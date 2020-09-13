@@ -1,4 +1,4 @@
-# CRMEB Admin
+# RC-Car-Admin
 ## 开发规范
 统一使用ES6 语法
 方法注释
@@ -210,17 +210,6 @@ utils 自定义工具js 独立命名，一般不用新建文件夹
 ## 开发
 
 ```bash
-# 克隆项目
-git clone https://gitee.com/ZhongBangKeJi/crmeb_java/
-
-# 进入项目目录
-cd ##
-
-# 安装依赖
-npm install
-
-# 建议不要直接使用 cnpm 安装依赖，会有各种诡异的 bug。可以通过如下操作解决 npm 下载速度慢的问题
-npm install --registry=https://registry.npm.taobao.org
 
 # 启动服务
 npm run dev
