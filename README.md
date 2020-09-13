@@ -1,16 +1,6 @@
 # RC-Car-Admin
 ## 开发规范
 统一使用ES6 语法
-方法注释
-/*
-* th => 表头
-* data => 数据
-* fileName => 文件名
-* fileType => 文件类型
-* sheetName => sheet页名
-*/
-export default function toExcel ({ th, data, fileName, fileType, sheetName }) 
-行注释 //
 
 ### 命名
 
