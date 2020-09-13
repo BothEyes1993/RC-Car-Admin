@@ -6,6 +6,7 @@
 
 页面目录 文件夹命名格式骆驼式命名法,例如：用户列表 userList 
 例如：商品模块
+~~~
 store 商品
     ├─ store 商品管理
         ├─index.vue 首页
@@ -17,7 +18,7 @@ store 商品
             ├─ index.vue
         ├─storeComment 商品评论
             ├─ index.vue    
-
+~~~
 页面命名、组建、文件夹 命名格式小驼峰命名法,例如：用户列表 userList
 
 类名函数命名 大驼峰式 例如：addUser
