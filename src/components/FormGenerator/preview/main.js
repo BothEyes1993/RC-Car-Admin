@@ -1,3 +1,4 @@
+/* eslint-disable no-eval */
 import Vue from 'vue'
 import { loadScriptQueue } from '@/utils/loadScript'
 import Tinymce from '@/components/tinymce'
@@ -12,7 +13,7 @@ const childAttrs = {
 
 window.addEventListener('message', init, false)
 
-function buildLinks(links) {
+function buildLinks (links) {
   let strs = ''
   links.forEach(url => {
     strs += `<link href="${url}" rel="stylesheet">`
@@ -20,7 +21,7 @@ function buildLinks(links) {
   return strs
 }
 
-function init(event) {
+function init (event) {
   if (event.data.type === 'refreshFrame') {
     const code = event.data.data
     const attrs = childAttrs[code.generateConf.type]
@@ -42,14 +43,14 @@ function init(event) {
   }
 }
 
-function newVue(attrs, main, html) {
+function newVue (attrs, main, html) {
   main = eval(`(${main})`)
   main.template = `<div>${html}</div>`
   new Vue({
     components: {
       child: main
     },
-    data() {
+    data () {
       return {
         visible: true
       }

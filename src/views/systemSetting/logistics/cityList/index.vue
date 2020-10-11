@@ -79,7 +79,7 @@ import * as logistics from '@/api/logistics.js'
 export default {
   name: 'CityList',
   components: { parser },
-  data() {
+  data () {
     return {
       // 表单
       formConf: { fields: [] },
@@ -99,12 +99,12 @@ export default {
       isCreate: 0
     }
   },
-  created() {
+  created () {
     this.getCityList()
   },
   methods: {
     // 获取城市数据
-    getCityList() {
+    getCityList () {
       this.loading = true
       logistics.cityList({
         parentId: this.parentId
@@ -114,19 +114,19 @@ export default {
       })
     },
     // 城市详情
-    cityDetail(item) {
+    cityDetail (item) {
       this.parentId = item.cityId
       this.parentName = item.name
       this.getCityList()
     },
     // 返回
-    back() {
+    back () {
       this.parentName = '中国'
       this.parentId = 0
       this.getCityList()
     },
     // 状态
-    cityStatus(e) {
+    cityStatus (e) {
       logistics.updateStatus({
         id: e.id,
         cityId: e.cityId,
@@ -138,7 +138,7 @@ export default {
       })
     },
     // 编辑
-    editCity(item) {
+    editCity (item) {
       this.editId = item.id
       const _pram = { id: this.formId }
       systemFormConfigApi.getFormConfigInfo(_pram).then(data => {
@@ -150,7 +150,7 @@ export default {
       })
     },
     // 详情
-    getCityInfo() {
+    getCityInfo () {
       logistics.cityInfo({
         id: this.editId
       }).then(res => {
@@ -162,7 +162,7 @@ export default {
         }, 80)
       })
     },
-    submit(data) {
+    submit (data) {
       const param = {
         id: this.editId,
         parentId: this.parentId,
@@ -174,7 +174,7 @@ export default {
       })
     },
     //  关闭模态框
-    handleClose(done) {
+    handleClose (done) {
       this.formConf.fields = []
       this.dialogVisible = false
     }

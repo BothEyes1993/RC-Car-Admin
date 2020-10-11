@@ -4,7 +4,7 @@ import request from '@/utils/request'
  * 新增商品
  * @param pram
  */
-export function productCreateApi(data) {
+export function productCreateApi (data) {
   return request({
     url: '/admin/store/product/save',
     method: 'POST',
@@ -16,7 +16,7 @@ export function productCreateApi(data) {
  * 编辑商品
  * @param pram
  */
-export function productUpdateApi(data) {
+export function productUpdateApi (data) {
   return request({
     url: '/admin/store/product/update',
     method: 'POST',
@@ -28,7 +28,7 @@ export function productUpdateApi(data) {
  * 商品详情
  * @param pram
  */
-export function productDetailApi(id) {
+export function productDetailApi (id) {
   return request({
     url: `/admin/store/product/info/${id}`,
     method: 'GET'
@@ -39,7 +39,7 @@ export function productDetailApi(id) {
  * 删除商品
  * @param pram
  */
-export function productDeleteApi(id) {
+export function productDeleteApi (id) {
   return request({
     url: `/admin/store/product/delete/${id}`,
     method: 'get'
@@ -49,7 +49,7 @@ export function productDeleteApi(id) {
 /**
  * 商品列表 表头数量
  */
-export function productHeadersApi() {
+export function productHeadersApi () {
   return request({
     url: '/admin/store/product/tabs/headers',
     method: 'GET'
@@ -60,7 +60,7 @@ export function productHeadersApi() {
  * 商品列表
  * @param pram
  */
-export function productLstApi(params) {
+export function productLstApi (params) {
   return request({
     url: '/admin/store/product/list',
     method: 'GET',
@@ -71,7 +71,7 @@ export function productLstApi(params) {
  * 商品分类
  * @param pram
  */
-export function categoryApi(params) {
+export function categoryApi (params) {
   return request({
     url: '/admin/category/list/tree',
     method: 'GET',
@@ -82,7 +82,7 @@ export function categoryApi(params) {
  * 商品上架
  * @param pram
  */
-export function putOnShellApi(id) {
+export function putOnShellApi (id) {
   return request({
     url: `/admin/store/product/putOnShell/${id}`,
     method: 'GET'
@@ -92,7 +92,7 @@ export function putOnShellApi(id) {
  * 商品下架
  * @param pram
  */
-export function offShellApi(id) {
+export function offShellApi (id) {
   return request({
     url: `/admin/store/product/offShell/${id}`,
     method: 'GET'
@@ -102,7 +102,7 @@ export function offShellApi(id) {
  * 商品规格 列表
  * @param pram
  */
-export function templateListApi(params) {
+export function templateListApi (params) {
   return request({
     url: '/admin/store/product/rule/list',
     method: 'GET',
@@ -113,7 +113,7 @@ export function templateListApi(params) {
  * 商品规格 删除
  * @param pram
  */
-export function attrDeleteApi(id) {
+export function attrDeleteApi (id) {
   return request({
     url: `/admin/store/product/rule/delete/${id}`,
     method: 'get'
@@ -123,7 +123,7 @@ export function attrDeleteApi(id) {
  * 商品规格 新增
  * @param pram
  */
-export function attrCreatApi(data) {
+export function attrCreatApi (data) {
   return request({
     url: '/admin/store/product/rule/save',
     method: 'POST',
@@ -134,7 +134,7 @@ export function attrCreatApi(data) {
  * 商品规格 编辑
  * @param pram
  */
-export function attrEditApi(data) {
+export function attrEditApi (data) {
   return request({
     url: '/admin/store/product/rule/update',
     method: 'POST',
@@ -145,7 +145,7 @@ export function attrEditApi(data) {
  * 商品规格 详情
  * @param pram
  */
-export function attrInfoApi(id) {
+export function attrInfoApi (id) {
   return request({
     url: `admin/store/product/rule/info/${id}`,
     method: 'GET'
@@ -155,7 +155,7 @@ export function attrInfoApi(id) {
  * 商品评论 列表
  * @param pram
  */
-export function replyListApi(params) {
+export function replyListApi (params) {
   return request({
     url: '/admin/store/product/reply/list',
     method: 'GET',
@@ -166,7 +166,7 @@ export function replyListApi(params) {
  * 商品评论 新增
  * @param pram
  */
-export function replyCreatApi(data) {
+export function replyCreatApi (data) {
   return request({
     url: '/admin/store/product/reply/save',
     method: 'POST',
@@ -177,7 +177,7 @@ export function replyCreatApi(data) {
  * 商品评论 编辑
  * @param pram
  */
-export function replyEditApi(data) {
+export function replyEditApi (data) {
   return request({
     url: '/admin/store/product/reply/update',
     method: 'POST',
@@ -188,7 +188,7 @@ export function replyEditApi(data) {
  * 商品评论 详情
  * @param pram
  */
-export function replyInfoApi(id) {
+export function replyInfoApi (id) {
   return request({
     url: `/admin/store/product/reply/info/${id}`,
     method: 'GET'
@@ -198,7 +198,7 @@ export function replyInfoApi(id) {
  * 商品评论 删除
  * @param pram
  */
-export function replyDeleteApi(id) {
+export function replyDeleteApi (id) {
   return request({
     url: `/admin/store/product/reply/delete/${id}`,
     method: 'GET'
@@ -209,10 +209,10 @@ export function replyDeleteApi(id) {
  * 商品评论 回复
  * @param pram
  */
-export function replyCommentApi(data) {
+export function replyCommentApi (data) {
   console.log(data)
   return request({
-    url: `/admin/store/product/reply/comment`,
+    url: '/admin/store/product/reply/comment',
     method: 'post',
     data
   })
@@ -222,9 +222,9 @@ export function replyCommentApi(data) {
  * 商品评论 导出
  * @param pram
  */
-export function productExportApi(params) {
+export function productExportApi (params) {
   return request({
-    url: `/admin/export/excel/product`,
+    url: '/admin/export/excel/product',
     method: 'get',
     params
   })
@@ -234,9 +234,9 @@ export function productExportApi(params) {
  * 商品复制
  * @param pram
  */
-export function importProductApi(params) {
+export function importProductApi (params) {
   return request({
-    url: `/admin/store/product/importProduct`,
+    url: '/admin/store/product/importProduct',
     method: 'post',
     params
   })
@@ -246,9 +246,9 @@ export function importProductApi(params) {
  * 恢复
  * @param pram
  */
-export function restoreApi(params) {
+export function restoreApi (params) {
   return request({
-    url: `/admin/store/product/importProduct`,
+    url: '/admin/store/product/importProduct',
     method: 'post',
     params
   })

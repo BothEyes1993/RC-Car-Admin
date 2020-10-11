@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function systemConfigCheck(pram) {
+export function systemConfigCheck (pram) {
   const data = {
     name: pram.name
   }
@@ -11,7 +11,7 @@ export function systemConfigCheck(pram) {
   })
 }
 
-export function systemConfigInfo(pram) {
+export function systemConfigInfo (pram) {
   const data = {
     formId: pram.id
   }
@@ -22,7 +22,7 @@ export function systemConfigInfo(pram) {
   })
 }
 
-export function systemConfigSave(pram) {
+export function systemConfigSave (pram) {
   return request({
     url: '/admin/system/config/save/form',
     method: 'POST',
@@ -30,12 +30,11 @@ export function systemConfigSave(pram) {
   })
 }
 
-
 /**
  * 文件上传
  * @param data
  */
-export function fileFileApi(data, params) {
+export function fileFileApi (data, params) {
   return request({
     url: '/admin/upload/file',
     method: 'POST',
@@ -48,7 +47,7 @@ export function fileFileApi(data, params) {
  * 图片上传
  * @param data
  */
-export function fileImageApi(data, params) {
+export function fileImageApi (data, params) {
   return request({
     url: '/admin/upload/image',
     method: 'POST',
@@ -61,7 +60,7 @@ export function fileImageApi(data, params) {
  * 图片列表
  * @param data
  */
-export function fileListApi(params) {
+export function fileListApi (params) {
   return request({
     url: '/admin/system/attachment/list',
     method: 'get',
@@ -73,7 +72,7 @@ export function fileListApi(params) {
  * 图片列表 删除图片
  * @param data
  */
-export function fileDeleteApi(id) {
+export function fileDeleteApi (id) {
   return request({
     url: `/admin/system/attachment/delete/${id}`,
     method: 'get'
@@ -84,22 +83,21 @@ export function fileDeleteApi(id) {
  * 图片列表 移動分類
  * @param data
  */
-export function attachmentMoveApi(data) {
+export function attachmentMoveApi (data) {
   return request({
-    url: `/admin/system/attachment/move`,
+    url: '/admin/system/attachment/move',
     method: 'post',
     data
   })
 }
 
-
 /**
  * 微信上传图片
  * @param data
  */
-export function wechatUploadApi(data, params) {
+export function wechatUploadApi (data, params) {
   return request({
-    url: `/admin/wechat/media/upload`,
+    url: '/admin/wechat/media/upload',
     method: 'post',
     data,
     params

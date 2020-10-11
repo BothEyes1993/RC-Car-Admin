@@ -79,7 +79,7 @@ import edit from './edit'
 export default {
   // name: "index"
   components: { edit },
-  data() {
+  data () {
     return {
       constants,
       listData: { list: [] },
@@ -101,11 +101,11 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.handleGetRoleList()
   },
   methods: {
-    handlerOpenDel(rowData) {
+    handlerOpenDel (rowData) {
       this.$confirm('确认删除当前数据').then(() => {
         roleApi.delRole(rowData).then(data => {
           this.$message.success('删除数据成功')
@@ -113,20 +113,20 @@ export default {
         })
       })
     },
-    handleGetRoleList() {
+    handleGetRoleList () {
       roleApi.getRoleList(this.listPram).then(data => {
         this.listData = data
         this.handlerGetMenuList()
       })
     },
-    handlerOpenEdit(isCreate, editDate) {
+    handlerOpenEdit (isCreate, editDate) {
       if (isCreate === 1) { editDate.rules = editDate.rules.split(',') }
 
       this.editDialogConfig.editData = editDate
       this.editDialogConfig.isCreate = isCreate
       this.editDialogConfig.visible = true
     },
-    handlerGetMenuList() { // 获取菜单全部数据后做menu翻译使用
+    handlerGetMenuList () { // 获取菜单全部数据后做menu翻译使用
       categroyApi.listCategroy({ page: 1, limit: 999, type: 5 }).then(data => {
         this.menuList = data.list
         this.listData.list.forEach(item => {
@@ -134,7 +134,7 @@ export default {
           const menuids = item.rules.split(',')
           menuids.map(muid => {
             this.menuList.filter(menu => {
-              if (menu.id == muid) {
+              if (menu.id === muid) {
                 _muneText.push(menu.name)
               }
             })
@@ -144,15 +144,15 @@ export default {
         })
       })
     },
-    hideEditDialog() {
+    hideEditDialog () {
       this.editDialogConfig.visible = false
       this.handleGetRoleList()
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.listPram.limit = val
       this.handleGetRoleList(this.listPram)
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.listPram.page = val
       this.handleGetRoleList(this.listPram)
     }

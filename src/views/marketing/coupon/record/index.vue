@@ -118,97 +118,97 @@
 </template>
 
 <script>
-  import { couponUserListApi } from '@/api/marketing'
-  import { roterPre } from '@/settings'
-  import { userListApi } from '@/api/user'
-  export default {
-    name: 'CouponUser',
-    filters: {
-      failFilter(status) {
-        const statusMap = {
-          'receive': '自己领取',
-          'send': '后台发送',
-          'give': '满赠',
-          'new': '新人',
-          'buy': '买赠送'
-        }
-        return statusMap[status]
+import { couponUserListApi } from '@/api/marketing'
+import { roterPre } from '@/settings'
+import { userListApi } from '@/api/user'
+export default {
+  name: 'CouponUser',
+  filters: {
+    failFilter (status) {
+      const statusMap = {
+        receive: '自己领取',
+        send: '后台发送',
+        give: '满赠',
+        new: '新人',
+        buy: '买赠送'
+      }
+      return statusMap[status]
+    },
+    statusFilter (status) {
+      const statusMap = {
+        0: '未使用',
+        1: '已使用',
+        2: '已过期'
+      }
+      return statusMap[status]
+    }
+  },
+  data () {
+    return {
+      Loading: false,
+      roterPre: roterPre,
+      imgList: [],
+      tableFromIssue: {
+        page: 1,
+        limit: 20,
+        uid: '',
+        name: '',
+        status: ''
       },
-      statusFilter(status) {
-        const statusMap = {
-          0: '未使用',
-          1: '已使用',
-          2: '已过期'
-        }
-        return statusMap[status]
+      issueData: {
+        data: [],
+        total: 0
+      },
+      loading: false,
+      options: []
+    }
+  },
+  mounted () {
+    this.getIssueList()
+  },
+  methods: {
+    remoteMethod (query) {
+      if (query !== '') {
+        this.loading = true
+        setTimeout(() => {
+          this.loading = false
+          userListApi({ keywords: query, page: 1, limit: 10 }).then(res => {
+            this.options = res.list
+          })
+        }, 200)
+      } else {
+        this.options = []
       }
     },
-    data() {
-      return {
-        Loading: false,
-        roterPre: roterPre,
-        imgList: [],
-        tableFromIssue: {
-          page: 1,
-          limit: 20,
-          uid: '',
-          name: '',
-          status: ''
-        },
-        issueData: {
-          data: [],
-          total: 0
-        },
-        loading: false,
-        options: []
-      }
-    },
-    mounted() {
+    seachList () {
+      this.tableFromIssue.page = 1
       this.getIssueList()
     },
-    methods: {
-      remoteMethod(query) {
-        if (query !== '') {
-          this.loading = true;
-          setTimeout(() => {
-            this.loading = false;
-            userListApi({keywords: query, page: 1, limit: 10}).then(res => {
-              this.options = res.list
-            })
-          }, 200);
-        } else {
-          this.options = [];
-        }
-      },
-      seachList() {
-        this.tableFromIssue.page = 1
-        this.getIssueList()
-      },
-      // 列表
-      getIssueList() {
-        this.Loading = true
-        couponUserListApi(this.tableFromIssue).then(res => {
-          this.issueData.data = res.list
-          this.issueData.total = res.total
-          // this.issueData.data.map((item) => {
-          //   this.imgList.push(item.user.avatar)
-          // })
-          this.Loading = false
-        }).catch(res => {
-          this.Loading = false
-          this.$message.error(res.message)
-        })
-      },
-      pageChangeIssue(page) {
-        this.tableFromIssue.page = page
-        this.getIssueList()
-      },
-      handleSizeChangeIssue(val) {
-        this.tableFromIssue.limit = val
-        this.getIssueList()
-      }
+    // 列表
+    getIssueList () {
+      this.Loading = true
+      couponUserListApi(this.tableFromIssue).then(res => {
+        this.issueData.data = res.list
+        this.issueData.total = res.total
+        // this.issueData.data.map((item) => {
+        //   this.imgList.push(item.user.avatar)
+        // })
+        this.Loading = false
+      }).catch(res => {
+        this.Loading = false
+        this.$message.error(res.message)
+      })
+    },
+    pageChangeIssue (page) {
+      this.tableFromIssue.page = page
+      this.getIssueList()
+    },
+    handleSizeChangeIssue (val) {
+      this.tableFromIssue.limit = val
+      this.getIssueList()
     }
   }
+}
 </script>
 
 <style scoped lang="scss">

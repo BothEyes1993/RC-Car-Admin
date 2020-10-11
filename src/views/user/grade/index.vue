@@ -96,88 +96,88 @@
 </template>
 
 <script>
-  import { userListApi, groupListApi, levelListApi, levelUseApi, levelDeleteApi } from '@/api/user'
-  import creatGrade from './creatGrade'
-  export default {
-    name: 'Grade',
-    filters: {
-      typeFilter(status) {
-        const statusMap = {
-          'wechat': '微信用户',
-          'routine': '小程序你用户',
-          'h5': 'H5用户'
-        }
-        return statusMap[status]
+import { levelListApi, levelUseApi, levelDeleteApi } from '@/api/user'
+import creatGrade from './creatGrade'
+export default {
+  name: 'Grade',
+  filters: {
+    typeFilter (status) {
+      const statusMap = {
+        wechat: '微信用户',
+        routine: '小程序你用户',
+        h5: 'H5用户'
       }
-    },
-    components: {creatGrade},
-    data() {
-      return {
-        listLoading: true,
-        tableData: {
-          data: [],
-          total: 0
-        },
-        tableFrom: {
-          isShow: '',
-          name: '',
-          page: 1,
-          limit: 20,
-          isDel: 0
-        }
-      }
-    },
-    mounted() {
-      this.getList()
-    },
-    methods: {
-      seachList() {
-        this.tableFrom.page = 1
-        this.getList()
+      return statusMap[status]
+    }
+  },
+  components: { creatGrade },
+  data () {
+    return {
+      listLoading: true,
+      tableData: {
+        data: [],
+        total: 0
       },
-      add() {
-        this.$refs.grades.dialogVisible = true
-      },
-      edit(id) {
-        this.$refs.grades.dialogVisible = true
-        this.$refs.grades.info(id)
-      },
-      // 列表
-      getList() {
-        this.listLoading = true
-        levelListApi(this.tableFrom).then(res => {
-          this.tableData.data = res.list
-          this.tableData.total = res.total
-          this.listLoading = false
-        }).catch(() => {
-          this.listLoading = false
-        })
-      },
-      pageChange(page) {
-        this.tableFrom.page = page
-        this.getList()
-      },
-      handleSizeChange(val) {
-        this.tableFrom.limit = val
-        this.getList()
-      },
-      // 删除
-      handleDelete(id, idx) {
-        this.$modalSure().then(() => {
-          levelDeleteApi({id:id}).then(() => {
-            this.$message.success('删除成功')
-            this.tableData.data.splice(idx, 1)
-          })
-        })
-      },
-      onchangeIsShow(row) {
-        levelUseApi({id: row.id, value:row.isShow}).then(() => {
-          this.$message.success('修改成功')
-          this.getList()
-        })
+      tableFrom: {
+        isShow: '',
+        name: '',
+        page: 1,
+        limit: 20,
+        isDel: 0
       }
     }
+  },
+  mounted () {
+    this.getList()
+  },
+  methods: {
+    seachList () {
+      this.tableFrom.page = 1
+      this.getList()
+    },
+    add () {
+      this.$refs.grades.dialogVisible = true
+    },
+    edit (id) {
+      this.$refs.grades.dialogVisible = true
+      this.$refs.grades.info(id)
+    },
+    // 列表
+    getList () {
+      this.listLoading = true
+      levelListApi(this.tableFrom).then(res => {
+        this.tableData.data = res.list
+        this.tableData.total = res.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    pageChange (page) {
+      this.tableFrom.page = page
+      this.getList()
+    },
+    handleSizeChange (val) {
+      this.tableFrom.limit = val
+      this.getList()
+    },
+    // 删除
+    handleDelete (id, idx) {
+      this.$modalSure().then(() => {
+        levelDeleteApi({ id: id }).then(() => {
+          this.$message.success('删除成功')
+          this.tableData.data.splice(idx, 1)
+        })
+      })
+    },
+    onchangeIsShow (row) {
+      levelUseApi({ id: row.id, value: row.isShow }).then(() => {
+        this.$message.success('修改成功')
+        this.getList()
+      })
+    }
   }
+}
 </script>
 
 <style scoped lang="scss">

@@ -38,7 +38,7 @@
           prop="avatar"
           label="头像"
           min-width="100">
-          <template slot-scope="{ row, index }" class="picMiddle">
+          <template slot-scope="{ row }" class="picMiddle">
             <div class="demo-image__preview">
               <el-image
                 style="width: 36px; height: 36px"
@@ -67,7 +67,7 @@
           prop="status"
           label="状态"
           min-width="100">
-          <template slot-scope="{ row, index }">
+          <template slot-scope="{ row }">
             <el-switch
               v-model="row.status"
               :active-value="1"
@@ -82,7 +82,7 @@
           fixed="right"
           label="操作"
           min-width="120">
-          <template slot-scope="{ row, index }">
+          <template slot-scope="{ row }">
             <el-button type="text" size="small" @click="edit(row.id)">编辑</el-button>
             <!--<el-divider direction="vertical"></el-divider>-->
             <el-button type="text" size="small" @click="storeDelete(row.id)">删除</el-button>
@@ -105,99 +105,99 @@
 </template>
 
 <script>
-  import addClerkList from './addClerk';
-  import { storeStaffListApi, storeListApi, storeStaffDeleteApi, storeStaffUpdateStatusApi } from '@/api/storePoint';
-  export default {
-    name: 'clerkList',
-    components: { addClerkList },
-    data () {
-      return{
-        storeSelectList:[],
-        artFrom: {
-          page: 1,
-          limit: 20,
-          storeId: ''
-        },
-        loading: false,
-        tableData:[],
-        total:0
-      }
+import addClerkList from './addClerk'
+import { storeStaffListApi, storeListApi, storeStaffDeleteApi, storeStaffUpdateStatusApi } from '@/api/storePoint'
+export default {
+  name: 'clerkList',
+  components: { addClerkList },
+  data () {
+    return {
+      storeSelectList: [],
+      artFrom: {
+        page: 1,
+        limit: 20,
+        storeId: ''
+      },
+      loading: false,
+      tableData: [],
+      total: 0
+    }
+  },
+  created () {
+    this.tableList()
+    this.storeList()
+  },
+  methods: {
+    // 是否显示
+    onchangeIsShow (id, isShow) {
+      const that = this
+      storeStaffUpdateStatusApi({ id: id, status: isShow }).then(() => {
+        that.$message.success('操作成功')
+        that.tableList()
+      }).catch(res => {
+        that.$message.error(res.message)
+      })
     },
-    created () {
-      this.tableList();
-      this.storeList();
-    },
-    methods: {
-      //是否显示
-      onchangeIsShow(id, isShow){
-        let that = this;
-        storeStaffUpdateStatusApi({id:id,status:isShow}).then(() => {
-          that.$message.success("操作成功");
-          that.tableList();
-        }).catch(res=>{
-          that.$message.error(res.message);
-        })
-      },
-      storeList() {
-        let artFrom =  {
-            page: 1,
-            limit: 9999,
-            status: '1',
-            keywords: ''
-        };
-        storeListApi(artFrom).then(res=>{
-          this.storeSelectList = res.list;
-        })
-      },
-      tableList(){
-        let that = this;
-        that.loading = true;
-        storeStaffListApi (that.artFrom).then(res=>{
-          that.loading = false;
-          that.tableData = res.list;
-          that.total = res.total;
-        }).catch(res => {
-          that.$message.error(res.message);
-        })
-      },
-      //切换页数
-      pageChange(index){
-        this.artFrom.page = index;
-        this.tableList();
-      },
-      //切换显示条数
-      sizeChange(index){
-        this.artFrom.limit = index;
-        this.tableList();
-      },
-      //搜索
-      search(){
-        this.artFrom.page = 1;
-        this.tableList();
-      },
-      //刪除
-      storeDelete(id){
-        let that = this;
-        that.$modalSure().then(() => {
-          storeStaffDeleteApi({ id: id }).then(() => {
-            that.$message.success('删除成功');
-            that.tableList();
-          })
-        }).catch(res=>{
-          that.$message.error(res.message);
-        })
-      },
-      //添加
-      add() {
-        this.$refs.template.dialogFormVisible = true;
-      },
-      //编辑
-      edit(id) {
-        this.$refs.template.dialogFormVisible = true;
-        this.$refs.template.getInfo(id);
+    storeList () {
+      const artFrom = {
+        page: 1,
+        limit: 9999,
+        status: '1',
+        keywords: ''
       }
+      storeListApi(artFrom).then(res => {
+        this.storeSelectList = res.list
+      })
+    },
+    tableList () {
+      const that = this
+      that.loading = true
+      storeStaffListApi(that.artFrom).then(res => {
+        that.loading = false
+        that.tableData = res.list
+        that.total = res.total
+      }).catch(res => {
+        that.$message.error(res.message)
+      })
+    },
+    // 切换页数
+    pageChange (index) {
+      this.artFrom.page = index
+      this.tableList()
+    },
+    // 切换显示条数
+    sizeChange (index) {
+      this.artFrom.limit = index
+      this.tableList()
+    },
+    // 搜索
+    search () {
+      this.artFrom.page = 1
+      this.tableList()
+    },
+    // 刪除
+    storeDelete (id) {
+      const that = this
+      that.$modalSure().then(() => {
+        storeStaffDeleteApi({ id: id }).then(() => {
+          that.$message.success('删除成功')
+          that.tableList()
+        })
+      }).catch(res => {
+        that.$message.error(res.message)
+      })
+    },
+    // 添加
+    add () {
+      this.$refs.template.dialogFormVisible = true
+    },
+    // 编辑
+    edit (id) {
+      this.$refs.template.dialogFormVisible = true
+      this.$refs.template.getInfo(id)
     }
   }
+}
 </script>
 
 <style scoped lang="scss">

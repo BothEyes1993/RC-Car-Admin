@@ -4,7 +4,7 @@ import request from '@/utils/request'
  * 订单 列表
  * @param pram
  */
-export function orderListApi(params) {
+export function orderListApi (params) {
   return request({
     url: '/admin/store/order/list',
     method: 'get',
@@ -12,12 +12,11 @@ export function orderListApi(params) {
   })
 }
 
-
 /**
  * 订单 删除
  * @param pram
  */
-export function orderDeleteApi(params) {
+export function orderDeleteApi (params) {
   return request({
     url: '/admin/store/order/delete',
     method: 'get',
@@ -29,7 +28,7 @@ export function orderDeleteApi(params) {
  * 订单 编辑
  * @param pram
  */
-export function orderUpdateApi(data, params) {
+export function orderUpdateApi (data, params) {
   return request({
     url: '/admin/store/order/update',
     method: 'post',
@@ -42,7 +41,7 @@ export function orderUpdateApi(data, params) {
  * 订单 记录
  * @param pram
  */
-export function orderLogApi(params) {
+export function orderLogApi (params) {
   return request({
     url: '/admin/store/order/status/list',
     method: 'get',
@@ -54,7 +53,7 @@ export function orderLogApi(params) {
  * 订单 详情
  * @param pram
  */
-export function orderDetailApi(params) {
+export function orderDetailApi (params) {
   return request({
     url: '/admin/store/order/info',
     method: 'get',
@@ -66,7 +65,7 @@ export function orderDetailApi(params) {
  * 订单 备注
  * @param pram
  */
-export function orderMarkApi(params) {
+export function orderMarkApi (params) {
   return request({
     url: '/admin/store/order/mark',
     method: 'post',
@@ -78,7 +77,7 @@ export function orderMarkApi(params) {
  * 订单 发货
  * @param pram
  */
-export function orderSendApi(params) {
+export function orderSendApi (params) {
   return request({
     url: '/admin/store/order/send',
     method: 'get',
@@ -90,7 +89,7 @@ export function orderSendApi(params) {
  * 订单 拒绝退款
  * @param pram
  */
-export function orderRefuseApi(params) {
+export function orderRefuseApi (params) {
   return request({
     url: '/admin/store/order/refund/refuse',
     method: 'get',
@@ -102,7 +101,7 @@ export function orderRefuseApi(params) {
  * 订单 立即退款
  * @param pram
  */
-export function orderRefundApi(params) {
+export function orderRefundApi (params) {
   return request({
     url: '/admin/store/order/refund',
     method: 'get',

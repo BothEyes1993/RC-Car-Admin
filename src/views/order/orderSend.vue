@@ -39,63 +39,63 @@
 </template>
 
 <script>
-    import { orderSendApi } from '@/api/order'
-    import { expressList } from '@/api/logistics';
-    export default {
-        name: 'orderSend',
-        props: {
-            orderId: Number
-        },
-        data () {
-            return {
-                formItem: {
-                    type: '1',
-                    expressId: '',
-                    expressCode: '',
-                    id: ''
-                },
-                modals: false,
-                express: []
-            }
-        },
-        mounted () {
-        },
-        methods: {
-            changeRadio (o) {
-              if( o === '3'){
-                this.formItem.expressId = ''
-                this.formItem.expressCode = ''
-              }
-            },
-            // 物流公司列表
-            getList () {
-              expressList({ page: 1, limit: 999, isShow:1 }).then(async res => {
-                    this.express = res.list
-                })
-            },
-            // 提交
-            putSend(name) {
-              this.formItem.id = this.orderId
-              this.$refs[name].validate((valid) => {
-                if (valid) {
-                  orderSendApi(this.formItem).then(async  => {
-                    this.$message.success('发送货成功');
-                    this.modals = false;
-                    this.$refs[name].resetFields();
-                    this.$emit('submitFail')
-                  })
-                } else {
-                  this.$message.error('请填写信息');
-                }
-              })
-            },
-            cancel (name) {
-                this.modals = false;
-                this.$refs[name].resetFields();
-                this.formItem.type = '1';
-            }
-        }
+import { orderSendApi } from '@/api/order'
+import { expressList } from '@/api/logistics'
+export default {
+  name: 'orderSend',
+  props: {
+    orderId: Number
+  },
+  data () {
+    return {
+      formItem: {
+        type: '1',
+        expressId: '',
+        expressCode: '',
+        id: ''
+      },
+      modals: false,
+      express: []
     }
+  },
+  mounted () {
+  },
+  methods: {
+    changeRadio (o) {
+      if (o === '3') {
+        this.formItem.expressId = ''
+        this.formItem.expressCode = ''
+      }
+    },
+    // 物流公司列表
+    getList () {
+      expressList({ page: 1, limit: 999, isShow: 1 }).then(async res => {
+        this.express = res.list
+      })
+    },
+    // 提交
+    putSend (name) {
+      this.formItem.id = this.orderId
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          orderSendApi(this.formItem).then(async => {
+            this.$message.success('发送货成功')
+            this.modals = false
+            this.$refs[name].resetFields()
+            this.$emit('submitFail')
+          })
+        } else {
+          this.$message.error('请填写信息')
+        }
+      })
+    },
+    cancel (name) {
+      this.modals = false
+      this.$refs[name].resetFields()
+      this.formItem.type = '1'
+    }
+  }
+}
 </script>
 
 <style scoped>

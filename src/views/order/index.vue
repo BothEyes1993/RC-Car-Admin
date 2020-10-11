@@ -274,260 +274,260 @@
 </template>
 
 <script>
-  import { orderListApi, orderUpdateApi, orderLogApi, orderMarkApi, orderDeleteApi, orderRefuseApi, orderRefundApi } from '@/api/order'
-  import cardsData from '@/components/cards/index'
-  import zbParser from '@/components/FormGenerator/components/parser/ZBParser'
-  import detailsFrom from './orderDetail'
-  import orderSend from './orderSend'
-  export default {
-    name: 'orderlistDetails',
-    components: {
-      cardsData,
-      zbParser,
-      detailsFrom,
-      orderSend
-    },
-    data() {
-        return {
-          RefuseVisible: false,
-          RefuseData:{},
-          orderId: 0,
-          refundVisible: false,
-          refundData: {},
-          dialogVisibleJI: false,
-          tableDataLog: {
-            data: [],
-            total: 0
-          },
-          tableFromLog: {
-            page: 1,
-            limit: 10,
-            oid: null
-          },
-          LogLoading: false,
-          isCreate: 1,
-          editData: null,
-          dialogVisible: false,
-          tableData: {
-            data: [],
-            total: 0
-          },
-          listLoading: true,
-          tableFrom: {
-            status: 'all',
-            dateLimit: '',
-            orderId: '',
-            page: 1,
-            limit: 20
-          },
-          orderChartType: {},
-          timeVal: [],
-          fromList: {
-            title: '选择时间',
-            custom: true,
-            fromTxt: [
-              { text: '全部', val: '' },
-              { text: '今天', val: 'today' },
-              { text: '昨天', val: 'yesterday' },
-              { text: '最近7天', val: 'lately7' },
-              { text: '最近30天', val: 'lately30' },
-              { text: '本月', val: 'month' },
-              { text: '本年', val: 'year' }
-            ]
-          },
-          selectionList: [],
-          ids: '',
-          orderids: '',
-          cardLists: []
-        }
+import { orderListApi, orderUpdateApi, orderLogApi, orderMarkApi, orderDeleteApi, orderRefuseApi, orderRefundApi } from '@/api/order'
+import cardsData from '@/components/cards/index'
+import zbParser from '@/components/FormGenerator/components/parser/ZBParser'
+import detailsFrom from './orderDetail'
+import orderSend from './orderSend'
+export default {
+  name: 'orderlistDetails',
+  components: {
+    cardsData,
+    zbParser,
+    detailsFrom,
+    orderSend
+  },
+  data () {
+    return {
+      RefuseVisible: false,
+      RefuseData: {},
+      orderId: 0,
+      refundVisible: false,
+      refundData: {},
+      dialogVisibleJI: false,
+      tableDataLog: {
+        data: [],
+        total: 0
       },
-    mounted() {
+      tableFromLog: {
+        page: 1,
+        limit: 10,
+        oid: null
+      },
+      LogLoading: false,
+      isCreate: 1,
+      editData: null,
+      dialogVisible: false,
+      tableData: {
+        data: [],
+        total: 0
+      },
+      listLoading: true,
+      tableFrom: {
+        status: 'all',
+        dateLimit: '',
+        orderId: '',
+        page: 1,
+        limit: 20
+      },
+      orderChartType: {},
+      timeVal: [],
+      fromList: {
+        title: '选择时间',
+        custom: true,
+        fromTxt: [
+          { text: '全部', val: '' },
+          { text: '今天', val: 'today' },
+          { text: '昨天', val: 'yesterday' },
+          { text: '最近7天', val: 'lately7' },
+          { text: '最近30天', val: 'lately30' },
+          { text: '本月', val: 'month' },
+          { text: '本年', val: 'year' }
+        ]
+      },
+      selectionList: [],
+      ids: '',
+      orderids: '',
+      cardLists: []
+    }
+  },
+  mounted () {
+    this.getList()
+  },
+  methods: {
+    seachList () {
+      this.tableFrom.page = 1
       this.getList()
     },
-    methods: {
-      seachList() {
-        this.tableFrom.page = 1
-        this.getList()
-      },
-      // 拒绝退款
-      RefusehandleClose() {
+    // 拒绝退款
+    RefusehandleClose () {
+      this.RefuseVisible = false
+    },
+    onOrderRefuse (row) {
+      this.orderids = row.id
+      this.RefuseData = {
+        orderId: row.orderId,
+        reason: ''
+      }
+      this.RefuseVisible = true
+    },
+    RefusehandlerSubmit (formValue) {
+      orderRefuseApi({ id: this.orderids, reason: formValue.reason }).then(data => {
+        this.$message.success('操作成功')
         this.RefuseVisible = false
-      },
-      onOrderRefuse(row) {
-        this.orderids = row.id
-        this.RefuseData = {
-          orderId: row.orderId,
-          reason: ''
-        }
-        this.RefuseVisible = true
-      },
-      RefusehandlerSubmit(formValue) {
-        orderRefuseApi({ id: this.orderids, reason: formValue.reason}).then(data => {
-          this.$message.success('操作成功')
-          this.RefuseVisible = false
-          this.getList()
-        })
-      },
-      // 立即退款
-      refundhandleClose() {
+        this.getList()
+      })
+    },
+    // 立即退款
+    refundhandleClose () {
+      this.refundVisible = false
+    },
+    onOrderRefund (row) {
+      this.refundData = {
+        orderId: row.orderId,
+        amount: row.payPrice,
+        type: ''
+      }
+      this.orderids = row.id
+      this.refundVisible = true
+    },
+    refundhandlerSubmit (formValue) {
+      orderRefundApi({ amount: formValue.amount, orderId: this.orderids, type: formValue.type }).then(data => {
+        this.$message.success('操作成功')
         this.refundVisible = false
-      },
-      onOrderRefund(row) {
-        this.refundData = {
-          orderId: row.orderId,
-          amount: row.payPrice,
-          type: ''
-        }
-        this.orderids = row.id
-        this.refundVisible = true
-      },
-      refundhandlerSubmit(formValue) {
-        orderRefundApi({ amount: formValue.amount, orderId: this.orderids, type: formValue.type}).then(data => {
-          this.$message.success('操作成功')
-          this.refundVisible = false
-          this.getList()
-        })
-      },
-      // 发送
-      sendOrder(row) {
-        this.$refs.send.modals = true;
-        this.$refs.send.getList();
-        this.orderId = row.id;
-      },
-      // 订单删除
-      handleDelete(row, idx) {
-        if (row.isDel) {
-          this.$modalSure().then(() => {
-            orderDeleteApi({ id: row.id }).then(() => {
-              this.$message.success('删除成功')
-              this.tableData.data.splice(idx, 1)
-            })
-          })
-        } else {
-          this.$confirm('您选择的的订单存在用户未删除的订单，无法删除用户未删除的订单！', '提示', {
-            confirmButtonText: '确定',
-            type: 'error'
-          })
-        }
-      },
-      // 详情
-      onOrderDetails(id) {
-        this.orderId = id
-        this.$refs.orderDetail.getDetail(id)
-        this.$refs.orderDetail.dialogVisible = true
-      },
-      // 订单记录
-      onOrderLog(id) {
-        this.dialogVisibleJI = true
-        this.LogLoading = true
-        this.tableFromLog.oid = id
-        orderLogApi( this.tableFromLog ).then(res => {
-          this.tableDataLog.data = res.list
-          this.tableDataLog.total = res.total
-          this.LogLoading = false
-        }).catch(() => {
-          this.LogLoading = false
-        })
-      },
-      pageChangeLog(page) {
-        this.tableFromLog.page = page
         this.getList()
-      },
-      handleSizeChangeLog(val) {
-        this.tableFromLog.limit = val
-        this.getList()
-      },
-      handleClose() {
-        this.dialogVisible = false
-      },
-      // 备注
-      onOrderMark(row) {
-        this.$prompt('订单备注', {
+      })
+    },
+    // 发送
+    sendOrder (row) {
+      this.$refs.send.modals = true
+      this.$refs.send.getList()
+      this.orderId = row.id
+    },
+    // 订单删除
+    handleDelete (row, idx) {
+      if (row.isDel) {
+        this.$modalSure().then(() => {
+          orderDeleteApi({ id: row.id }).then(() => {
+            this.$message.success('删除成功')
+            this.tableData.data.splice(idx, 1)
+          })
+        })
+      } else {
+        this.$confirm('您选择的的订单存在用户未删除的订单，无法删除用户未删除的订单！', '提示', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputErrorMessage: '请输入订单备注',
-          inputType: 'textarea',
-          inputValue: row.mark,
-          inputPlaceholder: '请输入订单备注',
-          inputValidator: (value) => { if(!value) return '输入不能为空'}
-        }).then(({value}) => {
-          orderMarkApi({ mark : value, id: row.id}).then(() => {
-            this.$message.success('操作成功')
-            this.getList();
-          })
-        }).catch(() => {
-          this.$message.info('取消输入')
+          type: 'error'
         })
-      },
-      handleSelectionChange(val) {
-        this.selectionList = val
-        const data = []
-        this.selectionList.map((item) => {
-          data.push(item.id)
-        })
-        this.ids = data.join(',')
-      },
-      // 选择时间
-      selectChange (tab) {
-        this.timeVal = [];
-        this.tableFrom.page = 1
-        this.getList();
-      },
-      // 具体日期
-      onchangeTime (e) {
-        this.timeVal = e;
-        this.tableFrom.dateLimit = e ? this.timeVal.join(',') : ''
-        this.tableFrom.page = 1
-        this.getList();
-      },
-      // 编辑
-      edit(row) {
-        this.dialogVisible = true
-        this.orderId = row.id
-        this.editData = {
-          orderId: row.orderId,
-          totalPrice: row.totalPrice,
-          totalPostage: row.totalPostage,
-          payPrice: row.payPrice,
-          payPostage: row.payPostage,
-          gainIntegral: row.gainIntegral,
-        }
-      },
-      handlerSubmit(formValue) {
-        orderUpdateApi(formValue, {id: this.orderId}).then(data => {
-          this.$message.success('编辑数据成功')
-          this.dialogVisible = false
+      }
+    },
+    // 详情
+    onOrderDetails (id) {
+      this.orderId = id
+      this.$refs.orderDetail.getDetail(id)
+      this.$refs.orderDetail.dialogVisible = true
+    },
+    // 订单记录
+    onOrderLog (id) {
+      this.dialogVisibleJI = true
+      this.LogLoading = true
+      this.tableFromLog.oid = id
+      orderLogApi(this.tableFromLog).then(res => {
+        this.tableDataLog.data = res.list
+        this.tableDataLog.total = res.total
+        this.LogLoading = false
+      }).catch(() => {
+        this.LogLoading = false
+      })
+    },
+    pageChangeLog (page) {
+      this.tableFromLog.page = page
+      this.getList()
+    },
+    handleSizeChangeLog (val) {
+      this.tableFromLog.limit = val
+      this.getList()
+    },
+    handleClose () {
+      this.dialogVisible = false
+    },
+    // 备注
+    onOrderMark (row) {
+      this.$prompt('订单备注', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputErrorMessage: '请输入订单备注',
+        inputType: 'textarea',
+        inputValue: row.mark,
+        inputPlaceholder: '请输入订单备注',
+        inputValidator: (value) => { if (!value) return '输入不能为空' }
+      }).then(({ value }) => {
+        orderMarkApi({ mark: value, id: row.id }).then(() => {
+          this.$message.success('操作成功')
           this.getList()
         })
-      },
-      // 列表
-      getList() {
-        this.listLoading = true
-        orderListApi(this.tableFrom).then(res => {
-          this.tableData.data = res.list.list || []
-          this.tableData.total = res.list.total
-          this.orderChartType = res.status
-          const stat = res.top
-          this.cardLists = [
-            { name: '订单数量', count: stat.count },
-            { name: '订单金额', count: stat.amount },
-            { name: '微信支付金额', count: stat.weChatAmount },
-            { name: '余额支付金额', count: stat.yueAmount }
-          ]
-          this.listLoading = false
-        }).catch(() => {
-          this.listLoading = false
-        })
-      },
-      pageChange(page) {
-        this.tableFrom.page = page
+      }).catch(() => {
+        this.$message.info('取消输入')
+      })
+    },
+    handleSelectionChange (val) {
+      this.selectionList = val
+      const data = []
+      this.selectionList.map((item) => {
+        data.push(item.id)
+      })
+      this.ids = data.join(',')
+    },
+    // 选择时间
+    selectChange (tab) {
+      this.timeVal = []
+      this.tableFrom.page = 1
+      this.getList()
+    },
+    // 具体日期
+    onchangeTime (e) {
+      this.timeVal = e
+      this.tableFrom.dateLimit = e ? this.timeVal.join(',') : ''
+      this.tableFrom.page = 1
+      this.getList()
+    },
+    // 编辑
+    edit (row) {
+      this.dialogVisible = true
+      this.orderId = row.id
+      this.editData = {
+        orderId: row.orderId,
+        totalPrice: row.totalPrice,
+        totalPostage: row.totalPostage,
+        payPrice: row.payPrice,
+        payPostage: row.payPostage,
+        gainIntegral: row.gainIntegral
+      }
+    },
+    handlerSubmit (formValue) {
+      orderUpdateApi(formValue, { id: this.orderId }).then(data => {
+        this.$message.success('编辑数据成功')
+        this.dialogVisible = false
         this.getList()
-      },
-      handleSizeChange(val) {
-        this.tableFrom.limit = val
-        this.getList()
-      },
+      })
+    },
+    // 列表
+    getList () {
+      this.listLoading = true
+      orderListApi(this.tableFrom).then(res => {
+        this.tableData.data = res.list.list || []
+        this.tableData.total = res.list.total
+        this.orderChartType = res.status
+        const stat = res.top
+        this.cardLists = [
+          { name: '订单数量', count: stat.count },
+          { name: '订单金额', count: stat.amount },
+          { name: '微信支付金额', count: stat.weChatAmount },
+          { name: '余额支付金额', count: stat.yueAmount }
+        ]
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    pageChange (page) {
+      this.tableFrom.page = page
+      this.getList()
+    },
+    handleSizeChange (val) {
+      this.tableFrom.limit = val
+      this.getList()
     }
+  }
 }
 </script>
 

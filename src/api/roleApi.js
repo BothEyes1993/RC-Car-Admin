@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getRoleById(pram) {
+export function getRoleById (pram) {
   const data = { ids: pram.roles }
   return request({
     url: '/admin/system/role/info',
@@ -13,7 +13,7 @@ export function getRoleById(pram) {
  * 菜单
  * @param pram
  */
-export function menuListApi() {
+export function menuListApi () {
   return request({
     url: '/admin/system/role/menu',
     method: 'GET'

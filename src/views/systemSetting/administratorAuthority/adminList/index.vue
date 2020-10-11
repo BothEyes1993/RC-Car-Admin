@@ -44,7 +44,7 @@
         <el-table-column label="账号" prop="account" min-width="120"/>
         <el-table-column label="身份" prop="realName" min-width="230">
           <template slot-scope="scope">
-            <el-tag size="small" type="info" v-for="(item, index) in scope.row.roleNames.split(',')" class="mr5">{{ item }}</el-tag>
+            <el-tag size="small" type="info" v-for="item in scope.row.roleNames.split(',')" :key="item" class="mr5">{{ item }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="最后登录时间" prop="lastTime" min-width="180">
@@ -112,7 +112,7 @@ import edit from './edit'
 export default {
   // name: "index"
   components: { edit },
-  data() {
+  data () {
     return {
       constants,
       listData: { list: [] },
@@ -138,26 +138,26 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.handleGetAdminList()
     this.handleGetRoleList()
   },
   methods: {
-    handleSearch() {
+    handleSearch () {
       this.listPram.page = 1
       this.handleGetAdminList()
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.listPram.limit = val
       this.handleGetAdminList()
       this.handleGetRoleList(this.listPram)
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.listPram.page = val
       this.handleGetAdminList()
       this.handleGetRoleList(this.listPram)
     },
-    handleGetRoleList() {
+    handleGetRoleList () {
       const _pram = {
         page: 1,
         limit: constants.page.limit[4]
@@ -166,27 +166,27 @@ export default {
         this.roleList = data
       })
     },
-    handlerOpenDel(rowData) {
+    handlerOpenDel (rowData) {
       this.$confirm('确认删除当前数据').then(() => {
-        const _pram = { id: rowData.id}
+        const _pram = { id: rowData.id }
         systemAdminApi.adminDel(_pram).then(data => {
           this.$message.success('删除数据成功')
           this.handleGetAdminList()
         })
       })
     },
-    handleGetAdminList() {
-      systemAdminApi.adminList( this.listPram ).then(data => {
+    handleGetAdminList () {
+      systemAdminApi.adminList(this.listPram).then(data => {
         this.listData = data
         // this.handlerGetMenuList()
       })
     },
-    handlerOpenEdit(isCreate, editDate) {
+    handlerOpenEdit (isCreate, editDate) {
       this.editDialogConfig.editData = editDate
       this.editDialogConfig.isCreate = isCreate
       this.editDialogConfig.visible = true
     },
-    handlerGetMenuList() { // 获取菜单全部数据后做menu翻译使用
+    handlerGetMenuList () { // 获取菜单全部数据后做menu翻译使用
       systemAdminApi.listCategroy({ page: 1, limit: 999, type: 5 }).then(data => {
         this.menuList = data.list
         this.listData.list.forEach(item => {
@@ -194,7 +194,7 @@ export default {
           const menuids = item.rules.split(',')
           menuids.map(muid => {
             this.menuList.filter(menu => {
-              if (menu.id == muid) {
+              if (menu.id === muid) {
                 _muneText.push(menu.name)
               }
             })
@@ -204,7 +204,7 @@ export default {
         })
       })
     },
-    hideEditDialog() {
+    hideEditDialog () {
       this.editDialogConfig.visible = false
       this.handleGetAdminList()
     }

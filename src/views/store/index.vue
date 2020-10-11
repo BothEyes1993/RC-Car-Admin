@@ -150,13 +150,13 @@
 </template>
 
 <script>
-import { productLstApi, productDeleteApi, categoryApi, putOnShellApi, offShellApi, productHeadersApi, productExportApi, restoreApi } from '@/api/store'
+import { productLstApi, productDeleteApi, categoryApi, putOnShellApi, offShellApi, productHeadersApi, restoreApi } from '@/api/store'
 import { getToken } from '@/utils/auth'
 import taoBao from './taoBao'
 export default {
   name: 'ProductList',
   components: { taoBao },
-  data() {
+  data () {
     return {
       props: {
         children: 'child',
@@ -184,31 +184,31 @@ export default {
       dialogVisible: false
     }
   },
-  mounted() {
+  mounted () {
     this.goodHeade()
     this.getList()
     this.getCategorySelect()
   },
   methods: {
-    handleRestore(id) {
-      this.$modalSure("恢复商品").then(() => {
+    handleRestore (id) {
+      this.$modalSure('恢复商品').then(() => {
         restoreApi(id)
           .then((res) => {
-            this.$message.success('操作成功');
-            this.goodHeade();
-            this.getList();
+            this.$message.success('操作成功')
+            this.goodHeade()
+            this.getList()
           })
-      });
+      })
     },
-    seachList() {
+    seachList () {
       this.tableFrom.page = 1
       this.getList()
     },
-    handleClose() {
+    handleClose () {
       this.dialogVisible = false
     },
     // 复制
-    onCopy(){
+    onCopy () {
       this.dialogVisible = true
     },
     // 导出
@@ -221,11 +221,11 @@ export default {
         console.log(res)
         this.headeNum = res
       }).catch(res => {
-        this.$message.error(res.message);
+        this.$message.error(res.message)
       })
     },
     // 商户分类；
-    getCategorySelect() {
+    getCategorySelect () {
       categoryApi({ status: -1, type: 1 }).then(res => {
         console.log(res)
         this.merCateList = res
@@ -234,7 +234,7 @@ export default {
       })
     },
     // 列表
-    getList() {
+    getList () {
       this.listLoading = true
       productLstApi(this.tableFrom).then(res => {
         this.tableData.data = res.list
@@ -245,16 +245,16 @@ export default {
         this.$message.error(res.message)
       })
     },
-    pageChange(page) {
+    pageChange (page) {
       this.tableFrom.page = page
       this.getList()
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.tableFrom.limit = val
       this.getList()
     },
     // 删除
-    handleDelete(id, idx) {
+    handleDelete (id, idx) {
       this.$modalSure().then(() => {
         productDeleteApi(id).then(() => {
           this.$message.success('删除成功')
@@ -262,9 +262,9 @@ export default {
         })
       })
     },
-    onchangeIsShow(row) {
+    onchangeIsShow (row) {
       row.isShow
-        ? putOnShellApi( row.id ).then(() => {
+        ? putOnShellApi(row.id).then(() => {
           this.$message.success('上架成功')
           this.getList()
         }) : offShellApi(row.id).then(() => {

@@ -155,7 +155,7 @@ const operationRouter = {
           meta: { title: '短信开关', noCache: true }
         }
       ]
-    },
+    }
   ]
 }
 

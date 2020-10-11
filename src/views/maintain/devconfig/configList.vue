@@ -12,7 +12,9 @@ export default {
   props: {
     prentData: {
       type: Object,
-      default: {}
+      default: () => {
+        return {}
+      }
     }
   }
 }

@@ -3,7 +3,7 @@ import ELEMENT from 'element-ui'
 
 let tinymceObj
 
-export default function loadTinymce(cb) {
+export default function loadTinymce (cb) {
   if (tinymceObj) {
     cb(tinymceObj)
     return

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function groupDataDelete(pram) {
+export function groupDataDelete (pram) {
   const data = {
     id: pram.id
   }
@@ -11,7 +11,7 @@ export function groupDataDelete(pram) {
   })
 }
 
-export function groupDataInfo(pram) {
+export function groupDataInfo (pram) {
   const data = {
     id: pram.id
   }
@@ -22,7 +22,7 @@ export function groupDataInfo(pram) {
   })
 }
 
-export function groupDataList(pram) {
+export function groupDataList (pram) {
   const data = {
     gid: pram.gid,
     keywords: pram.keywords,
@@ -37,7 +37,7 @@ export function groupDataList(pram) {
   })
 }
 
-export function groupDataSave(pram) {
+export function groupDataSave (pram) {
   return request({
     url: '/admin/system/group/data/save',
     method: 'POST',
@@ -45,7 +45,7 @@ export function groupDataSave(pram) {
   })
 }
 
-export function groupDataEdit(pram, id) {
+export function groupDataEdit (pram, id) {
   return request({
     url: '/admin/system/group/data/update',
     method: 'POST',

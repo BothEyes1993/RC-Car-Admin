@@ -71,7 +71,7 @@
         />
         <el-table-column
           prop="createTime"
-          label="	添加时间"
+          label="添加时间"
           min-width="150"
         />
       </el-table>
@@ -91,93 +91,91 @@
 </template>
 
 <script>
-  import { fromList } from '@/utils/constants.js'
-  import { integralListApi } from '@/api/marketing'
-  import { userListApi } from '@/api/user'
-  import cardsData from '@/components/cards/index'
-  export default {
-    components: { cardsData },
-    data() {
-      return {
-        loading: false,
-        options: [],
-        fromList: fromList,
-        listLoading: false,
-        tableData: {
-          data: [],
-          total: 0
-        },
-        tableFrom: {
-          page: 1,
-          limit: 20,
-          category: 'integral',
-          dateLimit: '',
-          userIdList: []
-        },
-        userIdList: [],
-        userList: [],
-        timeVal: [],
-        values: []
+import { fromList } from '@/utils/constants.js'
+import { integralListApi } from '@/api/marketing'
+import { userListApi } from '@/api/user'
+export default {
+  data () {
+    return {
+      loading: false,
+      options: [],
+      fromList: fromList,
+      listLoading: false,
+      tableData: {
+        data: [],
+        total: 0
+      },
+      tableFrom: {
+        page: 1,
+        limit: 20,
+        category: 'integral',
+        dateLimit: '',
+        userIdList: []
+      },
+      userIdList: [],
+      userList: [],
+      timeVal: [],
+      values: []
+    }
+  },
+  mounted () {
+    this.getList()
+    // this.getUserList()
+  },
+  methods: {
+    remoteMethod (query) {
+      console.log(query)
+      if (query !== '') {
+        this.loading = true
+        setTimeout(() => {
+          this.loading = false
+          userListApi({ keywords: query, page: 1, limit: 10 }).then(res => {
+            this.options = res.list
+          })
+        }, 200)
+      } else {
+        this.options = []
       }
     },
-    mounted() {
+    seachList () {
+      this.tableFrom.page = 1
       this.getList()
-      // this.getUserList()
     },
-    methods: {
-      remoteMethod(query) {
-        console.log(query)
-        if (query !== '') {
-          this.loading = true;
-          setTimeout(() => {
-            this.loading = false;
-            userListApi({keywords: query, page: 1, limit: 10}).then(res => {
-              this.options = res.list
-            })
-          }, 200);
-        } else {
-          this.options = [];
-        }
-      },
-      seachList() {
-        this.tableFrom.page = 1
-        this.getList()
-      },
-      // 选择时间
-      selectChange (tab) {
-        this.tableFrom.dateLimit = tab
-        this.tableFrom.page = 1
-        this.timeVal = [];
-        this.getList();
-      },
-      // 具体日期
-      onchangeTime (e) {
-        this.timeVal = e;
-        this.tableFrom.dateLimit = e ? this.timeVal.join(',') : ''
-        this.tableFrom.page = 1
-        this.getList();
-      },
-      // 列表
-      getList() {
-        this.listLoading = true
-        integralListApi({ limit:this.tableFrom.limit, page: this.tableFrom.page}, this.tableFrom).then(res => {
-          this.tableData.data = res.list
-          this.tableData.total = res.total
-          this.listLoading = false
-        }).catch(res => {
-          this.listLoading = false
-        })
-      },
-      pageChange(page) {
-        this.tableFrom.page = page
-        this.getList()
-      },
-      handleSizeChange(val) {
-        this.tableFrom.limit = val
-        this.getList()
-      },
+    // 选择时间
+    selectChange (tab) {
+      this.tableFrom.dateLimit = tab
+      this.tableFrom.page = 1
+      this.timeVal = []
+      this.getList()
+    },
+    // 具体日期
+    onchangeTime (e) {
+      this.timeVal = e
+      this.tableFrom.dateLimit = e ? this.timeVal.join(',') : ''
+      this.tableFrom.page = 1
+      this.getList()
+    },
+    // 列表
+    getList () {
+      this.listLoading = true
+      integralListApi({ limit: this.tableFrom.limit, page: this.tableFrom.page }, this.tableFrom).then(res => {
+        this.tableData.data = res.list
+        this.tableData.total = res.total
+        this.listLoading = false
+      }).catch(res => {
+        this.listLoading = false
+      })
+    },
+    pageChange (page) {
+      this.tableFrom.page = page
+      this.getList()
+    },
+    handleSizeChange (val) {
+      this.tableFrom.limit = val
+      this.getList()
     }
   }
+}
 </script>
 
 <style lang="sass" scoped>

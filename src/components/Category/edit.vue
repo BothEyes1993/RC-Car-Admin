@@ -6,7 +6,7 @@
         prop="name"
         :rules="[{ required:true,message:'请输入分类名称',trigger:['blur','change'] }]"
       >
-        <el-input v-model="editPram.name"  :maxlength="biztype.value === 1 ? 5 : 20" placeholder="分类名称" />
+        <el-input v-model="editPram.name" :maxlength="biztype.value === 1 ? 5 : 20" placeholder="分类名称" />
       </el-form-item>
       <el-form-item label="URL">
         <el-input v-model="editPram.url" placeholder="URL" />
@@ -47,7 +47,6 @@
 <script>
 import * as constants from '@/utils/constants.js'
 import * as categoryApi from '@/api/categoryApi.js'
-import * as selfUtil from '@/utils/ZBKJIutil.js'
 export default {
   // name: "edit"
   props: {
@@ -70,7 +69,7 @@ export default {
       type: Array
     }
   },
-  data() {
+  data () {
     return {
       loadingBtn: false,
       constants,
@@ -95,14 +94,14 @@ export default {
       parentOptions: []
     }
   },
-  mounted() {
+  mounted () {
     this.initEditData()
   },
   methods: {
     // 点击图标
-    addIcon() {
+    addIcon () {
       const _this = this
-      _this.$modalIcon(function(icon) {
+      _this.$modalIcon(function (icon) {
         _this.editPram.extra = icon
       })
     },
@@ -110,26 +109,26 @@ export default {
     modalPicTap (tit, num, i) {
       const _this = this
       const attr = []
-      this.$modalUpload(function(img) {
-        if(tit==='1'&& !num){
+      this.$modalUpload(function (img) {
+        if (tit === '1' && !num) {
           _this.editPram.extra = img[0].sattDir
         }
-        if(tit==='2'&& !num){
+        if (tit === '2' && !num) {
           img.map((item) => {
             attr.push(item.attachment_src)
             _this.formValidate.slider_image.push(item)
-          });
+          })
         }
-      },tit, 'store')
+      }, tit, 'store')
     },
-    close() {
+    close () {
       this.$emit('hideEditDialog')
     },
-    initEditData() {
+    initEditData () {
       console.log(this.editData)
       this.addTreeListLabelForCasCard(this.allTreeList, 'child')
       this.parentOptions = this.allTreeList
-        console.log(this.parentOptions)
+      console.log(this.parentOptions)
       if (this.isCreate !== 1) {
         const { id } = this.prent
         this.editPram.pid = id
@@ -146,8 +145,8 @@ export default {
         console.log(this.editPram.id)
       }
     },
-    addTreeListLabelForCasCard(arr, child) {
-      arr.forEach((o,i) => {
+    addTreeListLabelForCasCard (arr, child) {
+      arr.forEach((o, i) => {
         if (o.child && o.child.length) {
           o.disabled = true
           o.child.forEach((j) => {
@@ -156,13 +155,13 @@ export default {
         }
       })
     },
-    handlerSubmit(formName) {
+    handlerSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (!valid) return
         this.handlerSaveOrUpdate(this.isCreate === 0)
       })
     },
-    handlerSaveOrUpdate(isSave) {
+    handlerSaveOrUpdate (isSave) {
       if (isSave) {
         this.editPram.pid = this.prent.id
         this.loadingBtn = true

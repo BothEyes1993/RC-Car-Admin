@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  mounted() {
+  mounted () {
     // 取消开始的loading动画
     const preLoader = document.querySelector('#pre-loader')
     preLoader.style.display = 'none'

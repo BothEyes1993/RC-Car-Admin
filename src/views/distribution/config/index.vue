@@ -109,62 +109,62 @@
 </template>
 
 <script>
-  import { configApi, configUpdateApi, productCheckApi } from '@/api/distribution'
-  export default {
-    name: 'Index',
-    data() {
-      return {
-        promoterForm: {},
-        loading: false,
-        rules: {
-          brokerageFuncStatus: [
-            { required: true, message: '请选择是否启用分销', trigger: 'change' }
-          ],
-          storeBrokerageRatio: [
-            { required: true, message: '请输入一级返佣比例', trigger: 'blur' }
-          ],
-          storeBrokerageTwo: [
-            { required: true, message: '请输入二级返佣比例', trigger: 'blur' }
-          ]
-        }
-      }
-    },
-    mounted() {
-      this.getDetal()
-    },
-    methods: {
-      getDetal() {
-        configApi().then(res => {
-          this.promoterForm = res
-        }).catch((res) => {
-          this.$message.error(res.message)
-        })
-      },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.loading = true
-            configUpdateApi(this.promoterForm).then(res => {
-              this.loading = false
-              this.$message.success('提交成功')
-              // this.$modalSure('提交成功，是否自动下架商户低于此佣金比例的商品').then(() => {
-              //   productCheckApi().then(({ message }) => {
-              //     this.$message.success(message)
-              //   }).catch(({ message }) => {
-              //     this.$message.error(message)
-              //   })
-              // })
-            }).catch((res) => {
-              this.$message.error(res.message)
-              this.loading = false
-            })
-          } else {
-            return false
-          }
-        })
+import { configApi, configUpdateApi } from '@/api/distribution'
+export default {
+  name: 'Index',
+  data () {
+    return {
+      promoterForm: {},
+      loading: false,
+      rules: {
+        brokerageFuncStatus: [
+          { required: true, message: '请选择是否启用分销', trigger: 'change' }
+        ],
+        storeBrokerageRatio: [
+          { required: true, message: '请输入一级返佣比例', trigger: 'blur' }
+        ],
+        storeBrokerageTwo: [
+          { required: true, message: '请输入二级返佣比例', trigger: 'blur' }
+        ]
       }
     }
+  },
+  mounted () {
+    this.getDetal()
+  },
+  methods: {
+    getDetal () {
+      configApi().then(res => {
+        this.promoterForm = res
+      }).catch((res) => {
+        this.$message.error(res.message)
+      })
+    },
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.loading = true
+          configUpdateApi(this.promoterForm).then(res => {
+            this.loading = false
+            this.$message.success('提交成功')
+            // this.$modalSure('提交成功，是否自动下架商户低于此佣金比例的商品').then(() => {
+            //   productCheckApi().then(({ message }) => {
+            //     this.$message.success(message)
+            //   }).catch(({ message }) => {
+            //     this.$message.error(message)
+            //   })
+            // })
+          }).catch((res) => {
+            this.$message.error(res.message)
+            this.loading = false
+          })
+        } else {
+          return false
+        }
+      })
+    }
   }
+}
 </script>
 
 <style scoped lang="scss">

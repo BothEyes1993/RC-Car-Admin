@@ -112,7 +112,7 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       listLoading: true,
       tableData: {
@@ -137,28 +137,28 @@ export default {
   watch: {
     keyNum: {
       deep: true,
-      handler(val) {
+      handler (val) {
         this.getList()
       }
     }
   },
-  mounted() {
+  mounted () {
     this.tableFrom.page = 1
     this.getList()
     this.multipleSelectionAll = this.couponData
   },
   methods: {
-    close() {
+    close () {
       this.multipleSelection = []
     },
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.multipleSelection = val
       setTimeout(() => {
         this.changePageCoreRecordData()
       }, 50)
     },
     // 设置选中的方法
-    setSelectRow() {
+    setSelectRow () {
       if (!this.multipleSelectionAll || this.multipleSelectionAll.length <= 0) {
         return
       }
@@ -177,7 +177,7 @@ export default {
       }
     },
     // 记忆选择核心方法
-    changePageCoreRecordData() {
+    changePageCoreRecordData () {
       // 标识当前行的唯一键的名称
       const idKey = this.idKey
       const that = this
@@ -210,7 +210,7 @@ export default {
       noSelectIds.forEach(id => {
         if (selectAllIds.indexOf(id) >= 0) {
           for (let i = 0; i < that.multipleSelectionAll.length; i++) {
-            if (that.multipleSelectionAll[i][idKey] == id) {
+            if (that.multipleSelectionAll[i][idKey] === id) {
               // 如果总选择中有未被选中的，那么就删除这条
               that.multipleSelectionAll.splice(i, 1)
               break
@@ -219,7 +219,7 @@ export default {
         }
       })
     },
-    ok() {
+    ok () {
       if (this.multipleSelection.length > 0) {
         this.$emit('getCouponId', this.multipleSelectionAll)
         // this.close()
@@ -228,33 +228,33 @@ export default {
       }
     },
     // 列表
-    getList() {
+    getList () {
       this.listLoading = true
       marketingListApi(this.tableFrom).then(res => {
         this.tableData.data = res.list
         this.tableData.total = res.total
         this.listLoading = false
-        this.$nextTick(function() {
+        this.$nextTick(function () {
           this.setSelectRow()// 调用跨页选中方法
         })
       }).catch(res => {
         this.listLoading = false
       })
     },
-    pageChange(page) {
+    pageChange (page) {
       this.changePageCoreRecordData()
       this.tableFrom.page = page
       this.getList()
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.changePageCoreRecordData()
       this.tableFrom.limit = val
       this.getList()
     },
     // 发送
-    sendGrant(id){
+    sendGrant (id) {
       this.$modalSure('发送优惠劵吗').then(() => {
-        couponUserApi({ couponId:id, uid:this.userIds }).then(() => {
+        couponUserApi({ couponId: id, uid: this.userIds }).then(() => {
           this.$message.success('发送成功')
           this.getList()
         })

@@ -49,12 +49,12 @@
 import tableList from './components/tableList'
 import loginFrom from './components/loginFrom'
 import registerFrom from './components/register'
-import { logoutApi, smsNumberApi, smsInfoApi } from '@/api/sms'
+import { logoutApi, smsInfoApi } from '@/api/sms'
 import { mapGetters } from 'vuex'
 export default {
   name: 'SmsConfig',
   components: { tableList, loginFrom, registerFrom },
-  data() {
+  data () {
     return {
       fullscreenLoading: false,
       smsAccount: '',
@@ -74,7 +74,7 @@ export default {
       'isLogin'
     ])
   },
-  mounted() {
+  mounted () {
     this.onIsLogin()
     // if (!this.isLogin) {
     //   this.onIsLogin()
@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     // 剩余条数
-    getNumber() {
+    getNumber () {
       smsInfoApi().then(async res => {
         const data = res
         this.numbers = data.number
@@ -94,7 +94,7 @@ export default {
       })
     },
     // 登录跳转
-    onLogin() {
+    onLogin () {
       const url = this.$route.query.url
       if (url) {
         this.$router.replace(url)
@@ -106,7 +106,7 @@ export default {
       }
     },
     // 查看是否登录
-    onIsLogin() {
+    onIsLogin () {
       this.fullscreenLoading = true
       this.$store.dispatch('user/isLogin').then(async res => {
         const data = res
@@ -123,7 +123,7 @@ export default {
       })
     },
     // 退出登录
-    signOut() {
+    signOut () {
       logoutApi().then(async res => {
         this.isShowLogn = true
         this.isShowList = false
@@ -133,13 +133,13 @@ export default {
       })
     },
     // 立即注册
-    onChangeReg() {
+    onChangeReg () {
       this.isShowLogn = false
       this.isShow = false
       this.isShowReg = true
     },
     // 立即登录
-    logoup() {
+    logoup () {
       this.isShowLogn = true
       this.isShow = false
       this.isShowReg = false

@@ -29,112 +29,112 @@
 </template>
 
 <script>
-  import {chartUserApi, chartBuyApi} from '@/api/dashboard';
-  import echartsFrom from '@/components/echarts/index';
+import { chartUserApi, chartBuyApi } from '@/api/dashboard'
+import echartsFrom from '@/components/echarts/index'
 
-  export default {
-    name: 'user-chart',
-    components: {echartsFrom},
-    data() {
-      return {
-        line: 'line',
-        circle: 'circle',
-        xAxis: [],
-        infoList: {},
-        series: [],
-        xData: [],
-        y1Data: [],
-        y2Data: [],
-        lists: [],
-        bing_data: [],
-        bing_xdata: [],
+export default {
+  name: 'user-chart',
+  components: { echartsFrom },
+  data () {
+    return {
+      line: 'line',
+      circle: 'circle',
+      xAxis: [],
+      infoList: {},
+      series: [],
+      xData: [],
+      y1Data: [],
+      y2Data: [],
+      lists: [],
+      bing_data: [],
+      bing_xdata: [],
 
-        legendData: [],
-        seriesUser: [],
-        chartBuy: {}
-      }
-    },
-    methods: {
-      // 统计
-      getStatistics() {
-        chartUserApi().then(async res => {
-          this.infoList = res
-          let data = []
-          for (let key  in res) {
-            data.push(res[key])
-            this.xAxis.push(key)
+      legendData: [],
+      seriesUser: [],
+      chartBuy: {}
+    }
+  },
+  methods: {
+    // 统计
+    getStatistics () {
+      chartUserApi().then(async res => {
+        this.infoList = res
+        const data = []
+        for (const key in res) {
+          data.push(res[key])
+          this.xAxis.push(key)
+        }
+        this.series = [
+          {
+            data: data,
+            name: '人数（人）',
+            type: 'line',
+            tooltip: true,
+            smooth: true,
+            symbol: 'none',
+            areaStyle: {
+              normal: {
+                opacity: 0.2
+              }
+            }
           }
-          this.series = [
-            {
-              data: data,
-              name: '人数（人）',
-              type: 'line',
-              tooltip: true,
-              smooth: true,
-              symbol: 'none',
-              areaStyle: {
-                normal: {
-                  opacity: 0.2
-                }
-              }
-            }
-          ];
-          // this.bing_data = res.bing_data;
-          // this.bing_xdata = res.bing_xdata;
-        })
-      },
-      // 用户购买统计
-      getRank() {
-        chartBuyApi().then(async res => {
-          this.chartBuy = res
-          this.legendData = ["未消费用户", "消费一次用户", "留存客户", "回流客户"]
-          this.seriesUser = [{
-            "name": "未消费用户",
-            "value": res.zero,
-            "itemStyle": {
-              "color": "#5cadff"
-            }
-          },
-            {
-              "name": "消费一次用户",
-              "value": res.one,
-              "itemStyle": {
-                "color": "#b37feb"
-              }
-            },
-            {
-              "name": "留存客户",
-              "value": res.history,
-              "itemStyle": {
-                "color": "#19be6b"
-              }
-            },
-            {
-              "name": "回流客户",
-              "value": res.back,
-              "itemStyle": {
-                "color": "#ff9900"
-              }
-            }]
-        })
-      },
-      // 监听页面宽度变化，刷新表格
-      handleResize() {
-        if (this.infoList && this.series.length !== 0) this.$refs.userChart.handleResize();
-        if (this.infoList) this.$refs.visitChart.handleResize();
-      }
+        ]
+        // this.bing_data = res.bing_data;
+        // this.bing_xdata = res.bing_xdata;
+      })
     },
-    mounted() {
-      this.getStatistics();
-      this.getRank();
+    // 用户购买统计
+    getRank () {
+      chartBuyApi().then(async res => {
+        this.chartBuy = res
+        this.legendData = ['未消费用户', '消费一次用户', '留存客户', '回流客户']
+        this.seriesUser = [{
+          name: '未消费用户',
+          value: res.zero,
+          itemStyle: {
+            color: '#5cadff'
+          }
+        },
+        {
+          name: '消费一次用户',
+          value: res.one,
+          itemStyle: {
+            color: '#b37feb'
+          }
+        },
+        {
+          name: '留存客户',
+          value: res.history,
+          itemStyle: {
+            color: '#19be6b'
+          }
+        },
+        {
+          name: '回流客户',
+          value: res.back,
+          itemStyle: {
+            color: '#ff9900'
+          }
+        }]
+      })
     },
-    beforeDestroy() {
-      if (this.visitChart) {
-        this.visitChart.dispose();
-        this.visitChart = null;
-      }
+    // 监听页面宽度变化，刷新表格
+    handleResize () {
+      if (this.infoList && this.series.length !== 0) this.$refs.userChart.handleResize()
+      if (this.infoList) this.$refs.visitChart.handleResize()
+    }
+  },
+  mounted () {
+    this.getStatistics()
+    this.getRank()
+  },
+  beforeDestroy () {
+    if (this.visitChart) {
+      this.visitChart.dispose()
+      this.visitChart = null
     }
   }
+}
 </script>
 
 <style scoped lang="scss">

@@ -14,7 +14,7 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
       defaultProps: {
         children: 'children',
@@ -55,7 +55,7 @@ export default {
           }]
         }]
       }],
-      dataList: {// 数据结果
+      dataList: { // 数据结果
         page: 0,
         limit: 0,
         totalPage: 0,
@@ -64,11 +64,11 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.handlerGetTreeList(this.id)
   },
   methods: {
-    handlerGetTreeList(id) {
+    handlerGetTreeList (id) {
       if (!id) {
         this.$message.error('当前数据id不正确')
         return
@@ -77,7 +77,7 @@ export default {
         this.dataList = data
       })
     },
-    handleNodeClick(data) {
+    handleNodeClick (data) {
       console.log('data:', data)
     }
   }

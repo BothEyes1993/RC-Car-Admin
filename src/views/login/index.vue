@@ -84,18 +84,18 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-import { getLoginPicApi, captchaApi, codeCheckApi } from '@/api/user'
+// import { validUsername } from '@/utils/validate'
+import { getLoginPicApi, captchaApi } from '@/api/user'
 export default {
   name: 'Login',
-  data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
+  data () {
+    // const validateUsername = (rule, value, callback) => {
+    //   if (!validUsername(value)) {
+    //     callback(new Error('Please enter the correct user name'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error('The password can not be less than 6 digits'))
@@ -139,21 +139,21 @@ export default {
     }
   },
   watch: {
-    fullWidth(val) {
+    fullWidth (val) {
       // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
       if (!this.timer) {
         // 一旦监听到的screenWidth值改变，就将其重新赋给data里的screenWidth
         this.screenWidth = val
         this.timer = true
         const that = this
-        setTimeout(function() {
+        setTimeout(function () {
           // 打印screenWidth变化的值
           that.timer = false
         }, 400)
       }
     },
     $route: {
-      handler: function(route) {
+      handler: function (route) {
         const query = route.query
         if (query) {
           this.redirect = query.redirect
@@ -163,9 +163,9 @@ export default {
       immediate: true
     }
   },
-  created() {
+  created () {
     const _this = this
-    document.onkeydown = function(e) {
+    document.onkeydown = function (e) {
       if (_this.$route.path.indexOf('login') !== -1) {
         const key = window.event.keyCode
         if (key === 13) {
@@ -175,7 +175,7 @@ export default {
     }
     window.addEventListener('resize', this.handleResize)
   },
-  mounted() {
+  mounted () {
     this.getInfo()
     if (this.loginForm.account === '') {
       this.$refs.account.focus()
@@ -184,17 +184,17 @@ export default {
     }
     this.getCaptcha()
   },
-  destroyed() {
+  destroyed () {
     // window.removeEventListener('storage', this.afterQRScan)
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
-    handleResize(event) {
+    handleResize (event) {
       this.fullWidth = document.body.clientWidth
     },
-    getInfo() {
+    getInfo () {
       getLoginPicApi().then(res => {
         this.swiperList = res.banner
         this.loginLogo = res.logo
@@ -202,11 +202,11 @@ export default {
         // Cookies.set('MerInfo', JSON.stringify(data))
       })
     },
-    checkCapslock(e) {
+    checkCapslock (e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
     },
-    showPwd() {
+    showPwd () {
       if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
@@ -216,7 +216,7 @@ export default {
         this.$refs.pwd.focus()
       })
     },
-    handleLogin() {
+    handleLogin () {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -225,24 +225,24 @@ export default {
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               this.loading = false
             }).catch(() => {
-            this.loading = false
-            this.getCaptcha()
-          })
+              this.loading = false
+              this.getCaptcha()
+            })
         } else {
           console.log('error submit!!')
           return false
         }
       })
     },
-    getCaptcha() {
-      captchaApi().then(( data ) => {
+    getCaptcha () {
+      captchaApi().then((data) => {
         this.captchatImg = data.code
         this.loginForm.key = data.key
       }).catch(({ message }) => {
         this.$message.error(message)
       })
     },
-    getOtherQuery(query) {
+    getOtherQuery (query) {
       return Object.keys(query).reduce((acc, cur) => {
         if (cur !== 'redirect') {
           acc[cur] = query[cur]

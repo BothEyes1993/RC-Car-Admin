@@ -84,12 +84,11 @@
 </template>
 
 <script>
-import { smsNumberApi, smsPriceApi, payCodeApi, smsInfoApi } from '@/api/sms'
-import { isLogin } from '@/libs/public'
+import { smsPriceApi, payCodeApi, smsInfoApi } from '@/api/sms'
 import { mapGetters } from 'vuex'
 export default {
   name: 'SmsPay',
-  data() {
+  data () {
     return {
       numbers: '',
       account: '',
@@ -105,21 +104,20 @@ export default {
       'isLogin'
     ])
   },
-  mounted() {
+  mounted () {
     this.getNumber()
     this.getPrice()
-    return
 
-    if (!this.isLogin) {
-      this.$router.push('/operation/systemSms/config?url=' + this.$route.path)
-    } else {
-      this.getNumber()
-      this.getPrice()
-    }
+    // if (!this.isLogin) {
+    //   this.$router.push('/operation/systemSms/config?url=' + this.$route.path)
+    // } else {
+    //   this.getNumber()
+    //   this.getPrice()
+    // }
   },
   methods: {
     // 查看是否登录
-    onIsLogin() {
+    onIsLogin () {
       this.fullscreenLoading = true
       this.$store.dispatch('user/isLogin').then(async res => {
         const data = res
@@ -137,7 +135,7 @@ export default {
       })
     },
     // 剩余条数
-    getNumber() {
+    getNumber () {
       smsInfoApi().then(async res => {
         const data = res
         this.numbers = data.number
@@ -145,9 +143,9 @@ export default {
       })
     },
     // 支付套餐
-    getPrice() {
+    getPrice () {
       this.fullscreenLoading = true
-      smsPriceApi({ page: 1, limit: 9999}).then(async res => {
+      smsPriceApi({ page: 1, limit: 9999 }).then(async res => {
         setTimeout(() => {
           this.fullscreenLoading = false
         }, 800)
@@ -160,7 +158,7 @@ export default {
       })
     },
     // 选中
-    check(item, index) {
+    check (item, index) {
       this.fullscreenLoading = true
       this.current = index
       setTimeout(() => {
@@ -170,7 +168,7 @@ export default {
       }, 800)
     },
     // 支付码
-    getCode(item) {
+    getCode (item) {
       const data = {
         payType: 'weixin',
         mealId: item.id,

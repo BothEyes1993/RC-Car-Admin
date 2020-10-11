@@ -49,18 +49,18 @@
 <script>
 export default {
   name: 'ErrorLog',
-  data() {
+  data () {
     return {
       dialogTableVisible: false
     }
   },
   computed: {
-    errorLogs() {
+    errorLogs () {
       return this.$store.getters.errorLogs
     }
   },
   methods: {
-    clearAll() {
+    clearAll () {
       this.dialogTableVisible = false
       this.$store.dispatch('errorLog/clearErrorLog')
     }

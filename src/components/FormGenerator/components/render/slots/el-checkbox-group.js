@@ -1,5 +1,5 @@
 export default {
-  options(h, conf, key) {
+  options (h, conf, key) {
     const list = []
     conf.__slot__.options.forEach(item => {
       if (conf.__config__.optionType === 'button') {

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function configCheckUnique(pram) {
+export function configCheckUnique (pram) {
   const data = {
     name: pram.name
   }
@@ -11,7 +11,7 @@ export function configCheckUnique(pram) {
   })
 }
 
-export function configDelete(pram) {
+export function configDelete (pram) {
   const data = {
     id: pram.id
   }
@@ -22,7 +22,7 @@ export function configDelete(pram) {
   })
 }
 
-export function configInfo(pram) {
+export function configInfo (pram) {
   const data = {
     formId: pram.id
   }
@@ -33,7 +33,7 @@ export function configInfo(pram) {
   })
 }
 
-export function configList(pram) {
+export function configList (pram) {
   const data = {
     page: pram.page,
     limit: pram.limit
@@ -45,7 +45,7 @@ export function configList(pram) {
   })
 }
 
-export function configSave(pram) {
+export function configSave (pram) {
   const data = {
     systemConfigRequest: {
       desc: pram.desc,
@@ -65,7 +65,7 @@ export function configSave(pram) {
   })
 }
 
-export function configSaveForm(pram) {
+export function configSaveForm (pram) {
   return request({
     url: '/admin/system/config/save/form',
     method: 'POST',
@@ -73,7 +73,7 @@ export function configSaveForm(pram) {
   })
 }
 
-export function configUpdate(pram) {
+export function configUpdate (pram) {
   const data = {
     id: pram.id,
     systemConfigRequest: pram.systemConfigRequest
@@ -85,7 +85,7 @@ export function configUpdate(pram) {
   })
 }
 
-export function configSaveUniq(pram) {
+export function configSaveUniq (pram) {
   const data = {
     key: pram.key,
     value: pram.value
@@ -97,7 +97,7 @@ export function configSaveUniq(pram) {
   })
 }
 
-export function configGetUniq(pram) {
+export function configGetUniq (pram) {
   const data = {
     key: pram.key
   }
@@ -107,5 +107,3 @@ export function configGetUniq(pram) {
     params: data
   })
 }
-
-

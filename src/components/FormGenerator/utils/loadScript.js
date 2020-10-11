@@ -5,7 +5,7 @@ const callbacks = {}
  * @param {String} src 一个远程脚本
  * @param {Function} callback 回调
  */
-function loadScript(src, callback) {
+function loadScript (src, callback) {
   const existingScript = document.getElementById(src)
   const cb = callback || (() => {})
   if (!existingScript) {
@@ -21,7 +21,7 @@ function loadScript(src, callback) {
 
   callbacks[src].push(cb)
 
-  function stdOnEnd(script) {
+  function stdOnEnd (script) {
     script.onload = () => {
       this.onerror = this.onload = null
       callbacks[src].forEach(item => {
@@ -35,7 +35,7 @@ function loadScript(src, callback) {
     }
   }
 
-  function ieOnEnd(script) {
+  function ieOnEnd (script) {
     script.onreadystatechange = () => {
       if (this.readyState !== 'complete' && this.readyState !== 'loaded') return
       this.onreadystatechange = null
@@ -52,7 +52,7 @@ function loadScript(src, callback) {
  * @param {Array} list 一组远程脚本
  * @param {Function} cb 回调
  */
-export function loadScriptQueue(list, cb) {
+export function loadScriptQueue (list, cb) {
   const first = list.shift()
   list.length ? loadScript(first, () => loadScriptQueue(list, cb)) : loadScript(first, cb)
 }

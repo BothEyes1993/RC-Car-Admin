@@ -32,7 +32,7 @@
       <el-table-column
         label=""
         width="55">
-        <template slot-scope="{ row, index }">
+        <template slot-scope="{ row }">
           <el-radio v-model="templateRadio" :label="row.uid" @change.native="getTemplateRow(row.uid,row.avatar)">&nbsp;</el-radio>
         </template>
       </el-table-column>
@@ -50,7 +50,7 @@
       <el-table-column
         label="客服头像"
         min-Width="100">
-        <template slot-scope="{ row, index }" class="picMiddle">
+        <template slot-scope="{ row }" class="picMiddle">
           <div class="demo-image__preview">
             <el-image
               :src="row.avatar"
@@ -63,7 +63,7 @@
         prop="sex"
         label="性别"
         min-Width="60">
-        <template slot-scope="{ row, index }">
+        <template slot-scope="{ row }">
           <span v-show="row.sex ===1">男</span>
           <span v-show="row.sex ===2">女</span>
           <span v-show="row.sex ===0">保密</span>
@@ -73,7 +73,7 @@
         prop="country"
         label="地区"
         min-Width="100">
-        <template slot-scope="{ row, index }">
+        <template slot-scope="{ row }">
           {{row.country}}{{row.province}}{{row.city}}
         </template>
       </el-table-column>
@@ -81,7 +81,7 @@
         prop="subscribe"
         label="是否关注公众号"
         min-Width="100">
-        <template slot-scope="{ row, index }">
+        <template slot-scope="{ row }">
           {{row.subscribe?'关注':'未关注'}}
         </template>
       </el-table-column>
@@ -102,86 +102,86 @@
 </template>
 
 <script>
-  import { userListApi } from '@/api/user';
-    export default {
-      name: "index",
-      data(){
-          return{
-            loading:false,
-            templateRadio:'',
-            dialogFormVisible:false,
-            tableData:[],
-            artFrom: {
-              page: 1,
-              limit: 20,
-              data: '',
-              keywords: ''
-            },
-            total:0,
-            timeVal:'',
-            fromData: [
-              { text: '全部', val: '' },
-              { text: '今天', val: 'today' },
-              { text: '昨天', val: 'yesterday' },
-              { text: '最近7天', val: 'lately7' },
-              { text: '最近30天', val: 'lately30' },
-              { text: '本月', val: 'month' },
-              { text: '本年', val: 'year' }
-            ]
-          }
+import { userListApi } from '@/api/user'
+export default {
+  name: 'index',
+  data () {
+    return {
+      loading: false,
+      templateRadio: '',
+      dialogFormVisible: false,
+      tableData: [],
+      artFrom: {
+        page: 1,
+        limit: 20,
+        data: '',
+        keywords: ''
       },
-      created(){
-      },
-      methods:{
-        getTemplateRow(id,img){
-          this.dialogFormVisible = false;
-          this.$emit("upImgUid",id,img);
-        },
-        tableList(){
-          let that = this;
-          that.loading = true;
-          userListApi(that.artFrom).then(res=>{
-            that.loading = false;
-            that.tableData = res.list;
-            that.total = res.total
-          })
-        },
-        //切换显示条数
-        sizeChange(index){
-          this.artFrom.limit = index;
-          this.tableList();
-        },
-        //切换页数
-        pageChange(index){
-          this.artFrom.page = index;
-          this.tableList();
-        },
-        onchangeTime(e){
-          this.artFrom.page = 1;
-          if(e!==null){
-            this.artFrom.data = e.join(',');
-          }else {
-            this.artFrom.data = '';
-          }
-          this.tableList();
-        },
-        search(){
-          this.timeVal = '';
-          this.artFrom.page = 1;
-          this.tableList();
-        },
-        cancel(){
-          this.artFrom = {
-              page: 1,
-              limit: 20,
-              data: '',
-              keywords: ''
-          };
-          this.timeVal = '';
-          this.templateRadio = ''
-        }
-      }
+      total: 0,
+      timeVal: '',
+      fromData: [
+        { text: '全部', val: '' },
+        { text: '今天', val: 'today' },
+        { text: '昨天', val: 'yesterday' },
+        { text: '最近7天', val: 'lately7' },
+        { text: '最近30天', val: 'lately30' },
+        { text: '本月', val: 'month' },
+        { text: '本年', val: 'year' }
+      ]
     }
+  },
+  created () {
+  },
+  methods: {
+    getTemplateRow (id, img) {
+      this.dialogFormVisible = false
+      this.$emit('upImgUid', id, img)
+    },
+    tableList () {
+      const that = this
+      that.loading = true
+      userListApi(that.artFrom).then(res => {
+        that.loading = false
+        that.tableData = res.list
+        that.total = res.total
+      })
+    },
+    // 切换显示条数
+    sizeChange (index) {
+      this.artFrom.limit = index
+      this.tableList()
+    },
+    // 切换页数
+    pageChange (index) {
+      this.artFrom.page = index
+      this.tableList()
+    },
+    onchangeTime (e) {
+      this.artFrom.page = 1
+      if (e !== null) {
+        this.artFrom.data = e.join(',')
+      } else {
+        this.artFrom.data = ''
+      }
+      this.tableList()
+    },
+    search () {
+      this.timeVal = ''
+      this.artFrom.page = 1
+      this.tableList()
+    },
+    cancel () {
+      this.artFrom = {
+        page: 1,
+        limit: 20,
+        data: '',
+        keywords: ''
+      }
+      this.timeVal = ''
+      this.templateRadio = ''
+    }
+  }
+}
 </script>
 
 <style lang="scss">

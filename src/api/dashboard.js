@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 订单量
-export function statisticsOrderApi() {
+export function statisticsOrderApi () {
   return request({
     url: '/admin/statistics/home/order',
     method: 'get'
@@ -9,7 +9,7 @@ export function statisticsOrderApi() {
 }
 
 // 销售额
-export function statisticsSalesApi() {
+export function statisticsSalesApi () {
   return request({
     url: '/admin/statistics/home/sales',
     method: 'get'
@@ -17,7 +17,7 @@ export function statisticsSalesApi() {
 }
 
 // 新增用户
-export function statisticsUserApi() {
+export function statisticsUserApi () {
   return request({
     url: '/admin/statistics/home/user',
     method: 'get'
@@ -25,7 +25,7 @@ export function statisticsUserApi() {
 }
 
 // 用户访问量
-export function statisticsViewsApi() {
+export function statisticsViewsApi () {
   return request({
     url: '/admin/statistics/home/views',
     method: 'get'
@@ -33,7 +33,7 @@ export function statisticsViewsApi() {
 }
 
 // 用户曲线图
-export function chartUserApi() {
+export function chartUserApi () {
   return request({
     url: '/admin/statistics/home/chart/user',
     method: 'get'
@@ -41,7 +41,7 @@ export function chartUserApi() {
 }
 
 // 用户购买统计
-export function chartBuyApi() {
+export function chartBuyApi () {
   return request({
     url: '/admin/statistics/home/chart/user/buy',
     method: 'get'
@@ -49,7 +49,7 @@ export function chartBuyApi() {
 }
 
 // 订单量趋势 30天
-export function chartOrder30Api() {
+export function chartOrder30Api () {
   return request({
     url: '/admin/statistics/home/chart/order',
     method: 'get'
@@ -57,7 +57,7 @@ export function chartOrder30Api() {
 }
 
 // 订单量趋势 月
-export function chartOrderMonthApi() {
+export function chartOrderMonthApi () {
   return request({
     url: '/admin/statistics/home/chart/order/month',
     method: 'get'
@@ -65,7 +65,7 @@ export function chartOrderMonthApi() {
 }
 
 // 订单量趋势 周
-export function chartOrderWeekApi() {
+export function chartOrderWeekApi () {
   return request({
     url: '/admin/statistics/home/chart/order/week',
     method: 'get'
@@ -73,7 +73,7 @@ export function chartOrderWeekApi() {
 }
 
 // 订单量趋势 年
-export function chartOrderYearApi() {
+export function chartOrderYearApi () {
   return request({
     url: '/admin/statistics/home/chart/order/year',
     method: 'get'

@@ -64,25 +64,25 @@ export default {
   components: {},
   inheritAttrs: false,
   props: ['originResource'],
-  data() {
+  data () {
     return {
       resources: null
     }
   },
   computed: {},
   watch: {},
-  created() {},
-  mounted() {},
+  created () {},
+  mounted () {},
   methods: {
-    onOpen() {
+    onOpen () {
       this.resources = this.originResource.length ? JSON.parse(JSON.stringify(this.originResource)) : ['']
     },
-    onClose() {
+    onClose () {
     },
-    close() {
+    close () {
       this.$emit('update:visible', false)
     },
-    handelConfirm() {
+    handelConfirm () {
       const results = this.resources.filter(item => !!item) || []
       this.$emit('save', results)
       this.close()
@@ -90,10 +90,10 @@ export default {
         this.resources = results
       }
     },
-    deleteOne(index) {
+    deleteOne (index) {
       this.resources.splice(index, 1)
     },
-    addOne(url) {
+    addOne (url) {
       if (this.resources.indexOf(url) > -1) {
         this.$message('资源已存在')
       } else {

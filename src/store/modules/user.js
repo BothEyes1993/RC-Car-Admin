@@ -37,10 +37,9 @@ const mutations = {
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
-    const { account, pwd,  key, code } = userInfo
+  login ({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
-      login( userInfo ).then(data => {
+      login(userInfo).then(data => {
         commit('SET_TOKEN', data.token)
         Cookies.set('JavaInfo', JSON.stringify(data))
         setToken(data.token)
@@ -52,7 +51,7 @@ const actions = {
   },
 
   // 短信是否登录
-  isLogin({ commit }, userInfo) {
+  isLogin ({ commit }, userInfo) {
     // const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       isLoginApi().then(async res => {
@@ -66,17 +65,17 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  getInfo ({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(data => {
         if (!data) {
-          reject('Verification failed, please Login again.')
+          reject(new Error('Verification failed, please Login again.'))
         }
         const { roles, account } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
+          reject(new Error('getInfo: roles must be a non-null array!'))
         }
 
         commit('SET_ROLES', roles)
@@ -93,7 +92,7 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state, dispatch }) {
+  logout ({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
@@ -113,7 +112,7 @@ const actions = {
   },
 
   // remove token
-  resetToken({ commit }) {
+  resetToken ({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
@@ -123,7 +122,8 @@ const actions = {
   },
 
   // dynamically modify permissions
-  changeRoles({ commit, dispatch }, role) {
+  changeRoles ({ commit, dispatch }, role) {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async resolve => {
       const token = role + '-token'
 

@@ -61,154 +61,155 @@
 </template>
 
 <script>
-  import { replyCreatApi, replyEditApi, replyInfoApi } from '@/api/store'
-  const defaultObj= {
-    avatar: '',
-    comment: '',
-    nickname: '',
-    pics: '',
-    productId: '',
-    productScore: null,
-    serviceScore: null
-  }
-  export default {
-    name: "creatComment",
-    props:{
-      num: {
-        type: Number,
-        required: 0
-      },
-    },
-    data() {
-      var checkProductScore = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('商品分数不能为空'));
-        }else{
-          callback();
-        }
-      };
-      var checkServiceScore = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('服务分数不能为空'));
-        }else{
-          callback();
-        }
-      };
-      return {
-        loading: false,
-        pics: [],
-        image: '',
-        formValidate: Object.assign({}, defaultObj),
-        rules: {
-          avatar: [
-            {required: true, message: '请选择用户头像', trigger: 'change'},
-          ],
-          productId: [
-            {required: true, message: '请选择商品', trigger: 'change'},
-          ],
-          comment: [
-            {required: true, message: '请填写评价内容', trigger: 'blur'},
-          ],
-          nickname: [
-            {required: true, message: '请填写用户名称', trigger: 'blur'},
-          ],
-          pics: [
-            {required: true, message: '请选择评价图片', trigger: 'change'},
-          ],
-          productScore: [
-            {required: true, validator: checkProductScore, trigger: 'blur'},
-          ],
-          serviceScore: [
-            {required: true, validator: checkServiceScore,  trigger: 'change'},
-          ],
-        }
-      }
-    },
-    watch: {
-      num: {
-        handler: function(val) {
-          this.resetForm('formValidate')
-        },
-        deep: true
-      }
-    },
-    methods: {
-      changeGood(){
-        const _this = this
-        this.$modalGoodList(function(row) {
-          _this.image = row.image
-          _this.formValidate.productId = row.id
-        })
-      },
-      // 点击商品图
-      modalPicTap (tit) {
-        const _this = this
-        _this.$modalUpload(function(img) {
-          console.log(img)
-          tit==='1' ? _this.formValidate.avatar = img[0].sattDir : img.map((item) => {
-            _this.pics.push( item.sattDir)
-          })
-        },tit, 'store')
-      },
-      handleRemove (i) {
-        this.pics.splice(i, 1)
-      },
-      submitForm(formName) {
-        this.formValidate.pics = JSON.stringify(this.pics)
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            replyCreatApi(this.formValidate).then(() => {
-              this.$message.success("新增成功")
-              this.$msgbox.close()
-              setTimeout(() => {
-                // this.clear();
-                this.$emit('getList');
-              }, 600);
-            })
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields()
-        this.$msgbox.close()
-        this.pics=[]
-        this.formValidate.pics=''
-      },
-      info(){
-        this.loading = true
-        replyInfoApi(this.formValidate).then(() => {
-          this.formValidate = res
-          this.loading = false
-        }).catch(() => {
-          this.loading = false
-        })
-      },
-      // 移动
-      handleDragStart (e, item) {
-        this.dragging = item;
-      },
-      handleDragEnd (e, item) {
-        this.dragging = null
-      },
-      handleDragOver (e) {
-        e.dataTransfer.dropEffect = 'move'
-      },
-      handleDragEnter (e, item) {
-        e.dataTransfer.effectAllowed = 'move'
-        if (item === this.dragging) {
-          return
-        }
-        const newItems = [...this.pics]
-        const src = newItems.indexOf(this.dragging)
-        const dst = newItems.indexOf(item)
-        newItems.splice(dst, 0, ...newItems.splice(src, 1))
-        this.pics = newItems;
+import { replyCreatApi, replyInfoApi } from '@/api/store'
+const defaultObj = {
+  avatar: '',
+  comment: '',
+  nickname: '',
+  pics: '',
+  productId: '',
+  productScore: null,
+  serviceScore: null
+}
+export default {
+  name: 'creatComment',
+  props: {
+    num: {
+      type: Number,
+      required: 0
+    }
+  },
+  data () {
+    var checkProductScore = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('商品分数不能为空'))
+      } else {
+        callback()
       }
     }
+    var checkServiceScore = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('服务分数不能为空'))
+      } else {
+        callback()
+      }
+    }
+    return {
+      loading: false,
+      pics: [],
+      image: '',
+      formValidate: Object.assign({}, defaultObj),
+      rules: {
+        avatar: [
+          { required: true, message: '请选择用户头像', trigger: 'change' }
+        ],
+        productId: [
+          { required: true, message: '请选择商品', trigger: 'change' }
+        ],
+        comment: [
+          { required: true, message: '请填写评价内容', trigger: 'blur' }
+        ],
+        nickname: [
+          { required: true, message: '请填写用户名称', trigger: 'blur' }
+        ],
+        pics: [
+          { required: true, message: '请选择评价图片', trigger: 'change' }
+        ],
+        productScore: [
+          { required: true, validator: checkProductScore, trigger: 'blur' }
+        ],
+        serviceScore: [
+          { required: true, validator: checkServiceScore, trigger: 'change' }
+        ]
+      }
+    }
+  },
+  watch: {
+    num: {
+      handler: function (val) {
+        this.resetForm('formValidate')
+      },
+      deep: true
+    }
+  },
+  methods: {
+    changeGood () {
+      const _this = this
+      this.$modalGoodList(function (row) {
+        _this.image = row.image
+        _this.formValidate.productId = row.id
+      })
+    },
+    // 点击商品图
+    modalPicTap (tit) {
+      const _this = this
+      _this.$modalUpload(function (img) {
+        console.log(img)
+        tit === '1' ? _this.formValidate.avatar = img[0].sattDir : img.map((item) => {
+          _this.pics.push(item.sattDir)
+        })
+      }, tit, 'store')
+    },
+    handleRemove (i) {
+      this.pics.splice(i, 1)
+    },
+    submitForm (formName) {
+      this.formValidate.pics = JSON.stringify(this.pics)
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          replyCreatApi(this.formValidate).then(() => {
+            this.$message.success('新增成功')
+            this.$msgbox.close()
+            setTimeout(() => {
+              // this.clear();
+              this.$emit('getList')
+            }, 600)
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+      this.$msgbox.close()
+      this.pics = []
+      this.formValidate.pics = ''
+    },
+    info () {
+      this.loading = true
+      replyInfoApi(this.formValidate).then(() => {
+        // eslint-disable-next-line no-undef
+        this.formValidate = res
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    // 移动
+    handleDragStart (e, item) {
+      this.dragging = item
+    },
+    handleDragEnd (e, item) {
+      this.dragging = null
+    },
+    handleDragOver (e) {
+      e.dataTransfer.dropEffect = 'move'
+    },
+    handleDragEnter (e, item) {
+      e.dataTransfer.effectAllowed = 'move'
+      if (item === this.dragging) {
+        return
+      }
+      const newItems = [...this.pics]
+      const src = newItems.indexOf(this.dragging)
+      const dst = newItems.indexOf(item)
+      newItems.splice(dst, 0, ...newItems.splice(src, 1))
+      this.pics = newItems
+    }
   }
+}
 </script>
 
 <style scoped lang="scss">

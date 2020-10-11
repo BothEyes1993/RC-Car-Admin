@@ -17,7 +17,7 @@
 
 <script>
 // doc: https://panjiachen.github.io/vue-element-admin-site/feature/component/svg-icon.html#usage
-function isExternal(path) {
+function isExternal (path) {
   return /^(https?:|mailto:|tel:)/.test(path)
 }
 
@@ -34,19 +34,19 @@ export default {
     }
   },
   computed: {
-    isExternal() {
+    isExternal () {
       return isExternal(this.iconClass)
     },
-    iconName() {
+    iconName () {
       return `#icon-${this.iconClass}`
     },
-    svgClass() {
+    svgClass () {
       if (this.className) {
         return `svg-icon ${this.className}`
       }
       return 'svg-icon'
     },
-    styleExternalIcon() {
+    styleExternalIcon () {
       return {
         mask: `url(${this.iconClass}) no-repeat 50% 50%`,
         '-webkit-mask': `url(${this.iconClass}) no-repeat 50% 50%`

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 配置分类管理
 // 注意暂时没用到，使用无限极分类实现
 
-export function configTabDelete(pram) {
+export function configTabDelete (pram) {
   const data = {
     id: pram.id
   }
@@ -14,7 +14,7 @@ export function configTabDelete(pram) {
   })
 }
 
-export function configTabInfo(pram) {
+export function configTabInfo (pram) {
   const data = {
     id: pram.id
   }
@@ -25,7 +25,7 @@ export function configTabInfo(pram) {
   })
 }
 
-export function configTabList(pram) {
+export function configTabList (pram) {
   const data = {
     id: pram.id,
     engTitle: pram.engTitle,
@@ -44,7 +44,7 @@ export function configTabList(pram) {
   })
 }
 
-export function configSave(pram) {
+export function configSave (pram) {
   const data = {
     id: pram.id,
     configTabId: pram.configTabId,
@@ -69,7 +69,7 @@ export function configSave(pram) {
   })
 }
 
-export function configUpdate(pram) {
+export function configUpdate (pram) {
   const data = {
     id: pram.id,
     configTabId: pram.configTabId,

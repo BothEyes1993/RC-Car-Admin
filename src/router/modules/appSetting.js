@@ -56,7 +56,7 @@ const appSettingRouter = {
               meta: {
                 title: '关键字添加',
                 noCache: true,
-                activeMenu: `/appSetting/publicAccount/wxReply/keyword`
+                activeMenu: '/appSetting/publicAccount/wxReply/keyword'
               },
               hidden: true,
               component: () => import('@/views/appSetting/wxAccount/reply/follow')

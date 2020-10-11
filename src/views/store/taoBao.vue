@@ -186,368 +186,368 @@
 </template>
 
 <script>
-  import {crawlFromApi, treeListApi, crawlSaveApi, categoryApi, importProductApi, productCreateApi} from '@/api/store';
-  import { shippingTemplatesList } from '@/api/logistics'
-  const defaultObj = [{
-    image: '',
-    price: null,
-    cost: null,
-    ot_price: null,
-    stock: null,
-    barCode: '',
-    weight: null,
-    volume: null
-  }]
-  const objTitle = {
-    price: {
-      title: '售价'
-    },
-    cost: {
-      title: '成本价'
-    },
-    ot_price: {
-      title: '原价'
-    },
-    stock: {
-      title: '库存'
-    },
-    barCode: {
-      title: '商品编号'
-    },
-    weight: {
-      title: '重量（KG）'
-    },
-    volume: {
-      title: '体积(m³)'
-    }
+import { categoryApi, importProductApi, productCreateApi } from '@/api/store'
+import { shippingTemplatesList } from '@/api/logistics'
+const defaultObj = [{
+  image: '',
+  price: null,
+  cost: null,
+  ot_price: null,
+  stock: null,
+  barCode: '',
+  weight: null,
+  volume: null
+}]
+const objTitle = {
+  price: {
+    title: '售价'
+  },
+  cost: {
+    title: '成本价'
+  },
+  ot_price: {
+    title: '原价'
+  },
+  stock: {
+    title: '库存'
+  },
+  barCode: {
+    title: '商品编号'
+  },
+  weight: {
+    title: '重量（KG）'
+  },
+  volume: {
+    title: '体积(m³)'
   }
-  export default {
-    name: 'taoBao',
-    data() {
-      return {
-        loading: false,
-        formThead: Object.assign({}, objTitle),
-        manyTabTit: {},
-        manyTabDate: {},
-        formValidate: null,
-        form: 1,
-        props2: {
-          children: 'child',
-          label: 'name',
-          value: 'id',
-          multiple: true,
-          emitPath: false
-        },
-        modal_loading: false,
-        ManyAttrValue: [Object.assign({}, defaultObj[0])], // 多规格
-        imgList: [],
-        tempData: {
-          page: 1,
-          limit: 9999
-        },
-        shippingList:[],
-        merCateList:[],
-        images: '',
-        url: '',
-        modalPic: false,
-        isChoice: '',
-        ruleInline: {
-          storeName: [
-            { required: true, message: '请输入商品名称', trigger: 'blur' }
-          ],
-          cateIds: [
-            { required: true, message: '请选择商品分类', trigger: 'change', type: 'array', min: '1' }
-          ],
-          unitName: [
-            { required: true, message: '请输入单位', trigger: 'blur' }
-          ],
-          tempId: [
-            {required: true, message: '请选择运费模板', trigger: 'change', type: 'number'}
-          ],
-          keyword: [
-            { required: true, message: '请输入商品关键字', trigger: 'blur' }
-          ]
-        },
-        grid: {
-          xl: 8,
-          lg: 8,
-          md: 12,
-          sm: 24,
-          xs: 24
-        }
+}
+export default {
+  name: 'taoBao',
+  data () {
+    return {
+      loading: false,
+      formThead: Object.assign({}, objTitle),
+      manyTabTit: {},
+      manyTabDate: {},
+      formValidate: null,
+      form: 1,
+      props2: {
+        children: 'child',
+        label: 'name',
+        value: 'id',
+        multiple: true,
+        emitPath: false
+      },
+      modal_loading: false,
+      ManyAttrValue: [Object.assign({}, defaultObj[0])], // 多规格
+      imgList: [],
+      tempData: {
+        page: 1,
+        limit: 9999
+      },
+      shippingList: [],
+      merCateList: [],
+      images: '',
+      url: '',
+      modalPic: false,
+      isChoice: '',
+      ruleInline: {
+        storeName: [
+          { required: true, message: '请输入商品名称', trigger: 'blur' }
+        ],
+        cateIds: [
+          { required: true, message: '请选择商品分类', trigger: 'change', type: 'array', min: '1' }
+        ],
+        unitName: [
+          { required: true, message: '请输入单位', trigger: 'blur' }
+        ],
+        tempId: [
+          { required: true, message: '请选择运费模板', trigger: 'change', type: 'number' }
+        ],
+        keyword: [
+          { required: true, message: '请输入商品关键字', trigger: 'blur' }
+        ]
+      },
+      grid: {
+        xl: 8,
+        lg: 8,
+        md: 12,
+        sm: 24,
+        xs: 24
+      }
+    }
+  },
+  created () {
+    this.goodsCategory()
+  },
+  computed: {
+    attrValue () {
+      const obj = Object.assign({}, defaultObj[0])
+      delete obj.image
+      return obj
+    },
+    oneFormBatch () {
+      const obj = [Object.assign({}, defaultObj[0])]
+      delete obj[0].barCode
+      return obj
+    }
+  },
+  watch: {
+    'formValidate.attr': {
+      handler: function (val) {
+        this.watCh(val)
+      },
+      immediate: false,
+      deep: true
+    }
+  },
+  mounted () {
+    this.productGetTemplate()
+  },
+  methods: {
+    // 批量添加
+    batchAdd () {
+      // if (!this.oneFormBatch[0].pic || !this.oneFormBatch[0].price || !this.oneFormBatch[0].cost || !this.oneFormBatch[0].ot_price ||
+      //     !this.oneFormBatch[0].stock || !this.oneFormBatch[0].bar_code) return this.$Message.warning('请填写完整的批量设置内容！');
+      for (const val of this.ManyAttrValue) {
+        this.$set(val, 'image', this.oneFormBatch[0].image)
+        this.$set(val, 'price', this.oneFormBatch[0].price)
+        this.$set(val, 'cost', this.oneFormBatch[0].cost)
+        this.$set(val, 'ot_price', this.oneFormBatch[0].ot_price)
+        this.$set(val, 'stock', this.oneFormBatch[0].stock)
+        this.$set(val, 'barCode', this.oneFormBatch[0].barCode)
+        this.$set(val, 'weight', this.oneFormBatch[0].weight)
+        this.$set(val, 'volume', this.oneFormBatch[0].volume)
       }
     },
-    created() {
-      this.goodsCategory();
+    watCh (val) {
+      const tmp = {}
+      const tmpTab = {}
+      this.formValidate.attr.forEach((o, i) => {
+        tmp['value' + i] = { title: o.attrName }
+        tmpTab['value' + i] = ''
+      })
+      this.ManyAttrValue = this.attrFormat(val)
+      this.manyTabTit = tmp
+      this.manyTabDate = tmpTab
+      this.formThead = Object.assign({}, this.formThead, tmp)
     },
-    computed: {
-      attrValue() {
-        const obj = Object.assign({}, defaultObj[0])
-        delete obj.image
-        return obj
-      },
-      oneFormBatch() {
-        const obj = [Object.assign({}, defaultObj[0])]
-        delete obj[0].barCode
-        return obj
-      }
-    },
-    watch: {
-      'formValidate.attr': {
-        handler: function(val) {
-          this.watCh(val)
-        },
-        immediate: false,
-        deep: true
-      }
-    },
-    mounted() {
-      this.productGetTemplate();
-    },
-    methods: {
-      // 批量添加
-      batchAdd() {
-        // if (!this.oneFormBatch[0].pic || !this.oneFormBatch[0].price || !this.oneFormBatch[0].cost || !this.oneFormBatch[0].ot_price ||
-        //     !this.oneFormBatch[0].stock || !this.oneFormBatch[0].bar_code) return this.$Message.warning('请填写完整的批量设置内容！');
-        for (const val of this.ManyAttrValue) {
-          this.$set(val, 'image', this.oneFormBatch[0].image)
-          this.$set(val, 'price', this.oneFormBatch[0].price)
-          this.$set(val, 'cost', this.oneFormBatch[0].cost)
-          this.$set(val, 'ot_price', this.oneFormBatch[0].ot_price)
-          this.$set(val, 'stock', this.oneFormBatch[0].stock)
-          this.$set(val, 'barCode', this.oneFormBatch[0].barCode)
-          this.$set(val, 'weight', this.oneFormBatch[0].weight)
-          this.$set(val, 'volume', this.oneFormBatch[0].volume)
-        }
-      },
-      watCh(val) {
-        const tmp = {}
-        const tmpTab = {}
-        this.formValidate.attr.forEach((o, i) => {
-          tmp['value' + i] = { title: o.attrName }
-          tmpTab['value' + i] = ''
-        })
-        this.ManyAttrValue = this.attrFormat(val)
-        this.manyTabTit = tmp
-        this.manyTabDate = tmpTab
-        this.formThead = Object.assign({}, this.formThead, tmp)
-      },
-      attrFormat(arr) {
-        let data = []
-        const res = []
-        return format(arr)
-        function format(arr) {
-          if (arr.length > 1) {
-            arr.forEach((v, i) => {
-              if (i === 0) data = arr[i]['attrValue']
-              const tmp = []
-              data.forEach(function(vv) {
-                arr[i + 1] && arr[i + 1]['attrValue'] && arr[i + 1]['attrValue'].forEach(g => {
-                  const rep2 = (i !== 0 ? '' : arr[i]['attrName'] + '_') + vv + '$&' + arr[i + 1]['attrName'] + '_' + g
-                  tmp.push(rep2)
-                  if (i === (arr.length - 2)) {
-                    const rep4 = {
-                      image: '',
-                      price: 0,
-                      cost: 0,
-                      ot_price: 0,
-                      stock: 0,
-                      barCode: '',
-                      weight: 0,
-                      volume: 0,
-                      brokerage: 0,
-                      brokerage_two: 0
-                    }
-                    rep2.split('$&').forEach((h, k) => {
-                      const rep3 = h.split('_')
-                      if (!rep4['attrValue']) rep4['attrValue'] = {}
-                      rep4['attrValue'][rep3[0]] = rep3.length > 1 ? rep3[1] : ''
-                    })
-                    Object.values(rep4.attrValue).forEach((v, i) => {
-                      rep4['value' + i] = v
-                    })
-                    res.push(rep4)
+    attrFormat (arr) {
+      let data = []
+      const res = []
+      return format(arr)
+      function format (arr) {
+        if (arr.length > 1) {
+          arr.forEach((v, i) => {
+            if (i === 0) data = arr[i].attrValue
+            const tmp = []
+            data.forEach(function (vv) {
+              arr[i + 1] && arr[i + 1].attrValue && arr[i + 1].attrValue.forEach(g => {
+                const rep2 = (i !== 0 ? '' : arr[i].attrName + '_') + vv + '$&' + arr[i + 1].attrName + '_' + g
+                tmp.push(rep2)
+                if (i === (arr.length - 2)) {
+                  const rep4 = {
+                    image: '',
+                    price: 0,
+                    cost: 0,
+                    ot_price: 0,
+                    stock: 0,
+                    barCode: '',
+                    weight: 0,
+                    volume: 0,
+                    brokerage: 0,
+                    brokerage_two: 0
                   }
-                })
-              })
-              data = tmp.length ? tmp : []
-            })
-          } else {
-            const dataArr = []
-            arr.forEach((v, k) => {
-              v['attrValue'].forEach((vv, kk) => {
-                dataArr[kk] = v['attrName'] + '_' + vv
-                res[kk] = {
-                  image: '',
-                  price: 0,
-                  cost: 0,
-                  ot_price: 0,
-                  stock: 0,
-                  barCode: '',
-                  weight: 0,
-                  volume: 0,
-                  brokerage: 0,
-                  brokerage_two: 0,
-                  attrValue: { [v['attrName']]: vv }
+                  rep2.split('$&').forEach((h, k) => {
+                    const rep3 = h.split('_')
+                    if (!rep4.attrValue) rep4.attrValue = {}
+                    rep4.attrValue[rep3[0]] = rep3.length > 1 ? rep3[1] : ''
+                  })
+                  Object.values(rep4.attrValue).forEach((v, i) => {
+                    rep4['value' + i] = v
+                  })
+                  res.push(rep4)
                 }
-                Object.values(res[kk].attrValue).forEach((v, i) => {
-                  res[kk]['value' + i] = v
-                })
               })
             })
-            data.push(dataArr.join('$&'))
-          }
-          return res
-        }
-      },
-      // 获取运费模板；
-      productGetTemplate() {
-        shippingTemplatesList(this.tempData).then(res => {
-          this.shippingList = res.list
-        })
-      },
-      // 删除图片
-      handleRemove(i) {
-        this.formValidate.sliderImages.splice(i, 1);
-      },
-      // 选择主图
-      checked(item, index) {
-        this.formValidate.image = item;
-      },
-      // 商品分类；
-      goodsCategory() {
-        categoryApi({ status: -1, type: 1 }).then(res => {
-          this.merCateList = res
-        })
-      },
-      // 生成表单
-      add() {
-        if (this.url) {
-          // var reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
-          // if (!reg.test(this.soure_link)) {
-          //   return this.$message.warning('请输入以http开头的地址！');
-          // }
-          this.loading = true;
-          importProductApi({ url: this.url, form: this.form}).then(res => {
-            let info = res
-            this.formValidate = {
-              image: info.image,
-              sliderImages: JSON.parse(info.sliderImage),
-              sliderImage: info.sliderImage,
-              storeName: info.storeName,
-              storeInfo: info.storeInfo,
-              keyword: info.keyword,
-              cateIds: info.cateId ? info.cateId.split(',') : [], // 商品分类id
-              cateId: info.cateId,// 商品分类id传值
-              unitName: info.unitName,
-              sort: 0,
-              isShow: 0,
-              isBenefit: 0,
-              isNew: 0,
-              isGood: 0,
-              isHot: 0,
-              isBest: 0,
-              tempId: info.tempId,
-              attrValue: info.attrValue,
-              attr: info.attr,
-              selectRule: info.selectRule,
-              isSub: false,
-              content: info.content,
-              specType: info.specType,
-              id: info.id,
-              giveIntegral: info.giveIntegral,
-              ficti: info.ficti
-            }
-            for (var i = 0; i < this.formValidate.attr.length; i++) {
-              this.formValidate.attr[i].attrValue = JSON.parse(info.attr[i].attrValues)
-            }
-            this.loading = false;
-          }).catch(() => {
-            this.loading = false;
+            data = tmp.length ? tmp : []
           })
         } else {
-          this.$message.warning('请输入链接地址！');
-        }
-      },
-      // 提交
-      handleSubmit (name) {
-        this.formValidate.attr.length ? this.formValidate.attrValue=JSON.stringify(this.ManyAttrValue):this.formValidate.attrValue=[]
-        this.formValidate.cateId = this.formValidate.cateIds.join(',')
-        this.formValidate.sliderImage = JSON.stringify(this.formValidate.sliderImages)
-        if(!this.formValidate.specType){
-          this.formValidate.attr = []
-          this.formValidate.attrValue = ''
-        }
-        for (var i = 0; i < this.formValidate.attr.length; i++) {
-          this.formValidate.attr[i].attrValues = JSON.stringify(this.formValidate.attr[i].attrValue)
-        }
-        this.$refs[name].validate((valid) => {
-          if (valid) {
-            this.modal_loading = true
-            productCreateApi(this.formValidate).then(async res => {
-              this.$message.success('新增成功');
-              this.$parent.dialogVisible = false
-              this.modal_loading = false
-            }).catch(() => {
-              this.modal_loading = false
+          const dataArr = []
+          arr.forEach((v, k) => {
+            v.attrValue.forEach((vv, kk) => {
+              dataArr[kk] = v.attrName + '_' + vv
+              res[kk] = {
+                image: '',
+                price: 0,
+                cost: 0,
+                ot_price: 0,
+                stock: 0,
+                barCode: '',
+                weight: 0,
+                volume: 0,
+                brokerage: 0,
+                brokerage_two: 0,
+                attrValue: { [v.attrName]: vv }
+              }
+              Object.values(res[kk].attrValue).forEach((v, i) => {
+                res[kk]['value' + i] = v
+              })
             })
-          } else {
-            if(!this.formValidate.storeName || !this.formValidate.cateId  || !this.formValidate.keyword
-              || !this.formValidate.unitName || !this.formValidate.image){
-              this.$message.warning("请填写完整商品信息！");
-            }
-          }
-        })
-      },
-      // 点击商品图
-      modalPicTap (tit, num, i) {
-        const _this = this
-        this.$modalUpload(function(img) {
-          if(tit==='1'&& !num){
-            _this.formValidate.image = img[0].sattDir
-            _this.OneattrValue[0].image = img[0].sattDir
-          }
-          if(tit==='2'&& !num){
-            img.map((item) => {
-              _this.formValidate.sliderImages.push(item.sattDir)
-            });
-          }
-          if(tit==='1'&& num === 'dan' ){
-            _this.OneattrValue[0].image = img[0].sattDir
-          }
-          if(tit==='1'&& num === 'duo' ){
-            _this.ManyAttrValue[i].image = img[0].sattDir
-          }
-          if(tit==='1'&& num === 'pi' ){
-            _this.oneFormBatch[0].image = img[0].sattDir
-          }
-        },tit, 'store')
-      },
-      handleDragStart(e, item) {
-        this.dragging = item;
-      },
-      handleDragEnd(e, item) {
-        this.dragging = null
-      },
-      // 首先把div变成可以放置的元素，即重写dragenter/dragover
-      handleDragOver(e) {
-        // e.dataTransfer.dropEffect="move";//在dragenter中针对放置目标来设置!
-        e.dataTransfer.dropEffect = 'move'
-      },
-      handleDragEnter(e, item) {
-        // 为需要移动的元素设置dragstart事件
-        e.dataTransfer.effectAllowed = 'move'
-        if (item === this.dragging) {
-          return
+          })
+          data.push(dataArr.join('$&'))
         }
-        const newItems = [...this.formValidate.slider_image]
-        const src = newItems.indexOf(this.dragging)
-        const dst = newItems.indexOf(item)
-        newItems.splice(dst, 0, ...newItems.splice(src, 1))
-        this.formValidate.slider_image = newItems
+        return res
       }
+    },
+    // 获取运费模板；
+    productGetTemplate () {
+      shippingTemplatesList(this.tempData).then(res => {
+        this.shippingList = res.list
+      })
+    },
+    // 删除图片
+    handleRemove (i) {
+      this.formValidate.sliderImages.splice(i, 1)
+    },
+    // 选择主图
+    checked (item, index) {
+      this.formValidate.image = item
+    },
+    // 商品分类；
+    goodsCategory () {
+      categoryApi({ status: -1, type: 1 }).then(res => {
+        this.merCateList = res
+      })
+    },
+    // 生成表单
+    add () {
+      if (this.url) {
+        // var reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
+        // if (!reg.test(this.soure_link)) {
+        //   return this.$message.warning('请输入以http开头的地址！');
+        // }
+        this.loading = true
+        importProductApi({ url: this.url, form: this.form }).then(res => {
+          const info = res
+          this.formValidate = {
+            image: info.image,
+            sliderImages: JSON.parse(info.sliderImage),
+            sliderImage: info.sliderImage,
+            storeName: info.storeName,
+            storeInfo: info.storeInfo,
+            keyword: info.keyword,
+            cateIds: info.cateId ? info.cateId.split(',') : [], // 商品分类id
+            cateId: info.cateId, // 商品分类id传值
+            unitName: info.unitName,
+            sort: 0,
+            isShow: 0,
+            isBenefit: 0,
+            isNew: 0,
+            isGood: 0,
+            isHot: 0,
+            isBest: 0,
+            tempId: info.tempId,
+            attrValue: info.attrValue,
+            attr: info.attr,
+            selectRule: info.selectRule,
+            isSub: false,
+            content: info.content,
+            specType: info.specType,
+            id: info.id,
+            giveIntegral: info.giveIntegral,
+            ficti: info.ficti
+          }
+          for (var i = 0; i < this.formValidate.attr.length; i++) {
+            this.formValidate.attr[i].attrValue = JSON.parse(info.attr[i].attrValues)
+          }
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
+        })
+      } else {
+        this.$message.warning('请输入链接地址！')
+      }
+    },
+    // 提交
+    handleSubmit (name) {
+      this.formValidate.attr.length ? this.formValidate.attrValue = JSON.stringify(this.ManyAttrValue) : this.formValidate.attrValue = []
+      this.formValidate.cateId = this.formValidate.cateIds.join(',')
+      this.formValidate.sliderImage = JSON.stringify(this.formValidate.sliderImages)
+      if (!this.formValidate.specType) {
+        this.formValidate.attr = []
+        this.formValidate.attrValue = ''
+      }
+      for (var i = 0; i < this.formValidate.attr.length; i++) {
+        this.formValidate.attr[i].attrValues = JSON.stringify(this.formValidate.attr[i].attrValue)
+      }
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.modal_loading = true
+          productCreateApi(this.formValidate).then(async res => {
+            this.$message.success('新增成功')
+            this.$parent.dialogVisible = false
+            this.modal_loading = false
+          }).catch(() => {
+            this.modal_loading = false
+          })
+        } else {
+          if (!this.formValidate.storeName || !this.formValidate.cateId || !this.formValidate.keyword ||
+              !this.formValidate.unitName || !this.formValidate.image) {
+            this.$message.warning('请填写完整商品信息！')
+          }
+        }
+      })
+    },
+    // 点击商品图
+    modalPicTap (tit, num, i) {
+      const _this = this
+      this.$modalUpload(function (img) {
+        if (tit === '1' && !num) {
+          _this.formValidate.image = img[0].sattDir
+          _this.OneattrValue[0].image = img[0].sattDir
+        }
+        if (tit === '2' && !num) {
+          img.map((item) => {
+            _this.formValidate.sliderImages.push(item.sattDir)
+          })
+        }
+        if (tit === '1' && num === 'dan') {
+          _this.OneattrValue[0].image = img[0].sattDir
+        }
+        if (tit === '1' && num === 'duo') {
+          _this.ManyAttrValue[i].image = img[0].sattDir
+        }
+        if (tit === '1' && num === 'pi') {
+          _this.oneFormBatch[0].image = img[0].sattDir
+        }
+      }, tit, 'store')
+    },
+    handleDragStart (e, item) {
+      this.dragging = item
+    },
+    handleDragEnd (e, item) {
+      this.dragging = null
+    },
+    // 首先把div变成可以放置的元素，即重写dragenter/dragover
+    handleDragOver (e) {
+      // e.dataTransfer.dropEffect="move";//在dragenter中针对放置目标来设置!
+      e.dataTransfer.dropEffect = 'move'
+    },
+    handleDragEnter (e, item) {
+      // 为需要移动的元素设置dragstart事件
+      e.dataTransfer.effectAllowed = 'move'
+      if (item === this.dragging) {
+        return
+      }
+      const newItems = [...this.formValidate.slider_image]
+      const src = newItems.indexOf(this.dragging)
+      const dst = newItems.indexOf(item)
+      newItems.splice(dst, 0, ...newItems.splice(src, 1))
+      this.formValidate.slider_image = newItems
     }
   }
+}
 </script>
 
 <style scoped lang="scss">

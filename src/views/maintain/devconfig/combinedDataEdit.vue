@@ -47,10 +47,12 @@ export default {
     },
     editData: {
       type: Object,
-      default: {}
+      default: () => {
+        return {}
+      }
     }
   },
-  data() {
+  data () {
     return {
       editPram: {
         formId: null,
@@ -64,36 +66,36 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.handlerInitEditData()
   },
   methods: {
-    handlerInitEditData() {
+    handlerInitEditData () {
       if (this.isCreate !== 1) return
-      const { id, name, info, formId, createTime, updateTime } = this.editData
+      const { id, name, info, formId } = this.editData
       this.editPram.id = id
       this.editPram.name = name
       this.editPram.info = info
       this.editPram.formId = formId
     },
-    handlerSelectedRowData(rowData) {
+    handlerSelectedRowData (rowData) {
       this.selectedFormConfigData = rowData
       this.editPram.formId = this.selectedFormConfigData.id
       this.selectFormDialogConfig.visible = false
     },
-    handlerSubmit(form) {
+    handlerSubmit (form) {
       this.$refs[form].validate(result => {
         if (!result) return
         this.isCreate === 0 ? this.handlerSave(this.editPram) : this.handlerEdit(this.editPram)
       })
     },
-    handlerSave(pram) {
+    handlerSave (pram) {
       systemGroupApi.groupSave(pram).then(data => {
         this.$message.success('添加组合数据成功')
         this.$emit('hideDialog')
       })
     },
-    handlerEdit(pram) {
+    handlerEdit (pram) {
       systemGroupApi.groupEdit(pram).then(data => {
         this.$message.success('编辑组合数据成功')
         this.$emit('hideDialog')

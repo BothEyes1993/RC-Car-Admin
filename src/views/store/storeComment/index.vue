@@ -128,22 +128,20 @@
 </template>
 
 <script>
-import creatComment from './creatComment.vue'
 import { categoryApi, replyListApi, replyDeleteApi, replyCommentApi } from '@/api/store'
-import { formatDates } from '@/utils/index';
+import { formatDates } from '@/utils/index'
 import { userListApi } from '@/api/user'
 export default {
   name: 'StoreComment',
   filters: {
     formatDate (time) {
       if (time !== 0) {
-        const date = new Date(time * 1000);
-        return formatDates(date, 'yyyy-MM-dd hh:mm');
+        const date = new Date(time * 1000)
+        return formatDates(date, 'yyyy-MM-dd hh:mm')
       }
     }
   },
-  components: { creatComment },
-  data() {
+  data () {
     return {
       merCateList: [],
       props: {
@@ -176,7 +174,7 @@ export default {
         isReply: '',
         dateLimit: '',
         uid: '',
-        productSearch:'',
+        productSearch: '',
         isDel: false
       },
       timeVal: [],
@@ -185,31 +183,31 @@ export default {
       options: []
     }
   },
-  mounted() {
+  mounted () {
     // this.getLstFilterApi()
     this.getList()
     this.getCategorySelect()
   },
-  methods:{
-    remoteMethod(query) {
+  methods: {
+    remoteMethod (query) {
       if (query !== '') {
-        this.loading = true;
+        this.loading = true
         setTimeout(() => {
-          this.loading = false;
-          userListApi({keywords: query, page: 1, limit: 10}).then(res => {
+          this.loading = false
+          userListApi({ keywords: query, page: 1, limit: 10 }).then(res => {
             this.options = res.list
           })
-        }, 200);
+        }, 200)
       } else {
-        this.options = [];
+        this.options = []
       }
     },
-    seachList() {
+    seachList () {
       this.tableFrom.page = 1
       this.getList()
     },
     // 回复
-    reply(id) {
+    reply (id) {
       this.$prompt('回复内容', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -218,10 +216,10 @@ export default {
         inputPlaceholder: '请输入回复内容',
         inputValidator: (value) => {
           if (!value) {
-            return '输入不能为空';
+            return '输入不能为空'
           }
         }
-      }).then(({value}) => {
+      }).then(({ value }) => {
         replyCommentApi({
           ids: id,
           merchantReplyContent: value
@@ -229,38 +227,38 @@ export default {
           this.$message({
             type: 'success',
             message: '回复成功'
-          });
-          this.getList();
+          })
+          this.getList()
         })
       }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消输入'
-          })
+        this.$message({
+          type: 'info',
+          message: '取消输入'
         })
+      })
     },
     // 选择时间
     selectChange (tab) {
-      this.timeVal = [];
+      this.timeVal = []
       this.tableFrom.page = 1
-      this.getList();
+      this.getList()
     },
     // 商户分类；
-    getCategorySelect() {
+    getCategorySelect () {
       categoryApi({ status: -1, type: 1 }).then(res => {
         this.merCateList = res
       }).catch(res => {
         this.$message.error(res.message)
       })
     },
-    add() {
+    add () {
       const timer = new Date().getTime()
       const _this = this
-      this.modalFrom(timer,null,function() {
+      this.modalFrom(timer, null, function () {
         _this.getList()
       })
     },
-    modalFrom(timer, callback){
+    modalFrom (timer, callback) {
       const h = this.$createElement
       this.$msgbox({
         title: '虚拟评论',
@@ -271,7 +269,7 @@ export default {
               num: timer
             },
             on: {
-              getList() {
+              getList () {
                 callback()
               }
             }
@@ -289,13 +287,13 @@ export default {
     },
     // 具体日期
     onchangeTime (e) {
-      this.timeVal = e;
+      this.timeVal = e
       this.tableFrom.dateLimit = e ? this.timeVal.join(',') : ''
       this.tableFrom.page = 1
-      this.getList();
+      this.getList()
     },
     // 删除
-    handleDelete(id, idx) {
+    handleDelete (id, idx) {
       this.$modalSure().then(() => {
         replyDeleteApi(id).then(() => {
           this.$message.success('删除成功')
@@ -304,7 +302,7 @@ export default {
       })
     },
     // 列表
-    getList() {
+    getList () {
       this.listLoading = true
       this.tableFrom.uid = this.uids.join(',')
       replyListApi(this.tableFrom).then(res => {
@@ -315,14 +313,14 @@ export default {
         this.listLoading = false
       })
     },
-    pageChange(page) {
+    pageChange (page) {
       this.tableFrom.page = page
       this.getList()
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.tableFrom.limit = val
       this.getList()
-    },
+    }
   }
 }
 </script>

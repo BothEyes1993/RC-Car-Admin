@@ -41,7 +41,7 @@ const originList = iconList.map(name => `el-icon-${name}`)
 export default {
   inheritAttrs: false,
   props: ['current'],
-  data() {
+  data () {
     return {
       iconList: originList,
       active: null,
@@ -49,7 +49,7 @@ export default {
     }
   },
   watch: {
-    key(val) {
+    key (val) {
       if (val) {
         this.iconList = originList.filter(name => name.indexOf(val) > -1)
       } else {
@@ -58,12 +58,12 @@ export default {
     }
   },
   methods: {
-    onOpen() {
+    onOpen () {
       this.active = this.current
       this.key = ''
     },
-    onClose() {},
-    onSelect(icon) {
+    onClose () {},
+    onSelect (icon) {
       this.active = icon
       this.$emit('select', icon)
       this.$emit('update:visible', false)

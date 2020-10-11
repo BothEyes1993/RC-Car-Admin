@@ -117,134 +117,136 @@
 </template>
 
 <script>
-  import { couponSaveApi, couponInfoApi } from '@/api/marketing'
-  import { categoryApi } from '@/api/store'
-  export default {
-    name: "creatCoupon",
-    data() {
-      return {
-        loading: false,
-        threshold: false,
-        termTime: [],
-        isForeverTime: [],
-        props2: {
-          children: 'child',
-          label: 'name',
-          value: 'id',
-          checkStrictly: true,
-          emitPath: false
-        },
-        couponType: 0,
-        term: 'termday',
-        merCateList: [], // 商户分类筛选
-        ruleForm: {
-          useType: 1,
-          isFixedTime: false,
-          name: '',
-          money: 1,
-          minPrice: 1,
-          day: null,
-          isForever: false,
-          primaryKey: '',
-          type: 2,
-          isLimited: false,
-          useStartTime: '', // 使用
-          useEndTime: '', // 结束
-          receiveStartTime: '', //领取
-          receiveEndTime: '',
-          sort: 0,
-          total: 1,
-          status: false
-        },
-        rules: {
-          name: [
-            { required: true, message: '请输入优惠券名称', trigger: 'blur' },
-          ],
-        },
-        checked: []
-      }
-    },
-    mounted() {
-      this.getCategorySelect()
-      if( this.$route.params.id ) this.getInfo()
-    },
-    methods: {
-      // 商品分类；
-      getCategorySelect() {
-        categoryApi({ status: -1, type: 1 }).then(res => {
-          this.merCateList = res
-          this.merCateList.map(item => {
-            this.$set(item , 'disabled', true)
-          })
+import { couponSaveApi, couponInfoApi } from '@/api/marketing'
+import { categoryApi } from '@/api/store'
+export default {
+  name: 'creatCoupon',
+  data () {
+    return {
+      loading: false,
+      threshold: false,
+      termTime: [],
+      isForeverTime: [],
+      props2: {
+        children: 'child',
+        label: 'name',
+        value: 'id',
+        checkStrictly: true,
+        emitPath: false
+      },
+      couponType: 0,
+      term: 'termday',
+      merCateList: [], // 商户分类筛选
+      ruleForm: {
+        useType: 1,
+        isFixedTime: false,
+        name: '',
+        money: 1,
+        minPrice: 1,
+        day: null,
+        isForever: false,
+        primaryKey: '',
+        type: 2,
+        isLimited: false,
+        useStartTime: '', // 使用
+        useEndTime: '', // 结束
+        receiveStartTime: '', // 领取
+        receiveEndTime: '',
+        sort: 0,
+        total: 1,
+        status: false
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入优惠券名称', trigger: 'blur' }
+        ]
+      },
+      checked: []
+    }
+  },
+  mounted () {
+    this.getCategorySelect()
+    if (this.$route.params.id) this.getInfo()
+  },
+  methods: {
+    // 商品分类；
+    getCategorySelect () {
+      categoryApi({ status: -1, type: 1 }).then(res => {
+        this.merCateList = res
+        this.merCateList.map(item => {
+          this.$set(item, 'disabled', true)
         })
-      },
-      getInfo(){
-        this.loading = true
-        couponInfoApi({id: this.$route.params.id}).then(res => {
-          const info = res.coupon
-          this.ruleForm = {
-            useType: info.useType,
-            isFixedTime: info.isFixedTime,
-            isForever: info.isForever,
-            name: info.name,
-            money: info.money,
-            minPrice: info.minPrice,
-            day: info.day,
-            type: info.type,
-            isLimited: info.isLimited,
-            sort: info.sort,
-            total: info.total,
-            status: info.status,
-            primaryKey: Number(info.primaryKey)
-          }
-          this.checked = res.product
-          info.minPrice === 0 ? this.threshold = false : this.threshold = true
-          info.isForever ? this.isForeverTime = [info.receiveStartTime, info.receiveEndTime] : this.isForeverTime = []
-          info.isFixedTime ? this.termTime = [info.useStartTime, info.useEndTime] : this.termTime = []
-          this.loading = false
-        }).catch(res => {
-          this.loading = false
-          this.$message.error(res.message)
-        })
-      },
-      handleRemove (i) {
-        this.checked.splice(i, 1)
-      },
-      changeGood(){
-        const _this = this
-        this.$modalGoodList(function(row) {
-          _this.checked = row
-        },'many',_this.checked)
-      },
-      submitForm(formName) {
-        if( this.ruleForm.useType === 2 ) this.ruleForm.primaryKey = this.checked.map(item => {return item.id}).join(',')
-        if( this.ruleForm.useType === 1 ) this.ruleForm.primaryKey = ''
-        if( !this.threshold ) this.ruleForm.minPrice = 0
-        if( !this.ruleForm.isLimited ) this.ruleForm.total = 0
-        this.ruleForm.isFixedTime && this.termTime.length ? (this.ruleForm.useStartTime = this.termTime[0], this.ruleForm.day = null) : this.ruleForm.useStartTime = ''
-        this.ruleForm.isFixedTime && this.termTime.length ? (this.ruleForm.useEndTime = this.termTime[1], this.ruleForm.day = null) : this.ruleForm.useEndTime = ''
-        this.ruleForm.isForever && this.isForeverTime.length ? this.ruleForm.receiveStartTime = this.isForeverTime[0] : this.ruleForm.receiveStartTime = ''
-        this.ruleForm.isForever && this.isForeverTime.length ? this.ruleForm.receiveEndTime = this.isForeverTime[1] : this.ruleForm.receiveEndTime = ''
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.loading = true
-            couponSaveApi(this.ruleForm).then(() => {
-              this.$message.success("新增成功")
-              this.loading = false
-              setTimeout(() => {
-                this.$router.push({ path: `/marketing/coupon/list` })
-              }, 200);
-            }).catch(() => {
-              this.loading = false
-            })
-          } else {
+      })
+    },
+    getInfo () {
+      this.loading = true
+      couponInfoApi({ id: this.$route.params.id }).then(res => {
+        const info = res.coupon
+        this.ruleForm = {
+          useType: info.useType,
+          isFixedTime: info.isFixedTime,
+          isForever: info.isForever,
+          name: info.name,
+          money: info.money,
+          minPrice: info.minPrice,
+          day: info.day,
+          type: info.type,
+          isLimited: info.isLimited,
+          sort: info.sort,
+          total: info.total,
+          status: info.status,
+          primaryKey: Number(info.primaryKey)
+        }
+        this.checked = res.product
+        info.minPrice === 0 ? this.threshold = false : this.threshold = true
+        info.isForever ? this.isForeverTime = [info.receiveStartTime, info.receiveEndTime] : this.isForeverTime = []
+        info.isFixedTime ? this.termTime = [info.useStartTime, info.useEndTime] : this.termTime = []
+        this.loading = false
+      }).catch(res => {
+        this.loading = false
+        this.$message.error(res.message)
+      })
+    },
+    handleRemove (i) {
+      this.checked.splice(i, 1)
+    },
+    changeGood () {
+      const _this = this
+      this.$modalGoodList(function (row) {
+        _this.checked = row
+      }, 'many', _this.checked)
+    },
+    submitForm (formName) {
+      if (this.ruleForm.useType === 2) this.ruleForm.primaryKey = this.checked.map(item => { return item.id }).join(',')
+      if (this.ruleForm.useType === 1) this.ruleForm.primaryKey = ''
+      if (!this.threshold) this.ruleForm.minPrice = 0
+      if (!this.ruleForm.isLimited) this.ruleForm.total = 0
+      // eslint-disable-next-line no-unused-expressions
+      this.ruleForm.isFixedTime && this.termTime.length ? (this.ruleForm.useStartTime = this.termTime[0], this.ruleForm.day = null) : this.ruleForm.useStartTime = ''
+      // eslint-disable-next-line no-unused-expressions
+      this.ruleForm.isFixedTime && this.termTime.length ? (this.ruleForm.useEndTime = this.termTime[1], this.ruleForm.day = null) : this.ruleForm.useEndTime = ''
+      this.ruleForm.isForever && this.isForeverTime.length ? this.ruleForm.receiveStartTime = this.isForeverTime[0] : this.ruleForm.receiveStartTime = ''
+      this.ruleForm.isForever && this.isForeverTime.length ? this.ruleForm.receiveEndTime = this.isForeverTime[1] : this.ruleForm.receiveEndTime = ''
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.loading = true
+          couponSaveApi(this.ruleForm).then(() => {
+            this.$message.success('新增成功')
             this.loading = false
-            return false;
-          }
-        });
-      },
+            setTimeout(() => {
+              this.$router.push({ path: '/marketing/coupon/list' })
+            }, 200)
+          }).catch(() => {
+            this.loading = false
+          })
+        } else {
+          this.loading = false
+          return false
+        }
+      })
     }
   }
+}
 </script>
 
 <style scoped lang="scss">

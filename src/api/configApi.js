@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 // 配置管理
 
-export function configDelete(pram) {
+export function configDelete (pram) {
   const data = {
     id: pram.id
   }
@@ -13,7 +13,7 @@ export function configDelete(pram) {
   })
 }
 
-export function configInfo(pram) {
+export function configInfo (pram) {
   const data = {
     id: pram.id
   }
@@ -23,7 +23,7 @@ export function configInfo(pram) {
     params: data
   })
 }
-export function configList(pram) {
+export function configList (pram) {
   const data = {
     id: pram.id,
     configTabId: pram.configTabId,
@@ -50,7 +50,7 @@ export function configList(pram) {
   })
 }
 
-export function configSave(pram) {
+export function configSave (pram) {
   const data = {
     id: pram.id,
     configTabId: pram.configTabId,
@@ -75,7 +75,7 @@ export function configSave(pram) {
   })
 }
 
-export function configUpdate(pram) {
+export function configUpdate (pram) {
   const data = {
     id: pram.id,
     configTabId: pram.configTabId,

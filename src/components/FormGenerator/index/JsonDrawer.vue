@@ -45,13 +45,13 @@ export default {
       jsonEditor: null
     }
   },
-  data() {
+  data () {
     return {}
   },
   computed: {},
   watch: {},
-  created() {},
-  mounted() {
+  created () {},
+  mounted () {
     window.addEventListener('keydown', this.preventDefaultSave)
     const clipboard = new ClipboardJS('.copy-json-btn', {
       text: trigger => {
@@ -67,16 +67,16 @@ export default {
       this.$message.error('代码复制失败')
     })
   },
-  beforeDestroy() {
+  beforeDestroy () {
     window.removeEventListener('keydown', this.preventDefaultSave)
   },
   methods: {
-    preventDefaultSave(e) {
+    preventDefaultSave (e) {
       if (e.key === 's' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
       }
     },
-    onOpen() {
+    onOpen () {
       loadBeautifier(btf => {
         beautifier = btf
         this.beautifierJson = beautifier.js(this.jsonStr, beautifierConf.js)
@@ -98,8 +98,8 @@ export default {
       //   automaticLayout: true
       // });
     },
-    onClose() {},
-    setEditorValue(id, codeStr) {
+    onClose () {},
+    setEditorValue (id, codeStr) {
       if (this.jsonEditor) {
         this.jsonEditor.setValue(codeStr)
       } else {
@@ -117,7 +117,7 @@ export default {
         })
       }
     },
-    exportJsonFile() {
+    exportJsonFile () {
       this.$prompt('文件名:', '导出文件', {
         inputValue: `${+new Date()}.json`,
         closeOnClickModal: false,
@@ -129,7 +129,7 @@ export default {
         saveAs(blob, value)
       })
     },
-    refresh() {
+    refresh () {
       try {
         this.$emit('refresh', JSON.parse(this.jsonEditor.getValue()))
       } catch (error) {

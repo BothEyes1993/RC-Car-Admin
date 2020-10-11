@@ -58,7 +58,7 @@ export default {
   // name: "configCategotyEdit"
   props: {
     prent: {
-      type: Object,
+      type: Number,
       default: 0
     },
     isCreate: {
@@ -72,7 +72,7 @@ export default {
       type: Array
     }
   },
-  data() {
+  data () {
     return {
       constants,
       editPram: {
@@ -96,14 +96,14 @@ export default {
       parentOptions: []
     }
   },
-  mounted() {
+  mounted () {
     this.initEditData()
   },
   methods: {
-    close() {
+    close () {
       this.$emit('hideEditDialog')
     },
-    initEditData() {
+    initEditData () {
       this.parentOptions = selfUtil.addTreeListLabelForCasCard(this.allTreeList)
       if (this.isCreate !== 1) {
         const { id } = this.prent
@@ -121,13 +121,13 @@ export default {
         this.editPram.extra = extra
       }
     },
-    handlerSubmit(formName) {
+    handlerSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (!valid) return
         this.handlerSaveOrUpdate(this.isCreate === 0)
       })
     },
-    handlerSaveOrUpdate(isSave) {
+    handlerSaveOrUpdate (isSave) {
       if (isSave) {
         this.editPram.pid = this.prent.id
         categoryApi.addCategroy(this.editPram).then(data => {

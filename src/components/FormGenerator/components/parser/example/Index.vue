@@ -19,7 +19,7 @@ export default {
     Parser
   },
   props: {},
-  data() {
+  data () {
     return {
       key2: +new Date(),
       formConf: {
@@ -236,19 +236,19 @@ export default {
   },
   computed: {},
   watch: {},
-  created() {},
-  mounted() {},
+  created () {},
+  mounted () {},
   methods: {
-    change() {
+    change () {
       this.key2 = +new Date()
       const t = this.formConf
       this.formConf = this.formConf2
       this.formConf2 = t
     },
-    sumbitForm1(data) {
+    sumbitForm1 (data) {
       console.log('sumbitForm1提交数据：', data)
     },
-    sumbitForm2(data) {
+    sumbitForm2 (data) {
       console.log('sumbitForm2提交数据：', data)
     }
   }

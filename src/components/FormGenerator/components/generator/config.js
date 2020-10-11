@@ -1,5 +1,3 @@
-import { getToken } from '@/utils/auth'
-import SettingMer from '@/utils/settingMer'
 
 // 表单属性【右面板】
 export const formConf = {
@@ -504,7 +502,7 @@ export const selectComponents = [
     // action: SettingMer.apiBaseURL + 'admin/upload/image?model=product&pid=0',
     // disabled: false,
     // accept: '',
-    name: 'upfile',
+    name: 'upfile'
     // 'auto-upload': false,
     // 'list-type': 'text',
     // multiple: false
@@ -552,7 +550,7 @@ export const selectComponents = [
       span: 24,
       showTip: false,
       regList: [],
-      changeTag: true,
+      changeTag: true
     },
     height: 300, // 编辑器高度
     name: 'ueditor',

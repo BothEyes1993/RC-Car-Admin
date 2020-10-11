@@ -19,13 +19,13 @@ export default {
     },
     value: {}
   },
-  beforeMount(){
+  beforeMount () {
     // 接收 v-model 数据
-    if(this.value){
+    if (this.value) {
       this.contents = this.value
     }
   },
-  data() {
+  data () {
     return {
       contents: this.content,
       myConfig: {
@@ -38,17 +38,17 @@ export default {
     }
   },
   watch: {
-    content: function(val) {
+    content: function (val) {
       this.contents = this.content
     },
-    contents: function(val) {
+    contents: function (val) {
       this.$emit('input', val)
     }
   },
   methods: {
     // 添加自定义弹窗
-    addCustomDialog(editorId) {
-      window.UE.registerUI('test-dialog', function(editor, uiName) {
+    addCustomDialog (editorId) {
+      window.UE.registerUI('test-dialog', function (editor, uiName) {
         // 创建 dialog
         const dialog = new window.UE.ui.Dialog({
           // 指定弹出层中页面的路径，这里只能支持页面，路径参考常见问题 2
@@ -66,8 +66,8 @@ export default {
         var btn = new window.UE.ui.Button({
           name: 'dialog-button',
           title: '上传图片',
-          cssRules: `background-image: url(@/assets/images/icons.png);background-position: -726px -77px;`,
-          onclick: function() {
+          cssRules: 'background-image: url(@/assets/images/icons.png);background-position: -726px -77px;',
+          onclick: function () {
             // 渲染dialog
             dialog.render()
             dialog.open()

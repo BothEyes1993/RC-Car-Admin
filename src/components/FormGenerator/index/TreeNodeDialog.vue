@@ -80,7 +80,7 @@ export default {
   components: {},
   inheritAttrs: false,
   props: [],
-  data() {
+  data () {
     return {
       id,
       formData: {
@@ -119,27 +119,27 @@ export default {
   computed: {},
   watch: {
     // eslint-disable-next-line func-names
-    'formData.value': function(val) {
+    'formData.value': function (val) {
       this.dataType = isNumberStr(val) ? 'number' : 'string'
     },
-    id(val) {
+    id (val) {
       saveTreeNodeId(val)
     }
   },
-  created() {},
-  mounted() {},
+  created () {},
+  mounted () {},
   methods: {
-    onOpen() {
+    onOpen () {
       this.formData = {
         label: undefined,
         value: undefined
       }
     },
-    onClose() {},
-    close() {
+    onClose () {},
+    close () {
       this.$emit('update:visible', false)
     },
-    handelConfirm() {
+    handelConfirm () {
       this.$refs.elForm.validate(valid => {
         if (!valid) return
         if (this.dataType === 'number') {

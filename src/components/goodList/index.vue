@@ -28,7 +28,7 @@
         key="2"
         v-if="handleNum === 'many'"
         width="55">
-        <template slot="header" slot-scope="scope">
+        <template slot="header">
           <el-checkbox slot="reference" :value="isChecked && checkedPage.indexOf(tableFrom.page) > -1" @change="changeType" />
         </template>
         <template slot-scope="scope">
@@ -44,7 +44,7 @@
         v-if="handleNum !== 'many'"
       >
         <template slot-scope="scope">
-          <el-radio :label="scope.row.id" v-model="templateRadio" @change.native="getTemplateRow(scope.row)">&nbsp</el-radio>
+          <el-radio :label="scope.row.id" v-model="templateRadio" @change.native="getTemplateRow(scope.row)"> </el-radio>
         </template>
       </el-table-column>
       <el-table-column
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import { productLstApi, productDeleteApi, categoryApi, putOnShellApi, offShellApi, productHeadersApi } from '@/api/store'
+import { productLstApi, categoryApi } from '@/api/store'
 export default {
   name: 'GoodList',
   props: {
@@ -108,9 +108,9 @@ export default {
       default: () => []
     }
   },
-  data() {
+  data () {
     return {
-      templateRadio:0,
+      templateRadio: 0,
       merCateList: [],
       props: {
         children: 'child',
@@ -139,10 +139,10 @@ export default {
       checkedIds: [] // 订单当前页选中的数据
     }
   },
-  mounted() {
+  mounted () {
     this.getList()
-    if(this.checked.length){
-      let [ ...arr2 ] = this.checked
+    if (this.checked.length) {
+      const [...arr2] = this.checked
       this.checkBox = arr2
       this.checkedIds = arr2.map(item => {
         return item.id
@@ -151,37 +151,37 @@ export default {
     this.getCategorySelect()
   },
   methods: {
-    onInput(){
-      this.$forceUpdate();
+    onInput () {
+      this.$forceUpdate()
     },
-    changeType(v) {
+    changeType (v) {
       this.isChecked = v
-        const index = this.checkedPage.indexOf(this.tableFrom.page)
-        this.isIndex = index
-        this.checkedPage.push(this.tableFrom.page)
-        if (index > -1) {
-          this.checkedPage.splice(index, 1)
-        }
-        this.syncCheckedId(v)
+      const index = this.checkedPage.indexOf(this.tableFrom.page)
+      this.isIndex = index
+      this.checkedPage.push(this.tableFrom.page)
+      if (index > -1) {
+        this.checkedPage.splice(index, 1)
+      }
+      this.syncCheckedId(v)
     },
-    changeOne(v, order) {
+    changeOne (v, order) {
       if (v) {
         const index = this.checkedIds.indexOf(order.id)
-        if (index === -1){
+        if (index === -1) {
           this.checkedIds.push(order.id)
           this.checkBox.push(order)
         }
       } else {
         const index = this.checkedIds.indexOf(order.id)
-        if (index > -1){
+        if (index > -1) {
           this.checkedIds.splice(index, 1)
           this.checkBox.splice(index, 1)
         }
       }
     },
-    syncCheckedId(o) {
-      const ids = this.tableData.data.map(v => v.id)
-      if(o){
+    syncCheckedId (o) {
+      // const ids = this.tableData.data.map(v => v.id)
+      if (o) {
         this.tableData.data.forEach(item => {
           const index = this.checkedIds.indexOf(item.id)
           if (index === -1) {
@@ -189,7 +189,7 @@ export default {
             this.checkBox.push(item)
           }
         })
-      }else{
+      } else {
         this.tableData.data.forEach(item => {
           const index = this.checkedIds.indexOf(item.id)
           if (index > -1) {
@@ -199,29 +199,31 @@ export default {
         })
       }
     },
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       const tables = []
       val.map((item) => {
-        tables.push({ src: item.image,
-          id: item.id })
+        tables.push({
+          src: item.image,
+          id: item.id
+        })
       })
       this.multipleSelection = tables
     },
-    ok() {
+    ok () {
       this.$emit('getStoreItem', this.checkBox)
     },
-    getTemplateRow(row){
+    getTemplateRow (row) {
       this.$emit('getStoreItem', row)
     },
     // 商户分类；
-    getCategorySelect() {
+    getCategorySelect () {
       categoryApi({ status: -1, type: 1 }).then(res => {
         this.merCateList = res
       }).catch(res => {
         this.$message.error(res.message)
       })
     },
-    getList() {
+    getList () {
       this.listLoading = true
       productLstApi(this.tableFrom).then(res => {
         this.tableData.data = res.list
@@ -244,11 +246,11 @@ export default {
         this.$message.error(res.message)
       })
     },
-    pageChange(page) {
+    pageChange (page) {
       this.tableFrom.page = page
       this.getList()
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.tableFrom.limit = val
       this.getList()
     }

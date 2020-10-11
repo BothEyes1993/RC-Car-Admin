@@ -52,7 +52,7 @@
 export default {
   inheritAttrs: false,
   props: ['showFileName'],
-  data() {
+  data () {
     return {
       formData: {
         fileName: undefined,
@@ -82,19 +82,19 @@ export default {
   computed: {
   },
   watch: {},
-  mounted() {},
+  mounted () {},
   methods: {
-    onOpen() {
+    onOpen () {
       if (this.showFileName) {
         this.formData.fileName = `${+new Date()}.vue`
       }
     },
-    onClose() {
+    onClose () {
     },
-    close(e) {
+    close (e) {
       this.$emit('update:visible', false)
     },
-    handelConfirm() {
+    handelConfirm () {
       this.$refs.elForm.validate(valid => {
         if (!valid) return
         this.$emit('confirm', { ...this.formData })

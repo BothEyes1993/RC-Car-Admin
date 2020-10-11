@@ -119,17 +119,18 @@
 
 <script>
 import * as categoryApi from '@/api/categoryApi.js'
-import info from './info'
 import edit from './edit'
 import * as constants from '@/utils/constants.js'
 import * as selfUtil from '@/utils/ZBKJIutil.js'
 export default {
   // name: "list"
-  components: { info, edit },
+  components: { edit },
   props: {
     biztype: { // 类型，1 产品分类，2 附件分类，3 文章分类， 4 设置分类， 5 菜单分类
       type: Object,
-      default: { value: -1 },
+      default: () => {
+        return -1
+      },
       validator: (obj) => {
         return obj.value > 0
       }
@@ -150,7 +151,7 @@ export default {
     },
     rowSelect: {}
   },
-  data() {
+  data () {
     return {
       constants,
       treeProps: {
@@ -185,7 +186,7 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     // if(this.biztype.value === 3){
     //   this.listPram.pageSize = constants.page.pageSize[4]
     //   this.handlerGetList()
@@ -194,20 +195,20 @@ export default {
     // }
   },
   methods: {
-    handleEditMenu(rowData) {
+    handleEditMenu (rowData) {
       this.editDialogConfig.isCreate = 1
       this.editDialogConfig.data = rowData
       this.editDialogConfig.prent = rowData
       this.editDialogConfig.visible = true
     },
-    handleAddMenu(rowData) {
+    handleAddMenu (rowData) {
       this.editDialogConfig.isCreate = 0
       this.editDialogConfig.prent = rowData
       this.editDialogConfig.data = {}
       this.editDialogConfig.biztype = this.biztype
       this.editDialogConfig.visible = true
     },
-    handleDelMenu(rowData) {
+    handleDelMenu (rowData) {
       this.$confirm('确定删除当前数据?').then(() => {
         categoryApi.deleteCategroy(rowData).then(data => {
           this.handlerGetTreeList()
@@ -215,32 +216,32 @@ export default {
         })
       })
     },
-    handlerGetList() {
+    handlerGetList () {
       categoryApi.listCategroy(this.listPram).then(data => {
         this.treeList = data.list
       })
     },
-    handlerGetTreeList() {
+    handlerGetTreeList () {
       const _pram = { type: this.biztype.value, status: this.selectModel ? 1 : -1 }
-      this.biztype.value!==3 ? categoryApi.treeCategroy(_pram).then(data => {
+      this.biztype.value !== 3 ? categoryApi.treeCategroy(_pram).then(data => {
         this.treeList = this.handleAddArrt(data)
-      }) : categoryApi.listCategroy({ type: 3, status: '', pid: this.listPram.pid}).then(data => {
+      }) : categoryApi.listCategroy({ type: 3, status: '', pid: this.listPram.pid }).then(data => {
         this.treeList = data.list
       })
     },
-    handlerGetInfo(id) {
+    handlerGetInfo (id) {
       this.viewInfoConfig.data = id
       this.viewInfoConfig.visible = true
     },
-    handleNodeClick(data) {
+    handleNodeClick (data) {
       console.log('data:', data)
     },
-    handleAddArrt(treeData) {
+    handleAddArrt (treeData) {
       // let _result = this.addTreeListLabel(treeData)
       const _result = selfUtil.addTreeListLabel(treeData)
       return _result
     },
-    hideEditDialog() {
+    hideEditDialog () {
       setTimeout(() => {
         this.editDialogConfig.prent = {}
         this.editDialogConfig.type = 0
@@ -248,7 +249,7 @@ export default {
         this.handlerGetTreeList()
       }, 200)
     },
-    handleSelectionChange(d1, { checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys }) {
+    handleSelectionChange (d1, { checkedNodes, checkedKeys, halfCheckedNodes, halfCheckedKeys }) {
       // this.multipleSelection =  checkedKeys.concat(halfCheckedKeys)
       this.multipleSelection = checkedKeys
       this.$emit('rulesSelect', this.multipleSelection)

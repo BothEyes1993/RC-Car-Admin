@@ -1,4 +1,3 @@
-import { isArray } from 'util'
 import { exportDefault, titleCase } from '@/utils/index'
 import ruleTrigger from './ruleTrigger'
 
@@ -18,7 +17,7 @@ const inheritAttrs = {
  * @param {Object} formConfig 整个表单配置
  * @param {String} type 生成类型，文件或弹窗等
  */
-export function makeUpJs(formConfig, type) {
+export function makeUpJs (formConfig, type) {
   confGlobal = formConfig = JSON.parse(JSON.stringify(formConfig))
   const dataList = []
   const ruleList = []
@@ -46,7 +45,7 @@ export function makeUpJs(formConfig, type) {
 }
 
 // 构建组件属性
-function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, propsList, uploadVarList) {
+function buildAttributes (scheme, dataList, ruleList, optionsList, methodList, propsList, uploadVarList) {
   const config = scheme.__config__
   const slot = scheme.__slot__
   buildData(scheme, dataList)
@@ -89,7 +88,7 @@ function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, pr
 }
 
 // 混入处理函数
-function mixinMethod(type) {
+function mixinMethod (type) {
   const list = []; const
     minxins = {
       file: confGlobal.formBtns ? {
@@ -131,7 +130,7 @@ function mixinMethod(type) {
 }
 
 // 构建data
-function buildData(scheme, dataList) {
+function buildData (scheme, dataList) {
   const config = scheme.__config__
   if (scheme.__vModel__ === undefined) return
   const defaultValue = JSON.stringify(config.defaultValue)
@@ -139,21 +138,22 @@ function buildData(scheme, dataList) {
 }
 
 // 构建校验规则
-function buildRules(scheme, ruleList) {
+function buildRules (scheme, ruleList) {
   const config = scheme.__config__
   if (scheme.__vModel__ === undefined) return
   const rules = []
   if (ruleTrigger[config.tag]) {
     if (config.required) {
-      const type = isArray(config.defaultValue) ? 'type: \'array\',' : ''
-      let message = isArray(config.defaultValue) ? `请至少选择一个${config.label}` : scheme.placeholder
+      const type = Array.isArray(config.defaultValue) ? 'type: \'array\',' : ''
+      let message = Array.isArray(config.defaultValue) ? `请至少选择一个${config.label}` : scheme.placeholder
       if (message === undefined) message = `${config.label}不能为空`
       rules.push(`{ required: true, ${type} message: '${message}', trigger: '${ruleTrigger[config.tag]}' }`)
     }
-    if (config.regList && isArray(config.regList)) {
+    if (config.regList && Array.isArray(config.regList)) {
       config.regList.forEach(item => {
         if (item.pattern) {
           rules.push(
+            // eslint-disable-next-line no-eval
             `{ pattern: ${eval(item.pattern)}, message: '${item.message}', trigger: '${ruleTrigger[config.tag]}' }`
           )
         }
@@ -164,7 +164,7 @@ function buildRules(scheme, ruleList) {
 }
 
 // 构建options
-function buildOptions(scheme, optionsList) {
+function buildOptions (scheme, optionsList) {
   if (scheme.__vModel__ === undefined) return
   // el-cascader直接有options属性，其他组件都是定义在slot中，所以有两处判断
   let { options } = scheme
@@ -174,13 +174,13 @@ function buildOptions(scheme, optionsList) {
   optionsList.push(str)
 }
 
-function buildProps(scheme, propsList) {
+function buildProps (scheme, propsList) {
   const str = `${scheme.__vModel__}Props: ${JSON.stringify(scheme.props.props)},`
   propsList.push(str)
 }
 
 // el-upload的BeforeUpload
-function buildBeforeUpload(scheme) {
+function buildBeforeUpload (scheme) {
   console.log(scheme)
   const config = scheme.__config__
   const unitNum = units[config.sizeUnit]; let rightSizeCode = ''; let acceptCode = ''; const
@@ -208,14 +208,14 @@ function buildBeforeUpload(scheme) {
 }
 
 // el-upload的submit
-function buildSubmitUpload(scheme) {
+function buildSubmitUpload (scheme) {
   const str = `submitUpload() {
     this.$refs['${scheme.__vModel__}'].submit()
   },`
   return str
 }
 
-function buildOptionMethod(methodName, model, methodList) {
+function buildOptionMethod (methodName, model, methodList) {
   const str = `${methodName}() {
     // TODO 发起请求获取数据
     this.${model}
@@ -224,7 +224,7 @@ function buildOptionMethod(methodName, model, methodList) {
 }
 
 // js整体拼接
-function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, methods) {
+function buildexport (conf, type, data, rules, selectOptions, uploadVar, props, methods) {
   const str = `${exportDefault}{
   ${inheritAttrs[type]}
   components: {},

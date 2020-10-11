@@ -3,7 +3,7 @@ import ELEMENT from 'element-ui'
 
 let beautifierObj
 
-export default function loadBeautifier(cb) {
+export default function loadBeautifier (cb) {
   if (beautifierObj) {
     cb(beautifierObj)
     return

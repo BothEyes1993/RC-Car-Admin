@@ -22,7 +22,7 @@
       <el-form-item label="管理员身份" prop="roles">
         <el-select v-model="pram.roles" placeholder="身份" clearable multiple>
           <el-option
-            v-for="item,index in roleList.list"
+            v-for="(item,index) in roleList.list"
             :key="index"
             :label="item.roleName"
             :value="item.id"
@@ -59,7 +59,7 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     const validatePass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
@@ -92,15 +92,15 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.initEditData()
     this.handleGetRoleList()
   },
   methods: {
-    close() {
+    close () {
       this.$emit('hideEditDialog')
     },
-    handleGetRoleList() {
+    handleGetRoleList () {
       const _pram = {
         page: 1,
         limit: constants.page.limit[4],
@@ -110,9 +110,9 @@ export default {
         this.roleList = data
       })
     },
-    initEditData() {
+    initEditData () {
       if (this.isCreate !== 1) return
-      const { account, realName, roles, level, status, id } = this.editData
+      const { account, realName, roles, status, id } = this.editData
       this.pram.account = account
       this.pram.realName = realName
       const _roles = []
@@ -127,7 +127,7 @@ export default {
       this.rules.pwd = []
       this.rules.repwd = []
     },
-    handlerSubmit(form) {
+    handlerSubmit (form) {
       this.$refs[form].validate(valid => {
         if (!valid) return
         if (this.isCreate === 0) {
@@ -137,23 +137,23 @@ export default {
         }
       })
     },
-    handlerSave() {
+    handlerSave () {
       systemAdminApi.adminAdd(this.pram).then(data => {
         this.$message.success('创建管理员成功')
         this.$emit('hideEditDialog')
       })
     },
-    handlerEdit() {
+    handlerEdit () {
       this.pram.roles = this.pram.roles.join(',')
       systemAdminApi.adminUpdate(this.pram).then(data => {
         this.$message.success('更新管理员成功')
         this.$emit('hideEditDialog')
       })
     },
-    rulesSelect(selectKeys) {
+    rulesSelect (selectKeys) {
       this.pram.rules = selectKeys
     },
-    handlerPwdInput(val) {
+    handlerPwdInput (val) {
       if (!val) {
         this.rules.pwd = []
         this.rules.repwd = []
@@ -162,15 +162,20 @@ export default {
       this.rules.pwd = [
         { required: true, message: '请填管理员密码', trigger: ['blur', 'change'] },
         { min: 6, max: 20, message: '长度6-20个字符', trigger: ['blur', 'change'] }]
-      this.rules.repwd = [{ required: true, message: '两次输入密码不一致', validator: (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('两次输入密码不一致!'))
-        } else if (value !== this.pram.pwd) {
-          callback(new Error('两次输入密码不一致!'))
-        } else {
-          callback()
-        }
-      }, trigger: ['blur', 'change'] }]
+      this.rules.repwd = [{
+        required: true,
+        message: '两次输入密码不一致',
+        validator: (rule, value, callback) => {
+          if (value === '') {
+            callback(new Error('两次输入密码不一致!'))
+          } else if (value !== this.pram.pwd) {
+            callback(new Error('两次输入密码不一致!'))
+          } else {
+            callback()
+          }
+        },
+        trigger: ['blur', 'change']
+      }]
     }
   }
 }

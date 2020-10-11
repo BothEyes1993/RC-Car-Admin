@@ -1,10 +1,9 @@
 import request from '@/utils/request'
 
-
 /**
  * @description 分销设置 -- 详情
  */
-export function configApi() {
+export function configApi () {
   return request({
     url: '/admin/store/retail/spread/manage/get',
     method: 'get'
@@ -14,7 +13,7 @@ export function configApi() {
 /**
  * @description 分销设置 -- 表单提交
  */
-export function configUpdateApi(data) {
+export function configUpdateApi (data) {
   return request({
     url: '/admin/store/retail/spread/manage/set',
     method: 'post',
@@ -25,7 +24,7 @@ export function configUpdateApi(data) {
 /**
  * @description 分销员 -- 列表
  */
-export function promoterListApi(params) {
+export function promoterListApi (params) {
   return request({
     url: '/admin/store/retail/list',
     method: 'get',
@@ -36,7 +35,7 @@ export function promoterListApi(params) {
 /**
  * @description 推广人 -- 列表
  */
-export function spreadListApi( params, data) {
+export function spreadListApi (params, data) {
   return request({
     url: '/admin/store/retail/spread/userlist',
     method: 'post',
@@ -48,7 +47,7 @@ export function spreadListApi( params, data) {
 /**
  * @description 推广人订单 -- 列表
  */
-export function spreadOrderListApi(params, data) {
+export function spreadOrderListApi (params, data) {
   return request({
     url: '/admin/store/retail/spread/orderlist',
     method: 'post',
@@ -60,7 +59,7 @@ export function spreadOrderListApi(params, data) {
 /**
  * @description 推广人 -- 清除上级推广人
  */
-export function spreadClearApi(id) {
+export function spreadClearApi (id) {
   return request({
     url: `/admin/store/retail/spread/clean/${id}`,
     method: 'get'
@@ -70,9 +69,9 @@ export function spreadClearApi(id) {
 /**
  * @description 分销统计
  */
-export function spreadStatisticsApi(params) {
+export function spreadStatisticsApi (params) {
   return request({
-    url: `/admin/store/retail/statistics`,
+    url: '/admin/store/retail/statistics',
     method: 'get',
     params
   })

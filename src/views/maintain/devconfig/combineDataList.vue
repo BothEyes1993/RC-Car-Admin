@@ -41,7 +41,7 @@
     >
       <el-table-column label="编号" prop="id" />
       <el-table-column
-        v-for="item,index in formConf.fields"
+        v-for="(item,index) in formConf.fields"
         :key="index"
         :label="item.__config__.label"
         :prop="item.__vModel__"
@@ -94,7 +94,7 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
       constants,
       listPram: {
@@ -113,17 +113,17 @@ export default {
       dataList: { list: [], total: 0 }
     }
   },
-  mounted() {
+  mounted () {
     this.handlerGetFormConfig()
     this.listPram.gid = this.formData.id
     this.handlerGetListData(this.listPram)
   },
   methods: {
-    handlerSearch() {
+    handlerSearch () {
       this.listPram.page = 1
       this.handlerGetListData(this.listPram)
     },
-    handlerGetListData(pram) { // 获取列表数据
+    handlerGetListData (pram) { // 获取列表数据
       systemGroupDataApi.groupDataList(pram).then(data => {
         const _selfList = []
         data.list.forEach(_lItem => {
@@ -142,22 +142,22 @@ export default {
         this.dataList.total = data.total
       })
     },
-    handlerGetFormConfig() { // 获取表单配置后生成table列
+    handlerGetFormConfig () { // 获取表单配置后生成table列
       const _pram = { id: this.formData.formId }
       systemFormConfigApi.getFormConfigInfo(_pram).then(data => {
         this.formConf = JSON.parse(data.content)
       })
     },
-    handlerOpenEditData(rowData, isCreate) {
+    handlerOpenEditData (rowData, isCreate) {
       this.editDataConfig.editData = rowData
       this.editDataConfig.isCreate = isCreate
       this.editDataConfig.visible = true
     },
-    handlerHideDia() {
+    handlerHideDia () {
       this.handlerGetListData(this.listPram)
       this.editDataConfig.visible = false
     },
-    handlerDelete(rowData) {
+    handlerDelete (rowData) {
       this.$confirm('确实删除当前数据', '提示').then(() => {
         systemGroupDataApi.groupDataDelete(rowData).then(data => {
           this.$message.success('删除数据成功')
@@ -165,11 +165,11 @@ export default {
         })
       })
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.listPram.limit = val
       this.handlerGetListData(this.listPram)
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.listPram.page = val
       this.handlerGetListData(this.listPram)
     }

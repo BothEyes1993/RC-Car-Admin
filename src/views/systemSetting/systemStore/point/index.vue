@@ -30,7 +30,7 @@
            prop="image"
            label="提货点图片"
            min-width="100">
-           <template slot-scope="{ row, index }" class="picMiddle">
+           <template slot-scope="{ row }" class="picMiddle">
              <div class="demo-image__preview">
                <el-image
                  style="width: 36px; height: 36px"
@@ -64,7 +64,7 @@
            prop="isShow"
            label="是否显示"
            min-width="100">
-           <template slot-scope="{ row, index }">
+           <template slot-scope="{ row }">
              <el-switch
                :active-value="true"
                :inactive-value="false"
@@ -79,7 +79,7 @@
            fixed="right"
            label="操作"
            min-width="120">
-           <template slot-scope="{ row, index }">
+           <template slot-scope="{ row }">
              <el-button type="text" size="small" @click="edit(row.id)">编辑</el-button>
              <el-divider direction="vertical"></el-divider>
              <el-button type="text" size="small" @click="storeDelete(row.id)">删除</el-button>
@@ -102,13 +102,13 @@
 </template>
 
 <script>
-  import systemStore from './addPoint';
-  import { storeListApi, storeGetCountApi, storeUpdateStatusApi, storeDeleteApi } from '@/api/storePoint';
+import systemStore from './addPoint'
+import { storeListApi, storeGetCountApi, storeUpdateStatusApi, storeDeleteApi } from '@/api/storePoint'
 export default {
   name: 'Point',
   components: { systemStore },
   data () {
-    return{
+    return {
       artFrom: {
         page: 1,
         limit: 20,
@@ -116,87 +116,87 @@ export default {
         keywords: ''
       },
       loading: false,
-      tableData:[],
-      total:0,
-      headerCount:{}
+      tableData: [],
+      total: 0,
+      headerCount: {}
     }
   },
   created () {
-    this.storeGetCount();
-    this.tableList();
+    this.storeGetCount()
+    this.tableList()
   },
   methods: {
-    //头部数量显示；
-    storeGetCount(){
-      let that = this;
-      storeGetCountApi().then(res=>{
+    // 头部数量显示；
+    storeGetCount () {
+      const that = this
+      storeGetCountApi().then(res => {
         that.headerCount = res
       })
     },
-    //表格列表
-    tableList(){
-      let that = this;
-      that.loading = true;
-      storeListApi (that.artFrom).then(res=>{
-        that.loading = false;
-        that.tableData = res.list;
-        that.total = res.total;
+    // 表格列表
+    tableList () {
+      const that = this
+      that.loading = true
+      storeListApi(that.artFrom).then(res => {
+        that.loading = false
+        that.tableData = res.list
+        that.total = res.total
       }).catch(res => {
-        that.$message.error(res.message);
+        that.$message.error(res.message)
       })
     },
-    //切换页数
-    pageChange(index){
-      this.artFrom.page = index;
-      this.tableList();
+    // 切换页数
+    pageChange (index) {
+      this.artFrom.page = index
+      this.tableList()
     },
-    //切换显示条数
-    sizeChange(index){
-      this.artFrom.limit = index;
-      this.tableList();
+    // 切换显示条数
+    sizeChange (index) {
+      this.artFrom.limit = index
+      this.tableList()
     },
-    //头部切换
-    onClickTab() {
-      this.artFrom.keywords = '';
-      this.tableList();
+    // 头部切换
+    onClickTab () {
+      this.artFrom.keywords = ''
+      this.tableList()
     },
-    //搜索
-    search(){
-      this.artFrom.page = 1;
-      this.tableList();
+    // 搜索
+    search () {
+      this.artFrom.page = 1
+      this.tableList()
     },
-    //是否显示
-    onchangeIsShow(id, isShow){
-      let that = this;
-      storeUpdateStatusApi({id:id,status:isShow}).then(() => {
-        that.$message.success("操作成功");
-        that.tableList();
-        that.storeGetCount();
-      }).catch(res=>{
-        that.$message.error(res.message);
+    // 是否显示
+    onchangeIsShow (id, isShow) {
+      const that = this
+      storeUpdateStatusApi({ id: id, status: isShow }).then(() => {
+        that.$message.success('操作成功')
+        that.tableList()
+        that.storeGetCount()
+      }).catch(res => {
+        that.$message.error(res.message)
       })
     },
-    //刪除
-    storeDelete(id){
-      let that = this;
+    // 刪除
+    storeDelete (id) {
+      const that = this
       that.$modalSure().then(() => {
         storeDeleteApi({ id: id }).then(() => {
           that.$message.success('删除成功')
-          that.tableList();
-          that.storeGetCount();
+          that.tableList()
+          that.storeGetCount()
         })
-      }).catch(res=>{
-        that.$message.error(res.message);
+      }).catch(res => {
+        that.$message.error(res.message)
       })
     },
-    //添加
-    add() {
-      this.$refs.template.dialogFormVisible = true;
+    // 添加
+    add () {
+      this.$refs.template.dialogFormVisible = true
     },
-   //编辑
-    edit(id) {
-      this.$refs.template.dialogFormVisible = true;
-      this.$refs.template.getInfo(id);
+    // 编辑
+    edit (id) {
+      this.$refs.template.dialogFormVisible = true
+      this.$refs.template.getInfo(id)
     }
   }
 }

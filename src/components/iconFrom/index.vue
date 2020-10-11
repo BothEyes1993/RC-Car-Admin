@@ -35,7 +35,7 @@ import elementIcons from './element-icons'
 
 export default {
   name: 'Index',
-  data() {
+  data () {
     return {
       elementIcons,
       iconVal: '',
@@ -43,19 +43,19 @@ export default {
       list: []
     }
   },
-  mounted() {
+  mounted () {
     this.list = this.elementIcons
   },
   methods: {
-    generateElementIconCode(symbol) {
+    generateElementIconCode (symbol) {
       return `<i class="el-icon-${symbol}" />`
     },
-    handleClipboard(text, event, n) {
+    handleClipboard (text, event, n) {
       this.iconChange(n)
       //  clipboard(text, event)
     },
     // 搜索
-    upIcon(n) {
+    upIcon (n) {
       const arrs = []
       for (var i = 0; i < this.elementIcons.length; i++) {
         if (this.elementIcons[i].indexOf(n) !== -1) {
@@ -64,13 +64,13 @@ export default {
         }
       }
     },
-    iconChange(n) {
+    iconChange (n) {
       this.$emit('getIcon', n)
       this.$msgbox.close()
       console.log(n)
-      }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

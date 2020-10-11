@@ -1,13 +1,13 @@
 import request from '@/utils/request'
 
-export function getMenu() {
+export function getMenu () {
   return request({
     url: '/admin/system/role/testMenu',
     method: 'GET'
   })
 }
 
-export function adminDel(pram) {
+export function adminDel (pram) {
   const data = {
     id: pram.id
   }
@@ -18,7 +18,7 @@ export function adminDel(pram) {
   })
 }
 
-export function adminInfo(pram) {
+export function adminInfo (pram) {
   const data = {
     id: pram.id
   }
@@ -29,7 +29,7 @@ export function adminInfo(pram) {
   })
 }
 
-export function adminList(params) {
+export function adminList (params) {
   return request({
     url: '/admin/system/admin/list',
     method: 'GET',
@@ -37,7 +37,7 @@ export function adminList(params) {
   })
 }
 
-export function adminAdd(pram) {
+export function adminAdd (pram) {
   const data = {
     account: pram.account,
     level: pram.level,
@@ -53,7 +53,7 @@ export function adminAdd(pram) {
   })
 }
 
-export function adminUpdate(pram) {
+export function adminUpdate (pram) {
   // const data = {
   //   account: pram.account,
   //   level: pram.level,

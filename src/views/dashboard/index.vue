@@ -13,14 +13,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import baseInfo from './components/baseInfo';
-import gridMenu from './components/gridMenu';
-import visitChart from './components/visitChart';
-import userChart from './components/userChart';
+import baseInfo from './components/baseInfo'
+import gridMenu from './components/gridMenu'
+import visitChart from './components/visitChart'
+import userChart from './components/userChart'
 export default {
   name: 'Dashboard',
   components: { baseInfo, gridMenu, visitChart, userChart },
-  data() {
+  data () {
     return {
       currentRole: 'adminDashboard'
     }
@@ -30,7 +30,7 @@ export default {
       'roles'
     ])
   },
-  created() {
+  created () {
     if (!this.roles.includes('admin')) {
       this.currentRole = 'editorDashboard'
     }

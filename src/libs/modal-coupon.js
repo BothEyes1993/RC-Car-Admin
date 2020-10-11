@@ -1,4 +1,4 @@
-export default function modalCoupon(handle, keyNum, callback, couponId=[], userIds) {
+export default function modalCoupon (handle, keyNum, callback, couponId = [], userIds) {
   const h = this.$createElement
   return new Promise((resolve, reject) => {
     this.$msgbox({
@@ -15,7 +15,7 @@ export default function modalCoupon(handle, keyNum, callback, couponId=[], userI
             userIds: userIds
           },
           on: {
-            getCouponId(id) {
+            getCouponId (id) {
               callback(id)
             }
           }
@@ -26,7 +26,7 @@ export default function modalCoupon(handle, keyNum, callback, couponId=[], userI
     }).then(() => {
       resolve()
     }).catch(() => {
-      reject()
+      reject(new Error('errorMsg'))
       this.$message({
         type: 'info',
         message: '已取消'

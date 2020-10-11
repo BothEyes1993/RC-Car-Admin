@@ -27,535 +27,535 @@
     </div>
 </template>
 <script>
-  import { chartOrder30Api, chartOrderWeekApi, chartOrderMonthApi, chartOrderYearApi } from '@/api/dashboard';
-  import echartsFrom from '@/components/echarts/index';
+import { chartOrder30Api, chartOrderWeekApi, chartOrderMonthApi, chartOrderYearApi } from '@/api/dashboard'
+import echartsFrom from '@/components/echarts/index'
 
-  export default {
-    components: {echartsFrom},
-    data() {
-      return {
-        infoList: null,
-        visitDate: 'last30',
-        series: [],
-        xAxis: [],
-        info: {},
-        legendData: []
-      }
+export default {
+  components: { echartsFrom },
+  data () {
+    return {
+      infoList: null,
+      visitDate: 'last30',
+      series: [],
+      xAxis: [],
+      info: {},
+      legendData: []
+    }
+  },
+  methods: {
+    // 时间改变
+    handleChangeVisitType () {
+      this.xAxis = []
+      this.legendData = []
+      chartOrder30Api().then(async res => {
+        this.info = res
+        const pices = []
+        const qualitys = []
+        for (const key in res.price) {
+          pices.push(Number(res.price[key]))
+          this.xAxis.push(key)
+        }
+        for (const key in res.quality) {
+          qualitys.push(Number(res.quality[key]))
+        }
+        this.series = [{
+          name: '订单金额',
+          type: 'bar',
+          itemStyle: {
+            normal: {
+              color: {
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: '#69cdff'
+                  },
+                  {
+                    offset: 0.5,
+                    color: '#3eb3f7'
+                  },
+                  {
+                    offset: 1,
+                    color: '#1495eb'
+                  }
+                ]
+              }
+            }
+          },
+          data: pices
+        },
+        {
+          name: '订单数',
+          type: 'bar',
+          itemStyle: {
+            normal: {
+              color: {
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: '#6fdeab'
+                  },
+                  {
+                    offset: 0.5,
+                    color: '#44d693'
+                  },
+                  {
+                    offset: 1,
+                    color: '#2cc981'
+                  }
+                ]
+              }
+            }
+          },
+          data: qualitys
+        }]
+      })
     },
-    methods: {
-      // 时间改变
-      handleChangeVisitType() {
-        this.xAxis = []
-        this.legendData = []
-        chartOrder30Api().then(async res => {
-          this.info = res
-          let pices = []
-          let qualitys = []
-          for (let key  in res.price) {
-            pices.push(Number(res.price[key]))
-            this.xAxis.push(key)
-          }
-          for (let key  in res.quality) {
-            qualitys.push(Number(res.quality[key]))
-          }
-          this.series = [{
-            "name":"订单金额",
-            "type":"bar",
-            "itemStyle":{
-              "normal":{
-                "color":{
-                  "x":0,
-                  "y":0,
-                  "x2":0,
-                  "y2":1,
-                  "colorStops":[
+    handleChangeWeek () {
+      this.xAxis = []
+      this.legendData = []
+      chartOrderWeekApi().then(async res => {
+        this.info = res
+        this.legendData = ['上周金额', '本周金额', '上周订单数', '本周订单数']
+        const prePrice = []
+        const price = []
+        const qualitys = []
+        const preQuality = []
+        for (const key in res.prePrice) {
+          prePrice.push(Number(res.prePrice[key]))
+          this.xAxis.push(key)
+        }
+        for (const key in res.price) {
+          price.push(Number(res.price[key]))
+        }
+        for (const key in res.preQuality) {
+          preQuality.push(Number(res.preQuality[key]))
+        }
+        for (const key in res.quality) {
+          qualitys.push(Number(res.quality[key]))
+        }
+        this.series = [
+          {
+            name: '上周金额',
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                color: {
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
                     {
-                      "offset":0,
-                      "color":"#69cdff"
+                      offset: 0,
+                      color: '#69cdff'
                     },
                     {
-                      "offset":0.5,
-                      "color":"#3eb3f7"
+                      offset: 0.5,
+                      color: '#3eb3f7'
                     },
                     {
-                      "offset":1,
-                      "color":"#1495eb"
+                      offset: 1,
+                      color: '#1495eb'
                     }
                   ]
                 }
               }
             },
-            "data": pices
+            data: prePrice
           },
-            {
-              "name":"订单数",
-              "type":"bar",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#6fdeab"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#44d693"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#2cc981"
-                      }
-                    ]
-                  }
+          {
+            name: '本周金额',
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                color: {
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#69cdff'
+                    },
+                    {
+                      offset: 0.5,
+                      color: '#3eb3f7'
+                    },
+                    {
+                      offset: 1,
+                      color: '#1495eb'
+                    }
+                  ]
                 }
-              },
-              "data": qualitys
-            }]
-        })
-      },
-      handleChangeWeek() {
-        this.xAxis = []
-        this.legendData = []
-        chartOrderWeekApi().then(async res => {
-          this.info = res
-          this.legendData = ["上周金额", "本周金额", "上周订单数", "本周订单数"]
-          let prePrice = []
-          let price = []
-          let qualitys = []
-          let preQuality = []
-          for (let key  in res.prePrice) {
-            prePrice.push(Number(res.prePrice[key]))
-            this.xAxis.push(key)
-          }
-          for (let key  in res.price) {
-            price.push(Number(res.price[key]))
-          }
-          for (let key  in res.preQuality) {
-            preQuality.push(Number(res.preQuality[key]))
-          }
-          for (let key  in res.quality) {
-            qualitys.push(Number(res.quality[key]))
-          }
-          this.series = [
-            {
-              "name":"上周金额",
-              "type":"bar",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#69cdff"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#3eb3f7"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#1495eb"
-                      }
-                    ]
-                  }
-                }
-              },
-              "data": prePrice
+              }
             },
-            {
-              "name":"本周金额",
-              "type":"bar",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#69cdff"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#3eb3f7"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#1495eb"
-                      }
-                    ]
-                  }
+            data: price
+          },
+          {
+            name: '上周订单数',
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: {
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#6fdeab'
+                    },
+                    {
+                      offset: 0.5,
+                      color: '#44d693'
+                    },
+                    {
+                      offset: 1,
+                      color: '#2cc981'
+                    }
+                  ]
                 }
-              },
-              "data": price
+              }
             },
-            {
-              "name":"上周订单数",
-              "type":"line",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#6fdeab"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#44d693"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#2cc981"
-                      }
-                    ]
-                  }
+            data: preQuality
+          },
+          {
+            name: '本周订单数',
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: {
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#6fdeab'
+                    },
+                    {
+                      offset: 0.5,
+                      color: '#44d693'
+                    },
+                    {
+                      offset: 1,
+                      color: '#2cc981'
+                    }
+                  ]
                 }
-              },
-              "data": preQuality
+              }
             },
-            {
-              "name":"本周订单数",
-              "type":"line",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#6fdeab"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#44d693"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#2cc981"
-                      }
-                    ]
-                  }
-                }
-              },
-              "data": qualitys
-            }
-          ]
-        })
-      },
-      handleChangeMonth() {
-        this.xAxis = []
-        this.legendData = []
-        chartOrderMonthApi().then(async res => {
-          this.info = res
-          this.legendData = ["上月金额", "本月金额", "上月订单数", "本月订单数"]
-          let prePrice = []
-          let price = []
-          let qualitys = []
-          let preQuality = []
-          for (let key  in res.prePrice) {
-            prePrice.push(Number(res.prePrice[key]))
-            this.xAxis.push(key)
+            data: qualitys
           }
-          for (let key  in res.price) {
-            price.push(Number(res.price[key]))
-          }
-          for (let key  in res.preQuality) {
-            preQuality.push(Number(res.preQuality[key]))
-          }
-          for (let key  in res.quality) {
-            qualitys.push(Number(res.quality[key]))
-          }
-          this.series = [
-            {
-              "name":"上月金额",
-              "type":"bar",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#69cdff"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#3eb3f7"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#1495eb"
-                      }
-                    ]
-                  }
-                }
-              },
-              "data": prePrice
-            },
-            {
-              "name":"本月金额",
-              "type":"bar",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#69cdff"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#3eb3f7"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#1495eb"
-                      }
-                    ]
-                  }
-                }
-              },
-              "data": price
-            },
-            {
-              "name":"上月订单数",
-              "type":"line",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#6fdeab"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#44d693"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#2cc981"
-                      }
-                    ]
-                  }
-                }
-              },
-              "data": preQuality
-            },
-            {
-              "name":"本月订单数",
-              "type":"line",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#6fdeab"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#44d693"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#2cc981"
-                      }
-                    ]
-                  }
-                }
-              },
-              "data": qualitys
-            }
-          ]
-        })
-      },
-      handleChangeYear() {
-        this.xAxis = []
-        this.legendData = []
-        chartOrderYearApi().then(async res => {
-          this.info = res
-          this.legendData =  ["去年金额", "今年金额", "去年订单数", "今年订单数"]
-          let prePrice = []
-          let price = []
-          let qualitys = []
-          let preQuality = []
-          for (let key  in res.prePrice) {
-            prePrice.push(Number(res.prePrice[key]))
-            this.xAxis.push(key)
-          }
-          for (let key  in res.price) {
-            price.push(Number(res.price[key]))
-          }
-          for (let key  in res.preQuality) {
-            preQuality.push(Number(res.preQuality[key]))
-          }
-          for (let key  in res.quality) {
-            qualitys.push(Number(res.quality[key]))
-          }
-          this.series = [
-            {
-              "name":"去年金额",
-              "type":"bar",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#69cdff"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#3eb3f7"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#1495eb"
-                      }
-                    ]
-                  }
-                }
-              },
-              "data": prePrice
-            },
-            {
-              "name":"今年金额",
-              "type":"bar",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#69cdff"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#3eb3f7"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#1495eb"
-                      }
-                    ]
-                  }
-                }
-              },
-              "data": price
-            },
-            {
-              "name":"去年订单数",
-              "type":"line",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#6fdeab"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#44d693"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#2cc981"
-                      }
-                    ]
-                  }
-                }
-              },
-              "data": preQuality
-            },
-            {
-              "name":"今年订单数",
-              "type":"line",
-              "itemStyle":{
-                "normal":{
-                  "color":{
-                    "x":0,
-                    "y":0,
-                    "x2":0,
-                    "y2":1,
-                    "colorStops":[
-                      {
-                        "offset":0,
-                        "color":"#6fdeab"
-                      },
-                      {
-                        "offset":0.5,
-                        "color":"#44d693"
-                      },
-                      {
-                        "offset":1,
-                        "color":"#2cc981"
-                      }
-                    ]
-                  }
-                }
-              },
-              "data": qualitys
-            }
-          ]
-        })
-      },
-      // 监听页面宽度变化，刷新表格
-      handleResize() {
-        if (this.infoList) this.$refs.visitChart.handleResize();
-      }
+        ]
+      })
     },
-    created() {
-      this.handleChangeVisitType();
+    handleChangeMonth () {
+      this.xAxis = []
+      this.legendData = []
+      chartOrderMonthApi().then(async res => {
+        this.info = res
+        this.legendData = ['上月金额', '本月金额', '上月订单数', '本月订单数']
+        const prePrice = []
+        const price = []
+        const qualitys = []
+        const preQuality = []
+        for (const key in res.prePrice) {
+          prePrice.push(Number(res.prePrice[key]))
+          this.xAxis.push(key)
+        }
+        for (const key in res.price) {
+          price.push(Number(res.price[key]))
+        }
+        for (const key in res.preQuality) {
+          preQuality.push(Number(res.preQuality[key]))
+        }
+        for (const key in res.quality) {
+          qualitys.push(Number(res.quality[key]))
+        }
+        this.series = [
+          {
+            name: '上月金额',
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                color: {
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#69cdff'
+                    },
+                    {
+                      offset: 0.5,
+                      color: '#3eb3f7'
+                    },
+                    {
+                      offset: 1,
+                      color: '#1495eb'
+                    }
+                  ]
+                }
+              }
+            },
+            data: prePrice
+          },
+          {
+            name: '本月金额',
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                color: {
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#69cdff'
+                    },
+                    {
+                      offset: 0.5,
+                      color: '#3eb3f7'
+                    },
+                    {
+                      offset: 1,
+                      color: '#1495eb'
+                    }
+                  ]
+                }
+              }
+            },
+            data: price
+          },
+          {
+            name: '上月订单数',
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: {
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#6fdeab'
+                    },
+                    {
+                      offset: 0.5,
+                      color: '#44d693'
+                    },
+                    {
+                      offset: 1,
+                      color: '#2cc981'
+                    }
+                  ]
+                }
+              }
+            },
+            data: preQuality
+          },
+          {
+            name: '本月订单数',
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: {
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#6fdeab'
+                    },
+                    {
+                      offset: 0.5,
+                      color: '#44d693'
+                    },
+                    {
+                      offset: 1,
+                      color: '#2cc981'
+                    }
+                  ]
+                }
+              }
+            },
+            data: qualitys
+          }
+        ]
+      })
+    },
+    handleChangeYear () {
+      this.xAxis = []
+      this.legendData = []
+      chartOrderYearApi().then(async res => {
+        this.info = res
+        this.legendData = ['去年金额', '今年金额', '去年订单数', '今年订单数']
+        const prePrice = []
+        const price = []
+        const qualitys = []
+        const preQuality = []
+        for (const key in res.prePrice) {
+          prePrice.push(Number(res.prePrice[key]))
+          this.xAxis.push(key)
+        }
+        for (const key in res.price) {
+          price.push(Number(res.price[key]))
+        }
+        for (const key in res.preQuality) {
+          preQuality.push(Number(res.preQuality[key]))
+        }
+        for (const key in res.quality) {
+          qualitys.push(Number(res.quality[key]))
+        }
+        this.series = [
+          {
+            name: '去年金额',
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                color: {
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#69cdff'
+                    },
+                    {
+                      offset: 0.5,
+                      color: '#3eb3f7'
+                    },
+                    {
+                      offset: 1,
+                      color: '#1495eb'
+                    }
+                  ]
+                }
+              }
+            },
+            data: prePrice
+          },
+          {
+            name: '今年金额',
+            type: 'bar',
+            itemStyle: {
+              normal: {
+                color: {
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#69cdff'
+                    },
+                    {
+                      offset: 0.5,
+                      color: '#3eb3f7'
+                    },
+                    {
+                      offset: 1,
+                      color: '#1495eb'
+                    }
+                  ]
+                }
+              }
+            },
+            data: price
+          },
+          {
+            name: '去年订单数',
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: {
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#6fdeab'
+                    },
+                    {
+                      offset: 0.5,
+                      color: '#44d693'
+                    },
+                    {
+                      offset: 1,
+                      color: '#2cc981'
+                    }
+                  ]
+                }
+              }
+            },
+            data: preQuality
+          },
+          {
+            name: '今年订单数',
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: {
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#6fdeab'
+                    },
+                    {
+                      offset: 0.5,
+                      color: '#44d693'
+                    },
+                    {
+                      offset: 1,
+                      color: '#2cc981'
+                    }
+                  ]
+                }
+              }
+            },
+            data: qualitys
+          }
+        ]
+      })
+    },
+    // 监听页面宽度变化，刷新表格
+    handleResize () {
+      if (this.infoList) this.$refs.visitChart.handleResize()
     }
+  },
+  created () {
+    this.handleChangeVisitType()
   }
+}
 </script>
 <style lang="scss" scoped>
   .acea-row{

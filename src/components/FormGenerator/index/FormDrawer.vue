@@ -84,7 +84,7 @@ import {
 } from '@/components/FormGenerator/components/generator/html'
 import { makeUpJs } from '@/components/FormGenerator/components/generator/js'
 import { makeUpCss } from '@/components/FormGenerator/components/generator/css'
-import { exportDefault, beautifierConf, titleCase } from '../utils/index'
+import { exportDefault, beautifierConf } from '../utils/index'
 import ResourceDialog from './ResourceDialog'
 import loadMonaco from '../utils/loadMonaco'
 import loadBeautifier from '../utils/loadBeautifier'
@@ -105,7 +105,7 @@ let monaco
 export default {
   components: { ResourceDialog },
   props: ['formData', 'generateConf'],
-  data() {
+  data () {
     return {
       activeTab: 'html',
       htmlCode: '',
@@ -122,14 +122,14 @@ export default {
     }
   },
   computed: {
-    resources() {
+    resources () {
       return this.scripts.concat(this.links)
     }
   },
   watch: {},
-  created() {
+  created () {
   },
-  mounted() {
+  mounted () {
     window.addEventListener('keydown', this.preventDefaultSave)
     const clipboard = new ClipboardJS('.copy-btn', {
       text: trigger => {
@@ -146,16 +146,16 @@ export default {
       this.$message.error('代码复制失败')
     })
   },
-  beforeDestroy() {
+  beforeDestroy () {
     window.removeEventListener('keydown', this.preventDefaultSave)
   },
   methods: {
-    preventDefaultSave(e) {
+    preventDefaultSave (e) {
       if (e.key === 's' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
       }
     },
-    onOpen() {
+    onOpen () {
       const { type } = this.generateConf
       this.htmlCode = makeUpHtml(this.formData, type)
       this.jsCode = makeUpJs(this.formData, type)
@@ -179,18 +179,18 @@ export default {
         })
       })
     },
-    onClose() {
+    onClose () {
       this.isInitcode = false
       this.isRefreshCode = false
       this.isIframeLoaded = false
     },
-    iframeLoad() {
+    iframeLoad () {
       if (!this.isInitcode) {
         this.isIframeLoaded = true
         this.isRefreshCode && (this.isInitcode = true) && this.runCode()
       }
     },
-    setEditorValue(id, type, codeStr) {
+    setEditorValue (id, type, codeStr) {
       if (editorObj[type]) {
         editorObj[type].setValue(codeStr)
       } else {
@@ -208,7 +208,7 @@ export default {
         }
       })
     },
-    runCode() {
+    runCode () {
       const jsCodeStr = editorObj.js.getValue()
       try {
         const ast = parse(jsCodeStr, { sourceType: 'module' })
@@ -248,13 +248,13 @@ export default {
         console.error(err)
       }
     },
-    generateCode() {
+    generateCode () {
       const html = vueTemplate(editorObj.html.getValue())
       const script = vueScript(editorObj.js.getValue())
       const css = cssStyle(editorObj.css.getValue())
       return beautifier.html(html + script + css, beautifierConf.html)
     },
-    exportFile() {
+    exportFile () {
       this.$prompt('文件名:', '导出文件', {
         inputValue: `${+new Date()}.vue`,
         closeOnClickModal: false,
@@ -266,10 +266,10 @@ export default {
         saveAs(blob, value)
       })
     },
-    showResource() {
+    showResource () {
       this.resourceVisible = true
     },
-    setResource(arr) {
+    setResource (arr) {
       const scripts = []; const
         links = []
       if (Array.isArray(arr)) {

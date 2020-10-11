@@ -95,7 +95,7 @@ const childAttrs = {
 
 window.addEventListener('message', init, false)
 
-function buildLinks(links) {
+function buildLinks (links) {
   let strs = ''
   links.forEach(url => {
     strs += `<link href="${url}" rel="stylesheet">`
@@ -103,7 +103,7 @@ function buildLinks(links) {
   return strs
 }
 
-function init(event) {
+function init (event) {
   if (event.data.type === 'refreshFrame') {
     const code = event.data.data
     const attrs = childAttrs[code.generateConf.type]
@@ -125,7 +125,7 @@ function init(event) {
   }
 }
 
-function newVue(attrs, main, html) {
+function newVue (attrs, main, html) {
   // eslint-disable-next-line no-eval
   main = eval(`(${main})`)
   main.template = `<div>${html}</div>`
@@ -133,7 +133,7 @@ function newVue(attrs, main, html) {
     components: {
       child: main
     },
-    data() {
+    data () {
       return {
         visible: true
       }
@@ -142,6 +142,7 @@ function newVue(attrs, main, html) {
   }).$mount('#app')
 }
 
+// eslint-disable-next-line no-new
 new Vue({
   el: '#app',
   router,

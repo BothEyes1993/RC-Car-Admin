@@ -13,7 +13,7 @@ import { configSaveForm, configInfo } from '@/api/systemConfig.js'
 export default {
   name: 'Config',
   components: { parser },
-  data() {
+  data () {
     return {
       // 表单
       formConf: { fields: [] },
@@ -23,14 +23,14 @@ export default {
       isShow: false
     }
   },
-  created() {
+  created () {
     systemFormConfigApi.getFormConfigInfo({ id: this.formId }).then(data => {
       this.formConf = JSON.parse(data.content)
     })
     this.getFormInfo()
   },
   methods: {
-    submit(data) {
+    submit (data) {
       const tempArr = []
       for (var key in data) {
         const obj = {}
@@ -40,10 +40,10 @@ export default {
         tempArr.push(obj)
       }
       const _pram = {
-        'fields': tempArr,
-        'id': this.formId,
-        'sort': 0,
-        'status': true
+        fields: tempArr,
+        id: this.formId,
+        sort: 0,
+        status: true
       }
       console.log(_pram)
       configSaveForm(_pram).then(res => {
@@ -52,7 +52,7 @@ export default {
       })
     },
     // 获取表单详情
-    getFormInfo() {
+    getFormInfo () {
       configInfo({ id: this.formId }).then(res => {
         this.isShow = false
         this.formData = res

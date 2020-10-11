@@ -107,7 +107,7 @@ import * as constants from '@/utils/constants.js'
 export default {
   name: 'CompanyList',
   components: { parser },
-  data() {
+  data () {
     return {
       constants,
       // 表单
@@ -128,16 +128,16 @@ export default {
       editId: 0
     }
   },
-  created() {
+  created () {
     this.getExpressList()
   },
   methods: {
-    handlerSearch() {
+    handlerSearch () {
       this.page = 1
       this.getExpressList()
     },
     //  获取物流公司列表
-    getExpressList() {
+    getExpressList () {
       this.loading = true
       logistics.expressList({
         page: this.page,
@@ -150,7 +150,7 @@ export default {
       })
     },
     // 物流开关
-    bindStatus(item) {
+    bindStatus (item) {
       logistics.expressUpdate({
         code: item.code,
         id: item.id,
@@ -165,16 +165,16 @@ export default {
       })
     },
     // 分页
-    pageChange(e) {
+    pageChange (e) {
       this.page = e
       this.getExpressList()
     },
-    handleSizeChange(e) {
+    handleSizeChange (e) {
       this.limit = e
       this.getExpressList()
     },
     // 添加物流公司
-    addExpress() {
+    addExpress () {
       this.fromType = 'add'
       const _pram = { id: 71 }
       systemFormConfigApi.getFormConfigInfo(_pram).then(data => {
@@ -184,7 +184,7 @@ export default {
       })
     },
     // 删除物流公司
-    bindDelete(item) {
+    bindDelete (item) {
       this.$modalSure().then(() => {
         logistics.expressDelete({ id: item.id }).then(res => {
           this.$message.success('删除成功')
@@ -193,7 +193,7 @@ export default {
       })
     },
     // 表单提交
-    submit(data) {
+    submit (data) {
       if (this.fromType === 'add') {
         logistics.expressSave(data).then(res => {
           this.handleClose()
@@ -210,7 +210,7 @@ export default {
       }
     },
     //  关闭模态框
-    handleClose(done) {
+    handleClose (done) {
       this.formShow = false
       this.formData = {}
       this.formConf.fields = []
@@ -218,7 +218,7 @@ export default {
       this.isCreate = 0
     },
     // 编辑
-    bindEdit(item) {
+    bindEdit (item) {
       this.editId = item.id
       this.fromType = 'edit'
       const _pram = { id: 71 }
@@ -230,7 +230,7 @@ export default {
         this.getInfo(item)
       })
     },
-    getInfo(item) {
+    getInfo (item) {
       logistics.expressInfo({ id: item.id }).then(res => {
         this.formData = res
         this.isCreate = 1

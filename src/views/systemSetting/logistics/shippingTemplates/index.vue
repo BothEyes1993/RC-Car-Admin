@@ -96,14 +96,14 @@ import * as logistics from '@/api/logistics.js'
 export default {
   name: 'ShippingTemplates',
   filters: {
-    statusFilter(status) {
+    statusFilter (status) {
       const statusMap = {
         true: '开启',
         false: '关闭'
       }
       return statusMap[status]
     },
-    typeFilter(status) {
+    typeFilter (status) {
       const statusMap = {
         1: '按件数',
         2: '按重量',
@@ -113,7 +113,7 @@ export default {
     }
   },
   components: { CreatTemplates },
-  data() {
+  data () {
     return {
       dialogVisible: false,
       form: {
@@ -125,31 +125,31 @@ export default {
       loading: false
     }
   },
-  created() {
+  created () {
     this.getDataList()
   },
   methods: {
     // 添加
-    handleSubmit() {
+    handleSubmit () {
       this.$refs.addTemplates.dialogVisible = true
       this.$refs.addTemplates.getCityList()
       this.$refs.addTemplates.changType(0, this.te)
     },
-    handleSearch() {
+    handleSearch () {
       this.page = 1
       this.getDataList()
     },
     // 分页
-    pageChange(e) {
+    pageChange (e) {
       this.page = e
       this.getDataList()
     },
-    handleSizeChange(e) {
+    handleSizeChange (e) {
       this.limit = e
       this.getDataList()
     },
     // 数据列表
-    getDataList() {
+    getDataList () {
       this.loading = true
       logistics.shippingTemplatesList({
         keywords: this.form.keywords,
@@ -161,14 +161,14 @@ export default {
       })
     },
     // 编辑
-    bindEdit(item) {
+    bindEdit (item) {
       // this.$refs.addTemplates.dialogVisible = true
       this.$refs.addTemplates.getCityList()
       this.$refs.addTemplates.getInfo(item.id, item.appoint)
       this.$refs.addTemplates.changType(1)
     },
     // 删除
-    bindDelete(item) {
+    bindDelete (item) {
       this.$modalSure().then(() => {
         logistics.shippingDetete({ id: item.id }).then(res => {
           this.$message.success('删除成功')
@@ -177,7 +177,7 @@ export default {
       })
       // logistics.shippingDetete()
     },
-    getList() {
+    getList () {
       this.getDataList()
     }
   }

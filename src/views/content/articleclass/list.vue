@@ -10,7 +10,7 @@ import * as constants from '@/utils/constants.js'
 export default {
   // name: "list",
   components: { categoryList },
-  data() {
+  data () {
     return {
       constants
     }

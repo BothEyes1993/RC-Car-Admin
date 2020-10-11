@@ -23,12 +23,12 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       tinymceId: this.id
     }
   },
-  mounted() {
+  mounted () {
     loadTinymce(tinymce => {
       import('./zh_CN').then(() => {
         tinymce.init({
@@ -57,11 +57,11 @@ export default {
       })
     })
   },
-  destroyed() {
+  destroyed () {
     this.destroyTinymce()
   },
   methods: {
-    vModel(editor) {
+    vModel (editor) {
       // 控制连续写入时setContent的触发频率
       const debounceSetContent = debounce(250, editor.setContent)
       this.$watch('value', (val, prevVal) => {
@@ -75,7 +75,7 @@ export default {
         this.$emit('input', editor.getContent())
       })
     },
-    destroyTinymce() {
+    destroyTinymce () {
       if (!window.tinymce) return
       const tinymce = window.tinymce.get(this.tinymceId)
       if (tinymce) {

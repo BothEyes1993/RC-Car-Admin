@@ -67,16 +67,13 @@
 </template>
 
 <script>
-import Tinymce from '@/components/Tinymce/index'
 import * as categoryApi from '@/api/categoryApi.js'
 import * as constants from '@/utils/constants.js'
 import * as articleApi from '@/api/article.js'
-import * as selfUtil from '@/utils/ZBKJIutil.js'
 import { fileImageApi } from '@/api/systemSetting'
 import { getToken } from '@/utils/auth'
 export default {
   // name: "edit",
-  components: { Tinymce },
   props: {
     isEdit: {
       type: Number,
@@ -86,7 +83,7 @@ export default {
       type: Object
     }
   },
-  data() {
+  data () {
     return {
       constants,
       categoryTreeData: [],
@@ -117,22 +114,22 @@ export default {
       myHeaders: { 'X-Token': getToken() }
     }
   },
-  mounted() {
+  mounted () {
     this.handlerGetCategoryTreeData()
     this.hadlerInitEditData()
   },
   methods: {
     // 上传
-    handleUploadForm(param){
+    handleUploadForm (param) {
       const formData = new FormData()
       formData.append('media', param.file)
-      let loading = this.$loading({
+      const loading = this.$loading({
         lock: true,
         text: '上传中，请稍候...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-      fileImageApi(formData, {type: 'image'}).then(res => {
+      fileImageApi(formData, { type: 'image' }).then(res => {
         loading.close()
         this.pram.mediaId = res.mediaId
 
@@ -143,16 +140,18 @@ export default {
         loading.close()
       })
     },
-    modalPicTap(tit) {
+    modalPicTap (tit) {
       const _this = this
-      this.$modalUpload(function(img) {
+      this.$modalUpload(function (img) {
         _this.pram.imageInput = img[0].sattDir
       }, tit, 'content')
     },
-    hadlerInitEditData() {
+    hadlerInitEditData () {
       if (this.isEdit !== 1) return
-      const { author, cid, content, imageInputs,
-        isBanner, isHot, shareSynopsis, shareTitle, sort, synopsis, title, url, id } = this.editData
+      const {
+        author, cid, content, imageInputs,
+        isBanner, isHot, shareSynopsis, shareTitle, sort, synopsis, title, url, id
+      } = this.editData
       this.pram.author = author
       this.pram.cid = Number.parseInt(cid)
       this.pram.content = content
@@ -168,13 +167,13 @@ export default {
       this.pram.id = id
       // this.pram.mediaId = mediaId
     },
-    handlerGetCategoryTreeData() {
+    handlerGetCategoryTreeData () {
       const _pram = { type: constants.categoryType[2].value, status: 1, pid: 0 }
       categoryApi.treeCategroy(_pram).then(data => {
         this.categoryTreeData = data
       })
     },
-    handerSubmit(form) {
+    handerSubmit (form) {
       this.$refs[form].validate(valid => {
         if (!valid) return
         if (this.isEdit === 0) {
@@ -184,7 +183,7 @@ export default {
         }
       })
     },
-    handlerUpdate() {
+    handlerUpdate () {
       this.pram.cid = Array.isArray(this.pram.cid) ? this.pram.cid[0] : this.pram.cid
       this.pram.shareTitle = this.pram.title
       this.pram.shareSynopsis = this.pram.synopsis
@@ -193,7 +192,7 @@ export default {
         this.$emit('hideDialog')
       })
     },
-    handlerSave() {
+    handlerSave () {
       this.pram.cid = Array.isArray(this.pram.cid) ? this.pram.cid[0] : this.pram.cid
       this.pram.shareTitle = this.pram.title
       this.pram.shareSynopsis = this.pram.synopsis

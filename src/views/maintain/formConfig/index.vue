@@ -21,7 +21,6 @@
         :highlight-current-row="selectModel"
         size="mini"
         class="table"
-        highlight-current-row
         @current-change="handleCurrentRowChange"
       >
         <el-table-column label="ID" prop="id" width="80"/>
@@ -45,7 +44,6 @@
     </el-card>
     <el-dialog
       :visible.sync="editDialogConfig.visible"
-      title="title"
       fullscreen
       :title="editDialogConfig.isCreate === 0? '创建表单':'编辑表单'"
       destroy-on-close
@@ -74,7 +72,7 @@ export default {
       default: false
     }
   },
-  data() {
+  data () {
     return {
       constants,
       listPram: {
@@ -91,20 +89,20 @@ export default {
       selectedConfigData: {}
     }
   },
-  mounted() {
+  mounted () {
     this.handlerGetList(this.listPram)
   },
   methods: {
-    handlerSearch() {
+    handlerSearch () {
       this.listPram.page = 1
       this.handlerGetList(this.listPram)
     },
-    handlerGetList(pram) {
+    handlerGetList (pram) {
       systemFormConfigApi.getFormConfigList(pram).then(data => {
         this.dataList = data
       })
     },
-    handlerEditData(rowData, isCreate) {
+    handlerEditData (rowData, isCreate) {
       if (isCreate === 0) {
         this.editDialogConfig.editData = {}
       } else {
@@ -113,24 +111,24 @@ export default {
       this.editDialogConfig.isCreate = isCreate
       this.editDialogConfig.visible = true
     },
-    handlerHide() {
+    handlerHide () {
       this.editDialogConfig.editData = {}
       this.editDialogConfig.isCreate = 0
       this.editDialogConfig.visible = false
       this.handlerGetList(this.listPram)
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.listPram.limit = val
       this.handlerGetList(this.listPram)
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.listPram.page = val
       this.handlerGetList(this.listPram)
     },
-    handleCurrentRowChange(rowData) {
+    handleCurrentRowChange (rowData) {
       this.selectedConfigData = rowData
     },
-    handlerConfimSelect() {
+    handlerConfimSelect () {
       this.$emit('selectedRowData', this.selectedConfigData)
     }
   }

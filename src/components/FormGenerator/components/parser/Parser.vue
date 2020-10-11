@@ -13,7 +13,7 @@ const ruleTrigger = {
   'el-rate': 'change'
 }
 
-function renderFrom(h) {
+function renderFrom (h) {
   const { formConfCopy } = this
 
   return (
@@ -35,7 +35,7 @@ function renderFrom(h) {
   )
 }
 
-function formBtns(h) {
+function formBtns (h) {
   return <el-col>
     <el-form-item size='mini'>
       <el-button type='primary' onClick={this.submitForm}>提交</el-button>
@@ -44,7 +44,7 @@ function formBtns(h) {
   </el-col>
 }
 
-function renderFormItem(h, elementList) {
+function renderFormItem (h, elementList) {
   return elementList.map(scheme => {
     const config = scheme.__config__
     const layout = layouts[config.layout]
@@ -56,18 +56,18 @@ function renderFormItem(h, elementList) {
   })
 }
 
-function renderChildren(h, scheme) {
+function renderChildren (h, scheme) {
   const config = scheme.__config__
   if (!Array.isArray(config.children)) return null
   return renderFormItem.call(this, h, config.children)
 }
 
-function setValue(event, config, scheme) {
+function setValue (event, config, scheme) {
   this.$set(config, 'defaultValue', event)
   this.$set(this[this.formConf.formModel], scheme.__vModel__, event)
 }
 
-function buildListeners(scheme) {
+function buildListeners (scheme) {
   const config = scheme.__config__
   const methods = this.formConf.__methods__ || {}
   const listeners = {}
@@ -83,7 +83,7 @@ function buildListeners(scheme) {
 }
 
 const layouts = {
-  colFormItem(h, scheme) {
+  colFormItem (h, scheme) {
     const config = scheme.__config__
     const listeners = buildListeners.call(this, scheme)
     let labelWidth = config.labelWidth ? `${config.labelWidth}px` : null
@@ -97,7 +97,7 @@ const layouts = {
       </el-col>
     )
   },
-  rowFormItem(h, scheme) {
+  rowFormItem (h, scheme) {
     let child = renderChildren.apply(this, arguments)
     if (scheme.type === 'flex') {
       child = <el-row type={scheme.type} justify={scheme.justify} align={scheme.align}>
@@ -131,7 +131,7 @@ export default {
       default: false
     }
   },
-  data() {
+  data () {
     if (this.isEdit) { // 初始化待编辑数据
       this.formConf.fields.forEach(conf => {
         conf.__config__.defaultValue = this.formEditData[conf.__vModel__]
@@ -147,14 +147,14 @@ export default {
     return data
   },
   methods: {
-    initFormData(componentList, formData) {
+    initFormData (componentList, formData) {
       componentList.forEach(cur => {
         const config = cur.__config__
         if (cur.__vModel__) formData[cur.__vModel__] = config.defaultValue
         if (config.children) this.initFormData(config.children, formData)
       })
     },
-    buildRules(componentList, rules) {
+    buildRules (componentList, rules) {
       componentList.forEach(cur => {
         const config = cur.__config__
         if (Array.isArray(config.regList)) {
@@ -168,6 +168,7 @@ export default {
             config.regList.push(required)
           }
           rules[cur.__vModel__] = config.regList.map(item => {
+            // eslint-disable-next-line no-eval
             item.pattern && (item.pattern = eval(item.pattern))
             item.trigger = ruleTrigger && ruleTrigger[config.tag]
             return item
@@ -176,11 +177,11 @@ export default {
         if (config.children) this.buildRules(config.children, rules)
       })
     },
-    resetForm() {
+    resetForm () {
       this.formConfCopy = JSON.parse(JSON.stringify(this.formConf))
       this.$refs[this.formConf.formRef].resetFields()
     },
-    submitForm() {
+    submitForm () {
       this.$refs[this.formConf.formRef].validate(valid => {
         if (!valid) return false
         // 触发sumit事件
@@ -189,7 +190,7 @@ export default {
       })
     }
   },
-  render(h) {
+  render (h) {
     return renderFrom.call(this, h)
   }
 }

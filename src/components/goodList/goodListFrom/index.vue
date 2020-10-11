@@ -12,28 +12,28 @@
 </template>
 
 <script>
-  import goodList from '@/components/goodList/index.vue'
-  export default {
-    name: 'GoodListFrom',
-    components: { goodList },
-    data() {
-      return {
-        handleNum: '',
-        visible: false,
-        callback: function() {},
-        checked: []
-      }
+import goodList from '@/components/goodList/index.vue'
+export default {
+  name: 'GoodListFrom',
+  components: { goodList },
+  data () {
+    return {
+      handleNum: '',
+      visible: false,
+      callback: function () {},
+      checked: []
+    }
+  },
+  methods: {
+    handleClose () {
+      this.visible = false
     },
-    methods: {
-      handleClose() {
-        this.visible = false
-      },
-      getStoreItem(img) {
-        this.callback(img)
-        this.visible = false
-      }
+    getStoreItem (img) {
+      this.callback(img)
+      this.visible = false
     }
   }
+}
 </script>
 
 <style scoped>

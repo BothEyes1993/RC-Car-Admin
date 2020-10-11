@@ -1,4 +1,4 @@
-function vModel(self, dataObject, defaultValue) {
+function vModel (self, dataObject, defaultValue) {
   dataObject.props.value = defaultValue
 
   dataObject.on.input = val => {
@@ -21,7 +21,7 @@ keys.forEach(key => {
 })
 
 export default {
-  render(h) {
+  render (h) {
     const dataObject = {
       attrs: {},
       props: {},

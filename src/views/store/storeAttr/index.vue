@@ -80,7 +80,7 @@
 import { templateListApi, attrDeleteApi } from '@/api/store'
 export default {
   name: 'StoreAttr',
-  data() {
+  data () {
     return {
       formDynamic: {
         ruleName: '',
@@ -101,15 +101,15 @@ export default {
       keyNum: 0
     }
   },
-  mounted() {
+  mounted () {
     this.getList()
   },
   methods: {
-    seachList() {
+    seachList () {
       this.tableFrom.page = 1
       this.getList()
     },
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.selectionList = val
       const data = []
       this.selectionList.map((item) => {
@@ -117,14 +117,14 @@ export default {
       })
       this.ids = data.join(',')
     },
-    add() {
+    add () {
       const _this = this
-      this.$modalAttr(Object.assign({}, this.formDynamic), function() {
+      this.$modalAttr(Object.assign({}, this.formDynamic), function () {
         _this.getList()
       }, this.keyNum += 1)
     },
     // 列表
-    getList() {
+    getList () {
       this.listLoading = true
       templateListApi(this.tableFrom).then(res => {
         const list = res.list
@@ -138,37 +138,37 @@ export default {
         this.listLoading = false
       })
     },
-    pageChange(page) {
+    pageChange (page) {
       this.tableFrom.page = page
       this.getList()
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.tableFrom.limit = val
       this.getList()
     },
     // 删除
-    handleDelete(id, idx) {
+    handleDelete (id, idx) {
       this.$modalSure().then(() => {
-        attrDeleteApi( id ).then(() => {
+        attrDeleteApi(id).then(() => {
           this.$message.success('删除成功')
           this.tableData.data.splice(idx, 1)
         })
       }).catch(() => {
       })
     },
-    handleDeleteAll(){
-      if(!this.selectionList.length) return this.$message.warning('请选择商品规格')
+    handleDeleteAll () {
+      if (!this.selectionList.length) return this.$message.warning('请选择商品规格')
       this.$modalSure().then(() => {
-        attrDeleteApi( this.ids ).then(() => {
+        attrDeleteApi(this.ids).then(() => {
           this.$message.success('删除成功')
           this.getList()
         })
       }).catch(() => {
       })
     },
-    onEdit(val) {
+    onEdit (val) {
       const _this = this
-      this.$modalAttr(JSON.parse(JSON.stringify(val)), function() {
+      this.$modalAttr(JSON.parse(JSON.stringify(val)), function () {
         _this.getList()
       })
     }

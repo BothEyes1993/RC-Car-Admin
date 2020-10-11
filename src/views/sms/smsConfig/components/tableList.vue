@@ -76,11 +76,9 @@
 
 <script>
 import { smsLstApi } from '@/api/sms'
-import Template from "../../../appSetting/wxAccount/wxTemplate/index";
 export default {
   name: 'TableList',
-  components: {Template},
-  data() {
+  data () {
     return {
       listLoading: false,
       tableData: {
@@ -94,12 +92,12 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.getList()
   },
   methods: {
     // 列表
-    getList() {
+    getList () {
       this.listLoading = true
       smsLstApi(this.tableFrom).then(res => {
         this.tableData.data = res.list
@@ -109,11 +107,11 @@ export default {
         this.listLoading = false
       })
     },
-    pageChange(page) {
+    pageChange (page) {
       this.tableFrom.page = page
       this.getList()
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.tableFrom.limit = val
       this.getList()
     }

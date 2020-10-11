@@ -47,7 +47,7 @@ export default {
       type: Object
     }
   },
-  data() {
+  data () {
     return {
       formConf: { fields: [] },
       selfForm: {
@@ -56,40 +56,40 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.handlerGetFormConfig()
     this.handlerInitEditData()
   },
   methods: {
-    handlerInitEditData() {
+    handlerInitEditData () {
       const { sort, status } = this.editData
       this.selfForm.sort = sort
       this.selfForm.status = status
     },
-    handlerGetFormConfig() { // 获取表单配置后生成table列
+    handlerGetFormConfig () { // 获取表单配置后生成table列
       const _pram = { id: this.formData.formId }
       systemFormConfigApi.getFormConfigInfo(_pram).then(data => {
         this.formConf = JSON.parse(data.content)
       })
     },
-    handlerSubmit(formValue) {
+    handlerSubmit (formValue) {
       this.isCreate === 0 ? this.handlerSave(formValue) : this.handlerEdit(formValue)
     },
-    handlerSave(formValue) {
+    handlerSave (formValue) {
       const _pram = this.buildFormPram(formValue)
       systemGroupDataApi.groupDataSave(_pram).then(data => {
         this.$message.success('添加数据成功')
         this.$emit('hideDialog')
       })
     },
-    handlerEdit(formValue) {
+    handlerEdit (formValue) {
       const _pram = this.buildFormPram(formValue)
       systemGroupDataApi.groupDataEdit(_pram, this.editData.id).then(data => {
         this.$message.success('编辑数据成功')
         this.$emit('hideDialog')
       })
     },
-    buildFormPram(formValue) {
+    buildFormPram (formValue) {
       const _pram = {
         gid: this.formData.id,
         form: {
@@ -97,7 +97,8 @@ export default {
           id: this.formData.formId,
           sort: this.selfForm.sort,
           status: this.selfForm.status
-        }}
+        }
+      }
       const _fields = []
       Object.keys(formValue).forEach((key) => {
         _fields.push({

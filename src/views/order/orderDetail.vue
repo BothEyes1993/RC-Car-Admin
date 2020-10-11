@@ -70,19 +70,19 @@ export default {
       default: 0
     }
   },
-  data() {
+  data () {
     return {
       dialogVisible: false,
       orderDatalist: null,
       loading: false
     }
   },
-  mounted() {
+  mounted () {
   },
   methods: {
-    getDetail(id) {
+    getDetail (id) {
       this.loading = true
-      orderDetailApi({id: id}).then(res => {
+      orderDetailApi({ id: id }).then(res => {
         this.orderDatalist = res
         this.loading = false
       }).catch(() => {

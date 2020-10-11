@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <el-tabs v-model="activeNamel1" @tab-click="handleTabClick"  v-loading="loading">
         <el-tab-pane
-          v-for="tab,index in treeList"
+          v-for="(tab,index) in treeList"
           :key="index"
           :label="tab.name"
           :name="tab.extra"
@@ -11,7 +11,7 @@
           <!--      文件上传特殊处理-->
           <template v-if="activeNamel1 == 4">
             <el-radio-group v-model="activeNamel2" class="mb10">
-              <el-radio v-for="tabItem,itemIndex in tab.child"
+              <el-radio v-for="(tabItem,itemIndex)in tab.child"
                         :key="itemIndex"
                         :label="tabItem.name" @change="()=>handleItemTabClick(tabItem.extra)">{{tabItem.name}}</el-radio>
             </el-radio-group>
@@ -28,7 +28,7 @@
             <el-tabs v-if="tab.child.length > 0" v-model="activeNamel2"
                      type="border-card" @tab-click="handleItemTabClick">
               <el-tab-pane
-                v-for="tabItem,itemIndex in tab.child"
+                v-for="(tabItem,itemIndex) in tab.child"
                 :key="itemIndex"
                 :label="tabItem.name"
                 :name="tabItem.extra"
@@ -66,46 +66,44 @@ import * as selfUtil from '@/utils/ZBKJIutil.js'
 import * as systemFormConfigApi from '@/api/systemFormConfig.js'
 import * as systemSettingApi from '@/api/systemSetting.js'
 import * as systemConfigApi from '@/api/systemConfig.js'
-import Template from "@/views/appSetting/wxAccount/wxTemplate/index";
-import {beautifierConf} from "@/components/FormGenerator/utils";
 export default {
   // name: "index",
-  components: {Template, parser },
-  data() {
+  components: { parser },
+  data () {
     return {
       loading: false,
       formConf: { content: { fields: [] }, id: null, render: false, isEdit: false },
       formConfChild: { content: { fields: [] }, id: null, render: false, isEdit: false },
       activeNamel1: null,
-      activeNamel2: '本地(不推荐)',//针对文件特殊处理
+      activeNamel2: '本地(不推荐)', // 针对文件特殊处理
       treeList: [],
       editDataChild: {},
       isCreate: 0,
       currentEditId: null,
       currentEditData: null,
-      currentSelectedUploadFlag:null,
+      currentSelectedUploadFlag: null
     }
   },
-  mounted() {
+  mounted () {
     this.handlerGetTreeList()
     this.getCurrentUploadSelectedFlag()
   },
   methods: {
-    handleTabClick(tab, event) {
+    handleTabClick (tab, event) {
       console.log(tab)
       if (tab.name) {
         this.handlerGetLevel1FormConfig(tab.name)
-      } else if (tab.$children.length > 0 ) { // 初次加载第二层的第一个Tab数据
+      } else if (tab.$children.length > 0) { // 初次加载第二层的第一个Tab数据
         // if(tab.$children[0].panes){ // todo 优化。。。
         //   this.activeNamel2 = tab.$children[0].panes[0].name
         // }else{
         //   conaole.integralLog()
         // }
-        let _selected = tab.$children[0].panes[0]
+        const _selected = tab.$children[0].panes[0]
         // 设置特殊处理的文件长传表单默认选中第一个tab
-        this.activeNamel2 = _selected.name != 72 ? _selected.name : _selected.label
+        this.activeNamel2 = _selected.name !== 72 ? _selected.name : _selected.label
         console.log(this.activeNamel2)
-        if(this.activeNamel2 == 108){
+        if (this.activeNamel2 === 108) {
           switch (this.currentSelectedUploadFlag) {
             case 1:
               this.activeNamel2 = '本地(不推荐)'
@@ -124,50 +122,49 @@ export default {
               this.handlerGetLevel2FormConfig(83)
               break
           }
-        }else{
+        } else {
           this.handlerGetLevel2FormConfig(_selected.name)
         }
-
       }
     },
-    handlerGetLevel1FormConfig(id) {
+    handlerGetLevel1FormConfig (id) {
       const formPram = { id: id }
       this.currentEditId = id
       this.formConf.content = { fields: [] }
       this.formConf.render = false
       this.loading = true
       systemFormConfigApi.getFormConfigInfo(formPram).then(data => {
-        const { id, name, info, content } = data
+        const { id, content } = data
         this.formConf.content = JSON.parse(content)
         this.formConf.id = id
         this.handlerGetSettingInfo(id, 1)
         this.loading = false
-      }).catch(() =>{
+      }).catch(() => {
         this.loading = false
       })
     },
-    handleItemTabClick(tab, event) { //这里对tabs=tab.name和radio=id做了兼容
-      let _id = tab.name ? tab.name : tab
-      if(!_id) return this.$message.error('表单配置不正确，请关联正确表单后使用')
+    handleItemTabClick (tab, event) { // 这里对tabs=tab.name和radio=id做了兼容
+      const _id = tab.name ? tab.name : tab
+      if (!_id) return this.$message.error('表单配置不正确，请关联正确表单后使用')
       this.handlerGetLevel2FormConfig(_id)
     },
-    handlerGetLevel2FormConfig(id) {
+    handlerGetLevel2FormConfig (id) {
       const formPram = { id: id }
       this.currentEditId = id
       this.formConfChild.content = { fields: [] }
       this.formConfChild.render = false
       this.loading = true
       systemFormConfigApi.getFormConfigInfo(formPram).then(data => {
-        const { id, name, info, content } = data
+        const { id, content } = data
         this.formConfChild.content = JSON.parse(content)
         this.formConfChild.id = id
         this.handlerGetSettingInfo(id, 2)
         this.loading = false
-      }).catch(() =>{
+      }).catch(() => {
         this.loading = false
       })
     },
-    handlerGetSettingInfo(id, level) {
+    handlerGetSettingInfo (id, level) {
       systemSettingApi.systemConfigInfo({ id: id }).then(data => {
         this.currentEditData = data
         if (level === 1) {
@@ -179,10 +176,10 @@ export default {
         }
       })
     },
-    handlerSubmit(formValue) {
+    handlerSubmit (formValue) {
       this.handlerSave(formValue)
     },
-    handlerSave(formValue) {
+    handlerSave (formValue) {
       const _pram = this.buildFormPram(formValue)
       let _formId = 0
       systemSettingApi.systemConfigSave(_pram).then(data => {
@@ -190,24 +187,24 @@ export default {
         // 81 82 83
         // 针对云存储配置特殊处理 切勿随意改动
         _formId = parseInt(_pram.id)
-        if(_formId === 108 || _formId === 81 || _formId === 82 || _formId === 83){
+        if (_formId === 108 || _formId === 81 || _formId === 82 || _formId === 83) {
           let _value
           switch (_formId) {
             case 108: _value = 1
-              break;
+              break
             case 81: _value = 2
-              break;
+              break
             case 82: _value = 3
-              break;
+              break
             case 83: _value = 4
-              break;
+              break
           }
-          const _pram = { key:"uploadType",value:_value }
+          const _pram = { key: 'uploadType', value: _value }
           systemConfigApi.configSaveUniq(_pram)
         }
       })
     },
-    handlerGetTreeList() {
+    handlerGetTreeList () {
       const _pram = { type: constants.categoryType[5].value, status: 1 }
       this.loading = true
       categoryApi.treeCategroy(_pram).then(data => {
@@ -222,17 +219,17 @@ export default {
           this.handlerGetLevel1FormConfig(this.treeList[0].extra)
         }
         this.loading = false
-      }).catch(() =>{
+      }).catch(() => {
         this.loading = false
       })
     },
-    handleAddArrt(treeData) {
+    handleAddArrt (treeData) {
       // let _result = this.addTreeListLabel(treeData)
       const _result = selfUtil.addTreeListLabel(treeData)
       console.log(_result)
       return _result
     },
-    buildFormPram(formValue) {
+    buildFormPram (formValue) {
       const _pram = {
         fields: [],
         id: this.currentEditId,
@@ -250,8 +247,8 @@ export default {
       _pram.fields = _fields
       return _pram
     },
-    getCurrentUploadSelectedFlag(){
-      systemConfigApi.configGetUniq({key:"uploadType"}).then(data => {
+    getCurrentUploadSelectedFlag () {
+      systemConfigApi.configGetUniq({ key: 'uploadType' }).then(data => {
         this.currentSelectedUploadFlag = parseInt(data)
       })
     }

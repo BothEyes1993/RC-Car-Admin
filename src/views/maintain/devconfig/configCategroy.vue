@@ -91,15 +91,14 @@ import * as constants from '@/utils/constants.js'
 import * as categoryApi from '@/api/categoryApi.js'
 import edit from '@/views/maintain/devconfig/configCategotyEdit.vue'
 import * as selfUtil from '@/utils/ZBKJIutil.js'
-import configList from './configList'
 import formConfigList from '@/views/maintain/formConfig'
 export default {
   // name: "configCategroy"
-  components: { edit, configList, formConfigList },
+  components: { edit, formConfigList },
   props: {
 
   },
-  data() {
+  data () {
     return {
       constants,
       searchPram: {
@@ -127,34 +126,34 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.handlerGetTreeList()
   },
   methods: {
-    handlerOpenFormConfig(rowData) {
+    handlerOpenFormConfig (rowData) {
       this.configFormSelectedDialog.currentData = rowData
       this.configFormSelectedDialog.visible = true
     },
-    handlerGetList() {
+    handlerGetList () {
       categoryApi.listCategroy(this.listPram).then(data => {
         // this.dataList = data
         this.treeList = data.list
       })
     },
-    handlerOpenAdd(rowData) {
+    handlerOpenAdd (rowData) {
       this.editDialogConfig.isCreate = 0
       this.editDialogConfig.prent = rowData
       this.editDialogConfig.data = {}
       this.editDialogConfig.biztype = this.biztype
       this.editDialogConfig.visible = true
     },
-    handleEditMenu(rowData) {
+    handleEditMenu (rowData) {
       this.editDialogConfig.isCreate = 1
       this.editDialogConfig.data = rowData
       this.editDialogConfig.prent = rowData
       this.editDialogConfig.visible = true
     },
-    handleDelMenu(rowData) {
+    handleDelMenu (rowData) {
       this.$confirm('确定删除当前数据?').then(() => {
         categoryApi.deleteCategroy(rowData).then(data => {
           this.handlerGetTreeList()
@@ -162,7 +161,7 @@ export default {
         })
       })
     },
-    hideEditDialog() {
+    hideEditDialog () {
       setTimeout(() => {
         this.editDialogConfig.prent = {}
         this.editDialogConfig.type = 0
@@ -170,22 +169,22 @@ export default {
         this.handlerGetTreeList()
       }, 200)
     },
-    handlerGetTreeList() {
+    handlerGetTreeList () {
       // status: this.selectModel?1:-1
       const _pram = { type: constants.categoryType[5].value, status: -1 }
       categoryApi.treeCategroy(_pram).then(data => {
         this.treeList = this.handleAddArrt(data)
       })
     },
-    handleAddArrt(treeData) {
+    handleAddArrt (treeData) {
       // let _result = this.addTreeListLabel(treeData)
       const _result = selfUtil.addTreeListLabel(treeData)
       return _result
     },
-    handlerSelectedRowData(rowData) {
+    handlerSelectedRowData (rowData) {
       this.configFormSelectedDialog.currentData.extra = rowData.id
     },
-    handlerAddFormExtra() {
+    handlerAddFormExtra () {
       categoryApi.updateCategroy(this.configFormSelectedDialog.currentData).then(data => {
         this.$message.success('关联表单成功')
         setTimeout(() => {

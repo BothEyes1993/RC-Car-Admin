@@ -4,7 +4,7 @@ import { getToken } from '@/utils/auth'
 let confGlobal
 let someSpanIsNot24
 
-export function dialogWrapper(str) {
+export function dialogWrapper (str) {
   return `<el-dialog v-bind="$attrs" v-on="$listeners" @open="onOpen"  @close="onClose" title="Dialog Titile">
     ${str}
     <div slot="footer">
@@ -14,7 +14,7 @@ export function dialogWrapper(str) {
   </el-dialog>`
 }
 
-export function vueTemplate(str) {
+export function vueTemplate (str) {
   return `<template>
     <div>
       ${str}
@@ -22,19 +22,19 @@ export function vueTemplate(str) {
   </template>`
 }
 
-export function vueScript(str) {
+export function vueScript (str) {
   return `<script>
     ${str}
   </script>`
 }
 
-export function cssStyle(cssStr) {
+export function cssStyle (cssStr) {
   return `<style>
     ${cssStr}
   </style>`
 }
 
-function buildFormTemplate(scheme, child, type) {
+function buildFormTemplate (scheme, child, type) {
   let labelPosition = ''
   if (scheme.labelPosition !== 'right') {
     labelPosition = `label-position="${scheme.labelPosition}"`
@@ -52,7 +52,7 @@ function buildFormTemplate(scheme, child, type) {
   return str
 }
 
-function buildFromBtns(scheme, type) {
+function buildFromBtns (scheme, type) {
   let str = ''
   if (scheme.formBtns && type === 'file') {
     str = `<el-form-item size="large">
@@ -69,7 +69,7 @@ function buildFromBtns(scheme, type) {
 }
 
 // span不为24的用el-col包裹
-function colWrapper(scheme, str) {
+function colWrapper (scheme, str) {
   if (someSpanIsNot24 || scheme.__config__.span !== 24) {
     return `<el-col :span="${scheme.__config__.span}">
       ${str}
@@ -79,7 +79,7 @@ function colWrapper(scheme, str) {
 }
 
 const layouts = {
-  colFormItem(scheme) {
+  colFormItem (scheme) {
     const config = scheme.__config__
     let labelWidth = ''
     let label = `label="${config.label}"`
@@ -98,7 +98,7 @@ const layouts = {
     str = colWrapper(scheme, str)
     return str
   },
-  rowFormItem(scheme) {
+  rowFormItem (scheme) {
     const config = scheme.__config__
     const type = scheme.type === 'default' ? '' : `type="${scheme.type}"`
     const justify = scheme.type === 'default' ? '' : `justify="${scheme.justify}"`
@@ -311,7 +311,7 @@ const tags = {
   }
 }
 
-function attrBuilder(el) {
+function attrBuilder (el) {
   return {
     tag: el.__config__.tag,
     vModel: `v-model="${confGlobal.formModel}.${el.__vModel__}"`,
@@ -323,7 +323,7 @@ function attrBuilder(el) {
 }
 
 // el-buttin 子级
-function buildElButtonChild(scheme) {
+function buildElButtonChild (scheme) {
   const children = []
   const slot = scheme.__slot__ || {}
   if (slot.default) {
@@ -333,7 +333,7 @@ function buildElButtonChild(scheme) {
 }
 
 // el-input 子级
-function buildElInputChild(scheme) {
+function buildElInputChild (scheme) {
   const children = []
   const slot = scheme.__slot__
   if (slot && slot.prepend) {
@@ -346,7 +346,7 @@ function buildElInputChild(scheme) {
 }
 
 // el-select 子级
-function buildElSelectChild(scheme) {
+function buildElSelectChild (scheme) {
   const children = []
   const slot = scheme.__slot__
   if (slot && slot.options && slot.options.length) {
@@ -356,7 +356,7 @@ function buildElSelectChild(scheme) {
 }
 
 // el-radio-group 子级
-function buildElRadioGroupChild(scheme) {
+function buildElRadioGroupChild (scheme) {
   const children = []
   const slot = scheme.__slot__
   const config = scheme.__config__
@@ -369,7 +369,7 @@ function buildElRadioGroupChild(scheme) {
 }
 
 // el-checkbox-group 子级
-function buildElCheckboxGroupChild(scheme) {
+function buildElCheckboxGroupChild (scheme) {
   const children = []
   const slot = scheme.__slot__
   const config = scheme.__config__
@@ -382,7 +382,7 @@ function buildElCheckboxGroupChild(scheme) {
 }
 
 // el-upload 子级
-function buildElUploadChild(scheme) {
+function buildElUploadChild (scheme) {
   const list = []
   const config = scheme.__config__
   if (scheme['list-type'] === 'picture-card') list.push('<i class="el-icon-plus"></i>')
@@ -406,7 +406,7 @@ function buildElUploadChild(scheme) {
  * @param {Object} formConfig 整个表单配置
  * @param {String} type 生成类型，文件或弹窗等
  */
-export function makeUpHtml(formConfig, type) {
+export function makeUpHtml (formConfig, type) {
   const htmlList = []
   confGlobal = formConfig
   // 判断布局是否都沾满了24个栅格，以备后续简化代码结构

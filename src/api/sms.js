@@ -2,7 +2,7 @@ import request from '@/utils/request'
 /**
  * @description 短信发送记录 -- 列表
  */
-export function smsLstApi(params) {
+export function smsLstApi (params) {
   return request({
     url: '/admin/sms/record/list',
     method: 'get',
@@ -12,7 +12,7 @@ export function smsLstApi(params) {
 /**
  * @description 短信账户 -- 登录
  */
-export function configApi(params) {
+export function configApi (params) {
   return request({
     url: '/admin/sms/login',
     method: 'get',
@@ -22,7 +22,7 @@ export function configApi(params) {
 /**
  * @description 短信账户 -- 获取验证码
  */
-export function captchaApi(phone) {
+export function captchaApi (phone) {
   return request({
     url: `/admin/sms/sendCodeForRegister/${phone}`,
     method: 'get'
@@ -31,7 +31,7 @@ export function captchaApi(phone) {
 /**
  * @description 短信账户 -- 注册
  */
-export function registerApi(params) {
+export function registerApi (params) {
   return request({
     url: '/admin/sms/register',
     method: 'post',
@@ -41,7 +41,7 @@ export function registerApi(params) {
 /**
  * @description 短信账户 -- 是否登录
  */
-export function isLoginApi() {
+export function isLoginApi () {
   return request({
     url: '/admin/sms/islogin',
     method: 'get'
@@ -50,7 +50,7 @@ export function isLoginApi() {
 /**
  * @description 短信账户 -- 退出登录
  */
-export function logoutApi() {
+export function logoutApi () {
   return request({
     url: '/admin/sms/logout',
     method: 'get'
@@ -59,7 +59,7 @@ export function logoutApi() {
 /**
  * @description 短信账户 -- 剩余条数
  */
-export function smsNumberApi() {
+export function smsNumberApi () {
   return request({
     url: '/admin/sms/logout',
     method: 'get'
@@ -68,7 +68,7 @@ export function smsNumberApi() {
 /**
  * @description 短信模板 -- 列表
  */
-export function smsTempLstApi(params) {
+export function smsTempLstApi (params) {
   return request({
     url: '/admin/sms/temp/list',
     method: 'get',
@@ -78,7 +78,7 @@ export function smsTempLstApi(params) {
 /**
  * @description 短信购买 -- 支付套餐
  */
-export function smsPriceApi(params) {
+export function smsPriceApi (params) {
   return request({
     url: '/admin/sms/pay/list',
     method: 'get',
@@ -88,7 +88,7 @@ export function smsPriceApi(params) {
 /**
  * @description 短信购买 -- 支付码
  */
-export function payCodeApi(params) {
+export function payCodeApi (params) {
   return request({
     url: '/admin/sms/pay/qrCode',
     method: 'get',
@@ -98,7 +98,7 @@ export function payCodeApi(params) {
 /**
  * @description 短信模板 -- 添加表单
  */
-export function tempCreateApi(params) {
+export function tempCreateApi (params) {
   return request({
     url: '/admin/sms/temp/apply',
     method: 'post',
@@ -108,7 +108,7 @@ export function tempCreateApi(params) {
 /**
  * @description 短信 -- 用户信息
  */
-export function smsInfoApi() {
+export function smsInfoApi () {
   return request({
     url: '/admin/sms/info',
     method: 'get'
@@ -118,7 +118,7 @@ export function smsInfoApi() {
 /**
  * @description 短信 -- 短信提醒开关保存
  */
-export function smsSaveApi(params) {
+export function smsSaveApi (params) {
   return request({
     url: '/admin/sms/config/save',
     method: 'post',

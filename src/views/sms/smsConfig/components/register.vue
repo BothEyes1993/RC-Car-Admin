@@ -85,7 +85,7 @@
 import { captchaApi, registerApi } from '@/api/sms'
 export default {
   name: 'Register',
-  data() {
+  data () {
     const validatePhone = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('请填写手机号'))
@@ -132,7 +132,7 @@ export default {
     }
   },
   methods: {
-    showPwd() {
+    showPwd () {
       if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
@@ -143,7 +143,7 @@ export default {
       })
     },
     // 短信验证码
-    cutDown() {
+    cutDown () {
       if (this.formInline.phone) {
         if (!this.canClick) return
         this.canClick = false
@@ -164,7 +164,7 @@ export default {
       }
     },
     // 注册
-    handleSubmit(name) {
+    handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
           registerApi(this.formInline).then(async res => {
@@ -180,7 +180,7 @@ export default {
       })
     },
     // 立即登录
-    changelogo() {
+    changelogo () {
       this.$emit('on-change')
     }
   }

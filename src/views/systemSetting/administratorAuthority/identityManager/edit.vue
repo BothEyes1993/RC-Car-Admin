@@ -43,7 +43,7 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       constants,
       pram: {
@@ -55,14 +55,14 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.initEditData()
   },
   methods: {
-    close() {
+    close () {
       this.$emit('hideEditDialog')
     },
-    initEditData() {
+    initEditData () {
       if (this.isCreate !== 1) return
       const { level, roleName, rules, status, id } = this.editData
       this.pram.rules = rules
@@ -71,7 +71,7 @@ export default {
       this.pram.status = status
       this.pram.id = id
     },
-    handlerSubmit(form) {
+    handlerSubmit (form) {
       this.$refs[form].validate(valid => {
         if (!valid) return
         if (this.isCreate === 0) {
@@ -81,19 +81,19 @@ export default {
         }
       })
     },
-    handlerSave() {
+    handlerSave () {
       roleApi.addRole(this.pram).then(data => {
         this.$message.success('创建身份成功')
         this.$emit('hideEditDialog')
       })
     },
-    handlerEdit() {
+    handlerEdit () {
       roleApi.updateRole(this.pram).then(data => {
         this.$message.success('更新身份成功')
         this.$emit('hideEditDialog')
       })
     },
-    rulesSelect(selectKeys) {
+    rulesSelect (selectKeys) {
       // let _ids = []
       // select.map(item => {
       //   _ids.push(item.id)

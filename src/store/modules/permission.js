@@ -1,5 +1,4 @@
-import { asyncRoutes, constantRoutes } from '@/router'
-import * as categoryApi from '@/api/categoryApi.js'
+import { asyncRoutes } from '@/router'
 import * as roleApi from '@/api/roleApi.js'
 
 /**
@@ -20,7 +19,7 @@ import * as roleApi from '@/api/roleApi.js'
  * @param routes asyncRoutes
  * @param roles
  */
-export function filterAsyncRoutes(routes, roles) {
+export function filterAsyncRoutes (routes, roles) {
   const res = []
 
   routes.forEach(route => {
@@ -58,7 +57,8 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, roleid) {
+  generateRoutes ({ commit }, roleid) {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async resolve => {
       let accessedRoutes = []
       const { rules } = await roleApi.getRoleById(roleid)
@@ -79,7 +79,7 @@ const actions = {
   }
 }
 
-function comRouter(menus, asyncRouter, hasLeft) {
+function comRouter (menus, asyncRouter, hasLeft) {
   const res = []
   asyncRouter.forEach(router => {
     const _leftUrl = hasLeft ? (hasLeft + '/' + router.path) : router.path

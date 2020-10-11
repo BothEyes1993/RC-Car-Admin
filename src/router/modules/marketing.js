@@ -31,7 +31,7 @@ const marketingRouter = {
           meta: {
             title: '优惠劵添加',
             noCache: true,
-            activeMenu: `/marketing/coupon/list`
+            activeMenu: '/marketing/coupon/list'
           },
           hidden: true,
           component: () => import('@/views/marketing/coupon/list/creatCoupon')

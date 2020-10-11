@@ -37,22 +37,22 @@ export default {
       type: Object
     }
   },
-  data() {
+  data () {
     return {
       formConf: { fields: [] }
     }
   },
-  mounted() {
+  mounted () {
     this.handlerGetFormConfig(this.formId)
   },
   methods: {
-    handlerGetFormConfig(formId) { // 获取表单配置后生成table列
+    handlerGetFormConfig (formId) { // 获取表单配置后生成table列
       const _pram = { id: formId }
       systemFormConfigApi.getFormConfigInfo(_pram).then(data => {
         this.formConf = JSON.parse(data.content)
       })
     },
-    handlerSubmit(formValue) {
+    handlerSubmit (formValue) {
       this.$emit('submit', formValue)
     }
   }

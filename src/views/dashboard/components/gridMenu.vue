@@ -69,19 +69,19 @@
   </div>
 </template>
 <script>
-    export default {
-        data () {
-            return {
-                grid: {
-                    xl: 3,
-                    lg: 6,
-                    md: 6,
-                    sm: 8,
-                    xs: 8
-                }
-            }
-        }
+export default {
+  data () {
+    return {
+      grid: {
+        xl: 3,
+        lg: 6,
+        md: 6,
+        sm: 8,
+        xs: 8
+      }
     }
+  }
+}
 </script>
 <style lang="scss" scoped>
   .ivu-mb{

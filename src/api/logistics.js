@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 城市列表
-export function cityList(data) {
+export function cityList (data) {
   return request({
     url: '/admin/system/city/list',
     method: 'get',
@@ -10,7 +10,7 @@ export function cityList(data) {
 }
 
 // 城市列表
-export function cityListTree() {
+export function cityListTree () {
   return request({
     url: '/admin/system/city/list/tree',
     method: 'get'
@@ -18,7 +18,7 @@ export function cityListTree() {
 }
 
 // 城市修改状态
-export function updateStatus(data) {
+export function updateStatus (data) {
   return request({
     url: '/admin/system/city/update/status',
     method: 'post',
@@ -27,7 +27,7 @@ export function updateStatus(data) {
 }
 
 // 城市修改
-export function cityUpdate(data) {
+export function cityUpdate (data) {
   return request({
     url: '/admin/system/city/update',
     method: 'post',
@@ -36,7 +36,7 @@ export function cityUpdate(data) {
 }
 
 // 城市详情
-export function cityInfo(data) {
+export function cityInfo (data) {
   return request({
     url: '/admin/system/city/info',
     method: 'get',
@@ -45,7 +45,7 @@ export function cityInfo(data) {
 }
 
 // 物流公司列表
-export function expressList(data) {
+export function expressList (data) {
   return request({
     url: '/admin/express/list',
     method: 'get',
@@ -54,7 +54,7 @@ export function expressList(data) {
 }
 
 // 物流公司修改状态
-export function expressUpdate(data) {
+export function expressUpdate (data) {
   return request({
     url: '/admin/express/update',
     method: 'post',
@@ -63,7 +63,7 @@ export function expressUpdate(data) {
 }
 
 // 新增物流公司
-export function expressSave(data) {
+export function expressSave (data) {
   return request({
     url: '/admin/express/save',
     method: 'post',
@@ -72,7 +72,7 @@ export function expressSave(data) {
 }
 
 // 删除物流公司
-export function expressDelete(data) {
+export function expressDelete (data) {
   return request({
     url: '/admin/express/delete',
     method: 'GET',
@@ -81,7 +81,7 @@ export function expressDelete(data) {
 }
 
 // 物流运费模板列表
-export function shippingTemplatesList(data) {
+export function shippingTemplatesList (data) {
   return request({
     url: '/admin/express/shipping/templates/list',
     method: 'get',
@@ -90,7 +90,7 @@ export function shippingTemplatesList(data) {
 }
 
 // 物流运费模板详情
-export function templateDetailApi(data) {
+export function templateDetailApi (data) {
   return request({
     url: '/admin/express/shipping/templates/info',
     method: 'get',
@@ -99,7 +99,7 @@ export function templateDetailApi(data) {
 }
 
 // 物流运费模板包邮
-export function shippingFree(data) {
+export function shippingFree (data) {
   return request({
     url: '/admin/express/shipping/free/list',
     method: 'get',
@@ -108,7 +108,7 @@ export function shippingFree(data) {
 }
 
 // 物流运费模板不包邮
-export function shippingRegion(data) {
+export function shippingRegion (data) {
   return request({
     url: 'admin/express/shipping/region/list',
     method: 'get',
@@ -117,7 +117,7 @@ export function shippingRegion(data) {
 }
 
 // 物流运费模板新增
-export function shippingSave(data) {
+export function shippingSave (data) {
   return request({
     url: 'admin/express/shipping/templates/save',
     method: 'post',
@@ -126,7 +126,7 @@ export function shippingSave(data) {
 }
 
 // 物流运费模板更新
-export function shippingUpdate(data, id) {
+export function shippingUpdate (data, id) {
   return request({
     url: 'admin/express/shipping/templates/update',
     method: 'post',
@@ -136,7 +136,7 @@ export function shippingUpdate(data, id) {
 }
 
 // 物流运费模板删除
-export function shippingDetete(data) {
+export function shippingDetete (data) {
   return request({
     url: 'admin/express/shipping/templates/delete',
     method: 'get',
@@ -145,7 +145,7 @@ export function shippingDetete(data) {
 }
 
 // 物流公司详情
-export function expressInfo(data) {
+export function expressInfo (data) {
   return request({
     url: 'admin/express/info',
     method: 'get',

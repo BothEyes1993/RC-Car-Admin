@@ -12,26 +12,26 @@
 </template>
 
 <script>
-  import zbParser from '@/components/FormGenerator/components/parser/ZBParser'
-  import { smsSaveApi } from '@/api/sms'
-  export default {
-    name: "SmsMessage",
-    components: { zbParser },
-    data() {
-      return {
-        isCreate: 0,
-        editData: {}
-      }
-    },
-    methods: {
-      handlerSubmit(formValue) {
-        smsSaveApi(formValue).then(data => {
-          this.$message.success('新增成功')
-          this.editData = {}
-        })
-      }
+import zbParser from '@/components/FormGenerator/components/parser/ZBParser'
+import { smsSaveApi } from '@/api/sms'
+export default {
+  name: 'SmsMessage',
+  components: { zbParser },
+  data () {
+    return {
+      isCreate: 0,
+      editData: {}
+    }
+  },
+  methods: {
+    handlerSubmit (formValue) {
+      smsSaveApi(formValue).then(data => {
+        this.$message.success('新增成功')
+        this.editData = {}
+      })
     }
   }
+}
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 // TODO 微信沟通难度大暂放 呵呵
 
-export function menuCreate(data) {
+export function menuCreate (data) {
   return request({
     url: '/admin/wechat/menu/public/create',
     method: 'post',
@@ -9,7 +9,7 @@ export function menuCreate(data) {
   })
 }
 
-export function menuDelete(data) {
+export function menuDelete (data) {
   return request({
     url: '/admin/wechat/menu/public/delete',
     method: 'post',
@@ -17,7 +17,7 @@ export function menuDelete(data) {
   })
 }
 
-export function menuInfo(pram) {
+export function menuInfo (pram) {
   const data = {
     isAsync: pram.isAsync
   }
@@ -32,9 +32,9 @@ export function menuInfo(pram) {
  * 微信模板消息 列表
  * @param pram
  */
-export function wechatTemplateListApi(params) {
+export function wechatTemplateListApi (params) {
   return request({
-    url: `/admin/wechat/template/list`,
+    url: '/admin/wechat/template/list',
     method: 'get',
     params
   })
@@ -44,9 +44,9 @@ export function wechatTemplateListApi(params) {
  * 微信模板消息 新增
  * @param pram
  */
-export function wechatTemplateSaveApi(data) {
+export function wechatTemplateSaveApi (data) {
   return request({
-    url: `/admin/wechat/template/save`,
+    url: '/admin/wechat/template/save',
     method: 'post',
     data
   })
@@ -56,7 +56,7 @@ export function wechatTemplateSaveApi(data) {
  * 微信模板消息 编辑
  * @param pram
  */
-export function wechatTemplateUpdateApi(id, data) {
+export function wechatTemplateUpdateApi (id, data) {
   console.log(id)
   return request({
     url: `/admin/wechat/template/update/${id}`,
@@ -69,7 +69,7 @@ export function wechatTemplateUpdateApi(id, data) {
  * 微信模板消息 详情
  * @param pram
  */
-export function wechatTemplateInfoApi(id) {
+export function wechatTemplateInfoApi (id) {
   return request({
     url: `/admin/wechat/template/info/${id}`,
     method: 'get'
@@ -80,7 +80,7 @@ export function wechatTemplateInfoApi(id) {
  * 微信模板消息 修改状态
  * @param pram
  */
-export function wechatTemplateStatusApi(id, params) {
+export function wechatTemplateStatusApi (id, params) {
   return request({
     url: `/admin/wechat/template/update/status/${id}`,
     method: 'post',
@@ -92,7 +92,7 @@ export function wechatTemplateStatusApi(id, params) {
  * 微信模板消息 删除
  * @param pram
  */
-export function wechatTemplateDeleteApi(id) {
+export function wechatTemplateDeleteApi (id) {
   return request({
     url: `/admin/wechat/template/delete/${id}`,
     method: 'get'
@@ -103,9 +103,9 @@ export function wechatTemplateDeleteApi(id) {
  * 关键字回复 列表
  * @param pram
  */
-export function replyListApi(params) {
+export function replyListApi (params) {
   return request({
-    url: `/admin/wechat/keywords/reply/list`,
+    url: '/admin/wechat/keywords/reply/list',
     method: 'get',
     params
   })
@@ -115,9 +115,9 @@ export function replyListApi(params) {
  * 关键字回复 新增
  * @param pram
  */
-export function replySaveApi(data) {
+export function replySaveApi (data) {
   return request({
-    url: `/admin/wechat/keywords/reply/save`,
+    url: '/admin/wechat/keywords/reply/save',
     method: 'post',
     data
   })
@@ -127,9 +127,9 @@ export function replySaveApi(data) {
  * 关键字回复 编辑
  * @param pram
  */
-export function replyUpdateApi(params, data) {
+export function replyUpdateApi (params, data) {
   return request({
-    url: `/admin/wechat/keywords/reply/update`,
+    url: '/admin/wechat/keywords/reply/update',
     method: 'post',
     params,
     data
@@ -140,9 +140,9 @@ export function replyUpdateApi(params, data) {
  * 关键字回复 详情
  * @param pram
  */
-export function replyInfoApi(params) {
+export function replyInfoApi (params) {
   return request({
-    url: `/admin/wechat/keywords/reply/info`,
+    url: '/admin/wechat/keywords/reply/info',
     method: 'get',
     params
   })
@@ -152,9 +152,9 @@ export function replyInfoApi(params) {
  * 关键字回复 删除
  * @param pram
  */
-export function replyDeleteApi(params) {
+export function replyDeleteApi (params) {
   return request({
-    url: `/admin/wechat/keywords/reply/delete`,
+    url: '/admin/wechat/keywords/reply/delete',
     method: 'get',
     params
   })
@@ -164,9 +164,9 @@ export function replyDeleteApi(params) {
  * 关键字查询数据
  * @param pram
  */
-export function keywordsInfoApi(params) {
+export function keywordsInfoApi (params) {
   return request({
-    url: `/admin/wechat/keywords/reply/info/keywords`,
+    url: '/admin/wechat/keywords/reply/info/keywords',
     method: 'get',
     params
   })
@@ -176,9 +176,9 @@ export function keywordsInfoApi(params) {
  * 微信菜单 获取数据
  * @param pram
  */
-export function wechatMenuApi(params) {
+export function wechatMenuApi (params) {
   return request({
-    url: `/admin/wechat/menu/public/get`,
+    url: '/admin/wechat/menu/public/get',
     method: 'get',
     params
   })
@@ -188,9 +188,9 @@ export function wechatMenuApi(params) {
  * 微信菜单 新增
  * @param pram
  */
-export function wechatMenuAddApi(data) {
+export function wechatMenuAddApi (data) {
   return request({
-    url: `/admin/wechat/menu/public/create`,
+    url: '/admin/wechat/menu/public/create',
     method: 'post',
     data
   })

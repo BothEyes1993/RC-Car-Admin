@@ -145,7 +145,6 @@ import draggable from 'vuedraggable'
 import { debounce } from 'throttle-debounce'
 import { saveAs } from 'file-saver'
 import ClipboardJS from 'clipboard'
-import render from '@/components/FormGenerator/components/render/render'
 import FormDrawer from './FormDrawer'
 import JsonDrawer from './JsonDrawer'
 import RightPanel from './RightPanel'
@@ -153,7 +152,7 @@ import {
   inputComponents, selectComponents, layoutComponents, formConf
 } from '@/components/FormGenerator/components/generator/config'
 import {
-  exportDefault, beautifierConf, isNumberStr, titleCase
+  beautifierConf, titleCase
 } from '../utils/index'
 import {
   makeUpHtml, vueTemplate, vueScript, cssStyle
@@ -165,22 +164,18 @@ import drawingDefalut from '@/components/FormGenerator/components/generator/draw
 import CodeTypeDialog from './CodeTypeDialog'
 import DraggableItem from './DraggableItem'
 import {
-  getDrawingList, saveDrawingList, getIdGlobal, saveIdGlobal, getFormConf, getFormConfSelf
+  saveDrawingList, getIdGlobal, saveIdGlobal, getFormConfSelf
 } from '../utils/db'
 import loadBeautifier from '../utils/loadBeautifier'
 
 let beautifier
-const emptyActiveData = { style: {}, autosize: {}}
 let oldActiveId
 let tempActiveData
-const drawingListInDB = getDrawingList()
-const formConfInDB = getFormConf()
 const idGlobal = getIdGlobal()
 
 export default {
   components: {
     draggable,
-    render,
     FormDrawer,
     JsonDrawer,
     RightPanel,
@@ -190,14 +185,16 @@ export default {
   props: {
     editData: {
       type: Object,
-      default: {}
+      default: () => {
+        return {}
+      }
     },
     isCreate: {
       type: Number,
       default: 0 // 0=创建，1=编辑
     }
   },
-  data() {
+  data () {
     return {
       // logo,
       idGlobal,
@@ -243,7 +240,7 @@ export default {
   },
   watch: {
     // eslint-disable-next-line func-names
-    'activeData.__config__.label': function(val, oldVal) {
+    'activeData.__config__.label': function (val, oldVal) {
       if (
         this.activeData.placeholder === undefined ||
         !this.activeData.__config__.tag ||
@@ -254,26 +251,26 @@ export default {
       this.activeData.placeholder = this.activeData.placeholder.replace(oldVal, '') + val
     },
     activeId: {
-      handler(val) {
+      handler (val) {
         oldActiveId = val
       },
       immediate: true
     },
     drawingList: {
-      handler(val) {
+      handler (val) {
         this.saveDrawingListDebounce(val)
         if (val.length === 0) this.idGlobal = 100
       },
       deep: true
     },
     idGlobal: {
-      handler(val) {
+      handler (val) {
         this.saveIdGlobalDebounce(val)
       },
       immediate: true
     }
   },
-  mounted() {
+  mounted () {
     if (this.editData.content) {
       let { id, name, info, content } = this.editData
       this.selfForm.name = name
@@ -313,23 +310,23 @@ export default {
     })
   },
   methods: {
-    activeFormItem(element) {
+    activeFormItem (element) {
       this.activeData = element
       this.activeId = element.__config__.formId
     },
-    onEnd(obj) {
+    onEnd (obj) {
       if (obj.from !== obj.to) {
         this.activeData = tempActiveData
         this.activeId = this.idGlobal
       }
     },
-    addComponent(item) {
+    addComponent (item) {
       const clone = this.cloneComponent(item)
       this.drawingList.push(clone)
       this.activeFormItem(clone)
       console.log(this.drawingList)
     },
-    cloneComponent(origin) {
+    cloneComponent (origin) {
       const clone = JSON.parse(JSON.stringify(origin))
       const config = clone.__config__
       config.formId = ++this.idGlobal
@@ -345,30 +342,30 @@ export default {
       tempActiveData = clone
       return tempActiveData
     },
-    AssembleFormData() {
+    AssembleFormData () {
       this.formData = {
         fields: JSON.parse(JSON.stringify(this.drawingList)),
         ...this.formConf
       }
     },
-    generate(data) {
+    generate (data) {
       const func = this[`exec${titleCase(this.operationType)}`]
       this.generateConf = data
       func && func(data)
     },
-    execRun(data) {
+    execRun (data) {
       this.AssembleFormData()
       this.drawerVisible = true
     },
-    execDownload(data) {
+    execDownload (data) {
       const codeStr = this.generateCode()
       const blob = new Blob([codeStr], { type: 'text/plain;charset=utf-8' })
       saveAs(blob, data.fileName)
     },
-    execCopy(data) {
+    execCopy (data) {
       document.getElementById('copyNode').click()
     },
-    empty() {
+    empty () {
       this.$confirm('确定要清空所有组件吗？', '提示', { type: 'warning' }).then(
         () => {
           this.drawingList = []
@@ -376,13 +373,13 @@ export default {
         }
       )
     },
-    drawingItemCopy(item, parent) {
+    drawingItemCopy (item, parent) {
       let clone = JSON.parse(JSON.stringify(item))
       clone = this.createIdAndKey(clone)
       parent.push(clone)
       this.activeFormItem(clone)
     },
-    createIdAndKey(item) {
+    createIdAndKey (item) {
       const config = item.__config__
       config.formId = ++this.idGlobal
       config.renderKey = +new Date()
@@ -396,7 +393,7 @@ export default {
       }
       return item
     },
-    drawingItemDelete(index, parent) {
+    drawingItemDelete (index, parent) {
       parent.splice(index, 1)
       this.$nextTick(() => {
         const len = this.drawingList.length
@@ -405,7 +402,7 @@ export default {
         }
       })
     },
-    generateCode() {
+    generateCode () {
       const { type } = this.generateConf
       this.AssembleFormData()
       const script = vueScript(makeUpJs(this.formData, type))
@@ -413,11 +410,11 @@ export default {
       const css = cssStyle(makeUpCss(this.formData))
       return beautifier.html(html + script + css, beautifierConf.html)
     },
-    showJson() {
+    showJson () {
       this.AssembleFormData()
       this.jsonDrawerVisible = true
     },
-    handlerSaveJSON(form) {
+    handlerSaveJSON (form) {
       // this.AssembleFormData()
       // loadBeautifier(btf => {
       //   beautifier = btf
@@ -436,22 +433,22 @@ export default {
         this.$emit('getFormConfigDataResult', this.selfForm)
       })
     },
-    download() {
+    download () {
       this.dialogVisible = true
       this.showFileName = true
       this.operationType = 'download'
     },
-    run() {
+    run () {
       this.dialogVisible = true
       this.showFileName = false
       this.operationType = 'run'
     },
-    copy() {
+    copy () {
       this.dialogVisible = true
       this.showFileName = false
       this.operationType = 'copy'
     },
-    tagChange(newTag) {
+    tagChange (newTag) {
       newTag = this.cloneComponent(newTag)
       const config = newTag.__config__
       newTag.__vModel__ = this.activeData.__vModel__
@@ -471,7 +468,7 @@ export default {
       this.activeData = newTag
       this.updateDrawingList(newTag, this.drawingList)
     },
-    updateDrawingList(newTag, list) {
+    updateDrawingList (newTag, list) {
       const index = list.findIndex(item => item.__config__.formId === this.activeId)
       if (index > -1) {
         list.splice(index, 1, newTag)
@@ -481,7 +478,7 @@ export default {
         })
       }
     },
-    refreshJson(data) {
+    refreshJson (data) {
       this.drawingList = JSON.parse(JSON.stringify(data.fields))
       delete data.fields
       this.formConf = data

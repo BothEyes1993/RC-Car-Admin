@@ -25,7 +25,7 @@ import path from 'path'
 import { mapGetters } from 'vuex'
 export default {
   name: 'HeaderSearch',
-  data() {
+  data () {
     return {
       search: '',
       options: [],
@@ -37,19 +37,19 @@ export default {
   computed: {
     ...mapGetters([
       'permission_routes'
-    ]),
+    ])
     // routes() {
     //   return this.$store.getters.permission_routes
     // }
   },
   watch: {
-    routes(n) {
+    routes (n) {
       this.searchPool = this.generateRoutes(this.permission_routes)
     },
-    searchPool(list) {
+    searchPool (list) {
       this.initFuse(list)
     },
-    show(value) {
+    show (value) {
       if (value) {
         document.body.addEventListener('click', this.close)
       } else {
@@ -57,22 +57,22 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.searchPool = this.generateRoutes(this.permission_routes)
   },
   methods: {
-    click() {
+    click () {
       this.show = !this.show
       if (this.show) {
         this.$refs.headerSearchSelect && this.$refs.headerSearchSelect.focus()
       }
     },
-    close() {
+    close () {
       this.$refs.headerSearchSelect && this.$refs.headerSearchSelect.blur()
       this.options = []
       this.show = false
     },
-    change(val) {
+    change (val) {
       this.$router.push(val.path)
       this.search = ''
       this.options = []
@@ -80,7 +80,7 @@ export default {
         this.show = false
       })
     },
-    initFuse(list) {
+    initFuse (list) {
       this.fuse = new Fuse(list, {
         shouldSort: true,
         threshold: 0.4,
@@ -99,7 +99,7 @@ export default {
     },
     // Filter out the routes that can be displayed in the sidebar
     // And generate the internationalized title
-    generateRoutes(routes, basePath = '/', prefixTitle = []) {
+    generateRoutes (routes, basePath = '/', prefixTitle = []) {
       let res = []
       for (const router of routes) {
         // skip hidden router
@@ -131,7 +131,7 @@ export default {
       }
       return res
     },
-    querySearch(query) {
+    querySearch (query) {
       if (query !== '') {
         this.options = this.fuse.search(query)
       } else {

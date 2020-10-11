@@ -153,12 +153,12 @@
 
 <script>
 import { getToken } from '@/utils/auth'
-import { replySaveApi, replyEditApi, replyInfoApi, replyListApi, keywordsInfoApi, replyUpdateApi } from '@/api/wxApi'
+import { replySaveApi, replyInfoApi, keywordsInfoApi, replyUpdateApi } from '@/api/wxApi'
 import { wechatUploadApi } from '@/api/systemSetting'
 export default {
   name: 'Index',
   components: { },
-  data() {
+  data () {
     const validateContent = (rule, value, callback) => {
       if (this.formValidate.type === 'text') {
         if (this.formValidate.contents.content === '') {
@@ -209,7 +209,7 @@ export default {
         keywords: '',
         contents: {
           content: '',
-          articleData:{},
+          articleData: {},
           mediaId: '',
           srcUrl: '',
           articleId: null
@@ -235,18 +235,18 @@ export default {
     }
   },
   computed: {
-    fileUrl() {
-      return https + `/wechat/reply/upload/image`
+    fileUrl () {
+      return '/wechat/reply/upload/image'
     },
-    voiceUrl() {
-      return https + `/wechat/reply/upload/voice`
+    voiceUrl () {
+      return '/wechat/reply/upload/voice'
     },
-    httpsURL() {
+    httpsURL () {
       return process.env.VUE_APP_BASE_API.replace('api/', '')
     }
   },
   watch: {
-    $route(to, from) {
+    $route (to, from) {
       if (this.$route.params.id) {
         // this.formValidate.keywords = this.$route.params.key
         this.details()
@@ -256,7 +256,7 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     if (this.$route.params.id) {
       this.details()
     }
@@ -269,16 +269,16 @@ export default {
       this.$forceUpdate()
     },
     // 上传
-    handleUploadForm(param){
+    handleUploadForm (param) {
       const formData = new FormData()
       formData.append('media', param.file)
-      let loading = this.$loading({
+      const loading = this.$loading({
         lock: true,
         text: '上传中，请稍候...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-      wechatUploadApi(formData, {type: this.formValidate.type === 'image'?'image':'voice'}).then(res => {
+      wechatUploadApi(formData, { type: this.formValidate.type === 'image' ? 'image' : 'voice' }).then(res => {
         loading.close()
         this.formValidate.contents.mediaId = res.mediaId
         this.formValidate.contents.srcUrl = res.url
@@ -287,23 +287,23 @@ export default {
         loading.close()
       })
     },
-    changePic() {
+    changePic () {
       const _this = this
-      this.$modalArticle(function(row) {
-        _this.formValidate.contents.articleData ={
+      this.$modalArticle(function (row) {
+        _this.formValidate.contents.articleData = {
           title: row.title,
-          imageInput : row.imageInput
+          imageInput: row.imageInput
         }
         _this.formValidate.contents.articleId = row.id
       })
     },
-    handleClosePic() {
+    handleClosePic () {
       this.visible = false
     },
     // 详情
-    details() {
+    details () {
       this.loading = true
-      replyInfoApi({id:this.$route.params.id}).then(async res => {
+      replyInfoApi({ id: this.$route.params.id }).then(async res => {
         const info = res || null
         this.formValidate = {
           status: info.status,
@@ -323,9 +323,9 @@ export default {
       })
     },
     // 关注回复，无效关键词详情
-    followDetails() {
+    followDetails () {
       this.loading = true
-      keywordsInfoApi({ keywords: this.$route.path.indexOf('follow') !== -1 ? 'subscribe' : 'default'}).then(async res => {
+      keywordsInfoApi({ keywords: this.$route.path.indexOf('follow') !== -1 ? 'subscribe' : 'default' }).then(async res => {
         const info = res || null
         this.formValidate = {
           status: info.status,
@@ -337,7 +337,7 @@ export default {
             content: JSON.parse(info.data).content || '',
             mediaId: JSON.parse(info.data).mediaId || '',
             srcUrl: JSON.parse(info.data).srcUrl || '',
-            articleData: JSON.parse(info.data).articleData || {},
+            articleData: JSON.parse(info.data).articleData || {}
           }
         }
         this.loading = false
@@ -348,7 +348,7 @@ export default {
       })
     },
     // 下拉选择
-    RuleFactor(type) {
+    RuleFactor (type) {
       switch (type) {
         case 'text':
           this.formValidate.contents.mediaId = ''
@@ -368,11 +368,11 @@ export default {
       }
       // this.$refs['formValidate'].resetFields();
     },
-    handleClose(tag) {
+    handleClose (tag) {
       const index = this.labelarr.indexOf(tag)
       this.labelarr.splice(index, 1)
     },
-    addlabel() {
+    addlabel () {
       const count = this.labelarr.indexOf(this.val)
       if (count === -1) {
         this.labelarr.push(this.val)
@@ -380,13 +380,13 @@ export default {
       this.val = ''
     },
     // 保存
-    submenus(name) {
+    submenus (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
           this.formValidate.keywords = this.labelarr.join(',')
           this.formValidate.data = JSON.stringify(this.formValidate.contents)
           if (this.$route.path.indexOf('keyword') !== -1) {
-            this.$route.params.id ? replyUpdateApi({id:this.$route.params.id}, this.formValidate).then(async res => {
+            this.$route.params.id ? replyUpdateApi({ id: this.$route.params.id }, this.formValidate).then(async res => {
               this.operation()
             }).catch(res => {
               this.$message.error(res.message)
@@ -396,8 +396,8 @@ export default {
               this.$message.error(res.message)
             })
           } else {
-            this.$route.path.indexOf('follow') !== -1 ? this.formValidate.keywords = 'subscribe' : this.formValidate.keywords ='default'
-            replyUpdateApi({id:this.formValidate.id}, this.formValidate).then(async res => {
+            this.$route.path.indexOf('follow') !== -1 ? this.formValidate.keywords = 'subscribe' : this.formValidate.keywords = 'default'
+            replyUpdateApi({ id: this.formValidate.id }, this.formValidate).then(async res => {
               this.$message.success('操作成功')
             })
           }
@@ -407,17 +407,17 @@ export default {
       })
     },
     // 保存成功操作
-    operation() {
+    operation () {
       this.$modalSure('继续添加').then(() => {
         setTimeout(() => {
           this.labelarr = []
           this.val = ''
-          this.$refs['formValidate'].resetFields()
+          this.$refs.formValidate.resetFields()
           this.formValidate.contents.mediaId = ''
         }, 1000)
       }).catch(() => {
         setTimeout(() => {
-          this.$router.push({ path: `/publicAccount/wxReply/keyword` })
+          this.$router.push({ path: '/publicAccount/wxReply/keyword' })
         }, 500)
       })
     }

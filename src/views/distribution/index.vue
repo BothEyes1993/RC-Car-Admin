@@ -266,181 +266,181 @@
 </template>
 
 <script>
-  import { promoterListApi, spreadStatisticsApi, spreadListApi, spreadOrderListApi, spreadClearApi } from '@/api/distribution'
-  import { fromList } from '@/utils/constants.js'
-  import cardsData from '@/components/cards/index'
-  export default {
-    name: 'AccountsUser',
-    components: { cardsData },
-    data() {
-      return {
-        cardLists: [],
-        timeVal: [],
-        tableData: {
-          data: [],
-          total: 0
-        },
-        listLoading: true,
-        tableFrom: {
-          dateLimit: '',
-          keywords: '',
-          page: 1,
-          limit: 20
-        },
-        fromList: fromList,
-        dialogVisible: false,
-        spreadData: {
-          data: [],
-          total: 0
-        },
-        spreadFrom: {
-          page: 1,
-          limit: 10,
-          dateLimit: '',
-          type: null,
-          nickName: '',
-          uid: ''
-        },
-        timeValSpread: [],
-        spreadLoading: false,
-        uid: '',
-        onName: ''
-      }
-    },
-    mounted() {
-      this.spreadStatistics()
+import { promoterListApi, spreadStatisticsApi, spreadListApi, spreadOrderListApi, spreadClearApi } from '@/api/distribution'
+import { fromList } from '@/utils/constants.js'
+import cardsData from '@/components/cards/index'
+export default {
+  name: 'AccountsUser',
+  components: { cardsData },
+  data () {
+    return {
+      cardLists: [],
+      timeVal: [],
+      tableData: {
+        data: [],
+        total: 0
+      },
+      listLoading: true,
+      tableFrom: {
+        dateLimit: '',
+        keywords: '',
+        page: 1,
+        limit: 20
+      },
+      fromList: fromList,
+      dialogVisible: false,
+      spreadData: {
+        data: [],
+        total: 0
+      },
+      spreadFrom: {
+        page: 1,
+        limit: 10,
+        dateLimit: '',
+        type: null,
+        nickName: '',
+        uid: ''
+      },
+      timeValSpread: [],
+      spreadLoading: false,
+      uid: '',
+      onName: ''
+    }
+  },
+  mounted () {
+    this.spreadStatistics()
+    this.getList()
+  },
+  methods: {
+    seachList () {
+      this.tableFrom.page = 1
       this.getList()
     },
-    methods: {
-      seachList() {
-        this.tableFrom.page = 1
-        this.getList()
-      },
-      // 统计
-      spreadStatistics() {
-        spreadStatisticsApi({ dateLimit: this.tableFrom.dateLimit, nickName: this.tableFrom.nickName}).then((res) => {
-          this.cardLists = res
+    // 统计
+    spreadStatistics () {
+      spreadStatisticsApi({ dateLimit: this.tableFrom.dateLimit, nickName: this.tableFrom.nickName }).then((res) => {
+        this.cardLists = res
+      })
+    },
+    // 清除
+    clearSpread (row) {
+      this.$modalSure('解除【' + row.nickname + '】的上级推广人吗').then(() => {
+        spreadClearApi(row.uid).then((res) => {
+          this.$message.success('清除成功')
+          this.getList()
         })
-      },
-      // 清除
-      clearSpread(row) {
-        this.$modalSure('解除【' + row.nickname + '】的上级推广人吗').then(() => {
-          spreadClearApi(row.uid).then((res) => {
-            this.$message.success('清除成功')
-            this.getList()
-          })
-        })
-      },
-      onSpread(uid, n) {
-        this.onName = n
-        this.uid = uid
-        this.dialogVisible = true
-        this.spreadFrom = {
-          page: 1,
-          limit: 10,
-          dateLimit: '',
-          type: null,
-          nickName: '',
-          uid: uid
-        }
-        this.getListSpread()
-      },
-      handleClose() {
-        this.dialogVisible = false
-      },
-      // 选择时间
-      selectChangeSpread(tab) {
-        this.timeValSpread = []
-        this.spreadFrom.dateLimit = tab
-        this.onName === 'man' ? this.getListSpread() : this.getSpreadOrderList()
-      },
-      // 具体日期
-      onchangeTimeSpread(e) {
-        this.timeValSpread = e
-        this.tableFrom.dateLimit = e ? this.timeValSpread.join(',') : ''
-        this.onName === 'man' ? this.getListSpread() : this.getSpreadOrderList()
-      },
-      onChanges() {
-        this.onName === 'man' ? this.getListSpread() : this.getSpreadOrderList()
-      },
-      // 推广人列表
-      getListSpread() {
-        this.spreadLoading = true
-        spreadListApi({ page: this.spreadFrom.page, limit: this.spreadFrom.limit}, this.spreadFrom).then(res => {
-          this.spreadData.data = res.list
-          this.spreadData.total = res.total
-          this.spreadLoading = false
-        }).catch(() => {
-          this.spreadLoading = false
-        })
-      },
-      pageChangeSpread(page) {
-        this.spreadFrom.page = page
-        this.onName === 'man' ? this.getListSpread(this.uid) : this.getSpreadOrderList(this.uid)
-      },
-      handleSizeChangeSpread(val) {
-        this.spreadFrom.limit = val
-        this.onName === 'man' ? this.getListSpread(this.uid) : this.getSpreadOrderList(this.uid)
-      },
-      // 推广订单
-      onSpreadOrder(uid, n) {
-        this.uid = uid
-        this.onName = n
-        this.dialogVisible = true
-        this.spreadFrom = {
-          page: 1,
-          limit: 10,
-          dateLimit: '',
-          type: '',
-          nickName: '',
-          uid: uid
-        }
-        this.getSpreadOrderList()
-      },
-      getSpreadOrderList() {
-        this.spreadLoading = true
-        spreadOrderListApi({ page: this.spreadFrom.page, limit: this.spreadFrom.limit}, this.spreadFrom).then(res => {
-          this.spreadData.data = res.list
-          this.spreadData.total = res.total
-          this.spreadLoading = false
-        }).catch(() => {
-          this.spreadLoading = false
-        })
-      },
-      selectChange(tab) {
-        this.tableFrom.dateLimit = tab
-        this.tableFrom.page = 1
-        this.timeVal = []
-        this.getList()
-      },
-      // 具体日期
-      onchangeTime(e) {
-        this.timeVal = e
-        this.tableFrom.dateLimit = e ? this.timeVal.join(',') : ''
-        this.tableFrom.page = 1
-        this.getList()
-      },
-      // 列表
-      getList() {
-        this.listLoading = true
-        promoterListApi(this.tableFrom).then(res => {
-          this.tableData.data = res.list
-          this.tableData.total = res.total
-          this.listLoading = false
-        }).catch(() => {
-          this.listLoading = false
-        })
-      },
-      pageChange(page) {
-        this.tableFrom.page = page
-        this.getList()
-      },
-      handleSizeChange(val) {
-        this.tableFrom.limit = val
-        this.getList()
+      })
+    },
+    onSpread (uid, n) {
+      this.onName = n
+      this.uid = uid
+      this.dialogVisible = true
+      this.spreadFrom = {
+        page: 1,
+        limit: 10,
+        dateLimit: '',
+        type: null,
+        nickName: '',
+        uid: uid
       }
+      this.getListSpread()
+    },
+    handleClose () {
+      this.dialogVisible = false
+    },
+    // 选择时间
+    selectChangeSpread (tab) {
+      this.timeValSpread = []
+      this.spreadFrom.dateLimit = tab
+      this.onName === 'man' ? this.getListSpread() : this.getSpreadOrderList()
+    },
+    // 具体日期
+    onchangeTimeSpread (e) {
+      this.timeValSpread = e
+      this.tableFrom.dateLimit = e ? this.timeValSpread.join(',') : ''
+      this.onName === 'man' ? this.getListSpread() : this.getSpreadOrderList()
+    },
+    onChanges () {
+      this.onName === 'man' ? this.getListSpread() : this.getSpreadOrderList()
+    },
+    // 推广人列表
+    getListSpread () {
+      this.spreadLoading = true
+      spreadListApi({ page: this.spreadFrom.page, limit: this.spreadFrom.limit }, this.spreadFrom).then(res => {
+        this.spreadData.data = res.list
+        this.spreadData.total = res.total
+        this.spreadLoading = false
+      }).catch(() => {
+        this.spreadLoading = false
+      })
+    },
+    pageChangeSpread (page) {
+      this.spreadFrom.page = page
+      this.onName === 'man' ? this.getListSpread(this.uid) : this.getSpreadOrderList(this.uid)
+    },
+    handleSizeChangeSpread (val) {
+      this.spreadFrom.limit = val
+      this.onName === 'man' ? this.getListSpread(this.uid) : this.getSpreadOrderList(this.uid)
+    },
+    // 推广订单
+    onSpreadOrder (uid, n) {
+      this.uid = uid
+      this.onName = n
+      this.dialogVisible = true
+      this.spreadFrom = {
+        page: 1,
+        limit: 10,
+        dateLimit: '',
+        type: '',
+        nickName: '',
+        uid: uid
+      }
+      this.getSpreadOrderList()
+    },
+    getSpreadOrderList () {
+      this.spreadLoading = true
+      spreadOrderListApi({ page: this.spreadFrom.page, limit: this.spreadFrom.limit }, this.spreadFrom).then(res => {
+        this.spreadData.data = res.list
+        this.spreadData.total = res.total
+        this.spreadLoading = false
+      }).catch(() => {
+        this.spreadLoading = false
+      })
+    },
+    selectChange (tab) {
+      this.tableFrom.dateLimit = tab
+      this.tableFrom.page = 1
+      this.timeVal = []
+      this.getList()
+    },
+    // 具体日期
+    onchangeTime (e) {
+      this.timeVal = e
+      this.tableFrom.dateLimit = e ? this.timeVal.join(',') : ''
+      this.tableFrom.page = 1
+      this.getList()
+    },
+    // 列表
+    getList () {
+      this.listLoading = true
+      promoterListApi(this.tableFrom).then(res => {
+        this.tableData.data = res.list
+        this.tableData.total = res.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    pageChange (page) {
+      this.tableFrom.page = page
+      this.getList()
+    },
+    handleSizeChange (val) {
+      this.tableFrom.limit = val
+      this.getList()
     }
   }
+}
 </script>
 
 <style scoped>

@@ -5,26 +5,26 @@
 </template>
 
 <script>
-import { asyncRoutes, constantRoutes } from '@/router'
+import { asyncRoutes } from '@/router'
 import * as categoryApi from '@/api/categoryApi.js'
 import categoryList from '@/components/Category/list'
 import * as constants from '@/utils/constants.js'
 export default {
   // name: "index"
   components: { categoryList },
-  data() {
+  data () {
     return {
       asyncRoutes,
       constants
     }
   },
-  mounted() {
+  mounted () {
   },
   methods: {
-    handleTreeCheckChange(data, checked, indateminate) {
+    handleTreeCheckChange (data, checked, indateminate) {
       console.log(data, checked, indateminate)
     },
-    categoryAdd(pram) {
+    categoryAdd (pram) {
       const _pram = {
         extra: pram.extra,
         name: pram.name,

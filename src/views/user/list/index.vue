@@ -398,431 +398,432 @@
 </template>
 
 <script>
-  import { userListApi, groupListApi, levelListApi, tagListApi, groupPiApi, tagPiApi, foundsApi } from '@/api/user'
-  import editFrom from './edit'
-  import userDetails from './userDetails'
-  import * as logistics from '@/api/logistics.js'
-  import Cookies from 'js-cookie'
-  export default {
-    name: 'UserIndex',
-    components:{ editFrom, userDetails },
-    filters: {
-      sexFilter(status) {
-        const statusMap = {
-          0: '未知',
-          1: '男',
-          2: '女',
-          3: '保密'
-        }
-        return statusMap[status]
+import { userListApi, groupListApi, levelListApi, tagListApi, groupPiApi, tagPiApi, foundsApi } from '@/api/user'
+import editFrom from './edit'
+import userDetails from './userDetails'
+import * as logistics from '@/api/logistics.js'
+export default {
+  name: 'UserIndex',
+  components: { editFrom, userDetails },
+  filters: {
+    sexFilter (status) {
+      const statusMap = {
+        0: '未知',
+        1: '男',
+        2: '女',
+        3: '保密'
       }
-    },
-    data() {
-      return {
-        pickerOptions: {
-          shortcuts: [
-            {
-              text: '今天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                start.setTime(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
-                picker.$emit('pick', [start, end])
-              }
-            },
-            {
-              text: '昨天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                start.setTime(start.setTime(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1)))
-                end.setTime(end.setTime(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())))
-                picker.$emit('pick', [start, end])
-              }
-            },
-            {
-              text: '最近7天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-                picker.$emit('pick', [start, end])
-              }
-            },
-            {
-              text: '最近30天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-                picker.$emit('pick', [start, end])
-              }
-            },
-            {
-              text: '本月',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                start.setTime(start.setTime(new Date(new Date().getFullYear(), new Date().getMonth(), 1)))
-                picker.$emit('pick', [start, end])
-              }
-            },
-            {
-              text: '本年',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                start.setTime(start.setTime(new Date(new Date().getFullYear(), 0, 1)))
-                picker.$emit('pick', [start, end])
-              }
+      return statusMap[status]
+    }
+  },
+  data () {
+    return {
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: '今天',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
+              picker.$emit('pick', [start, end])
             }
-          ]
-        },
-        loadingBtn: false,
-        PointValidateForm: {
-          integralType: 2,
-          integralValue: 0,
-          moneyType: 2,
-          moneyValue: 0,
-          uid: ''
-        },
-        loadingPoint: false,
-        VisiblePoint: false,
-        visible: false,
-        userIds: '',
-        dialogVisible: false,
-        levelData: [],
-        groupData: [],
-        labelData: [],
-        selData:[],
-        labelPosition:'right',
-        collapse: false,
-        props: {
-          children: 'child',
-          label: 'name',
-          value: 'id',
-          emitPath: false
-        },
-        propsCity: {
-          children: 'child',
-          label: 'name',
-          value: 'cityId'
-        },
-        headeNum: [
-          { 'type': '', 'name': '全部用户' },
-          { 'type': 'wechat', 'name': '微信公众号用户' },
-          { 'type': 'routine', 'name': '微信小程序用户' },
-          { 'type': 'h5', 'name': 'H5用户' }
-        ],
-        listLoading: true,
-        tableData: {
-          data: [],
-          total: 0
-        },
-        loginType: '',
-        userFrom: {
-          labelId: '',
-          userType: '',
-          sex: '',
-          isPromoter: '',
-          country: '',
-          payCount: '',
-          accessType: 0,
-          dateLimit: '',
-          keywords: '',
-          province: '',
-          city: '',
-          page: 1,
-          limit: 15,
-          level: '',
-          groupId: ''
-        },
-        grid: {
-          xl: 8,
-          lg: 12,
-          md: 12,
-          sm: 24,
-          xs: 24
-        },
-        grid2: {
-          xl: 18,
-          lg: 16,
-          md: 12,
-          sm: 24,
-          xs: 24
-        },
-        grid3: {
-          xl: 8,
-          lg: 12,
-          md: 12,
-          sm: 24,
-          xs: 24
-        },
-        levelList: [],
-        labelLists: [],
-        groupList: [],
-        selectedData: [],
-        timeVal: [],
-        addresData: [],
-        dynamicValidateForm:{
-          groupId: []
-        },
-        loading: false,
-        groupIdFrom: [],
-        selectionList: [],
-        batchName: '',
-        uid: 0,
-        Visible: false,
-        keyNum: 0,
-        address: []
+          },
+          {
+            text: '昨天',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.setTime(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1)))
+              end.setTime(end.setTime(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())))
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '最近7天',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '最近30天',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '本月',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.setTime(new Date(new Date().getFullYear(), new Date().getMonth(), 1)))
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '本年',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.setTime(new Date(new Date().getFullYear(), 0, 1)))
+              picker.$emit('pick', [start, end])
+            }
+          }
+        ]
+      },
+      loadingBtn: false,
+      PointValidateForm: {
+        integralType: 2,
+        integralValue: 0,
+        moneyType: 2,
+        moneyValue: 0,
+        uid: ''
+      },
+      loadingPoint: false,
+      VisiblePoint: false,
+      visible: false,
+      userIds: '',
+      dialogVisible: false,
+      levelData: [],
+      groupData: [],
+      labelData: [],
+      selData: [],
+      labelPosition: 'right',
+      collapse: false,
+      props: {
+        children: 'child',
+        label: 'name',
+        value: 'id',
+        emitPath: false
+      },
+      propsCity: {
+        children: 'child',
+        label: 'name',
+        value: 'cityId'
+      },
+      headeNum: [
+        { type: '', name: '全部用户' },
+        { type: 'wechat', name: '微信公众号用户' },
+        { type: 'routine', name: '微信小程序用户' },
+        { type: 'h5', name: 'H5用户' }
+      ],
+      listLoading: true,
+      tableData: {
+        data: [],
+        total: 0
+      },
+      loginType: '',
+      userFrom: {
+        labelId: '',
+        userType: '',
+        sex: '',
+        isPromoter: '',
+        country: '',
+        payCount: '',
+        accessType: 0,
+        dateLimit: '',
+        keywords: '',
+        province: '',
+        city: '',
+        page: 1,
+        limit: 15,
+        level: '',
+        groupId: ''
+      },
+      grid: {
+        xl: 8,
+        lg: 12,
+        md: 12,
+        sm: 24,
+        xs: 24
+      },
+      grid2: {
+        xl: 18,
+        lg: 16,
+        md: 12,
+        sm: 24,
+        xs: 24
+      },
+      grid3: {
+        xl: 8,
+        lg: 12,
+        md: 12,
+        sm: 24,
+        xs: 24
+      },
+      levelList: [],
+      labelLists: [],
+      groupList: [],
+      selectedData: [],
+      timeVal: [],
+      addresData: [],
+      dynamicValidateForm: {
+        groupId: []
+      },
+      loading: false,
+      groupIdFrom: [],
+      selectionList: [],
+      batchName: '',
+      uid: 0,
+      Visible: false,
+      keyNum: 0,
+      address: []
+    }
+  },
+  mounted () {
+    this.getList()
+    this.groupLists()
+    this.levelLists()
+    this.getTagList()
+    this.getCityList()
+  },
+  methods: {
+    reset (formName) {
+      this.userFrom = {
+        labelId: '',
+        userType: '',
+        sex: '',
+        isPromoter: '',
+        country: '',
+        payCount: '',
+        accessType: 0,
+        dateLimit: '',
+        keywords: '',
+        province: '',
+        city: '',
+        page: 1,
+        limit: 15,
+        level: '',
+        groupId: ''
       }
-    },
-    mounted() {
+      this.levelData = []
+      this.groupData = []
+      this.labelData = []
       this.getList()
-      this.groupLists()
-      this.levelLists()
-      this.getTagList()
-      this.getCityList()
     },
-    methods: {
-      reset(formName) {
-        this.userFrom = {
-            labelId: '',
-            userType: '',
-            sex: '',
-            isPromoter: '',
-            country: '',
-            payCount: '',
-            accessType: 0,
-            dateLimit: '',
-            keywords: '',
-            province: '',
-            city: '',
-            page: 1,
-            limit: 15,
-            level: '',
-            groupId: ''
-        }
-        this.levelData = []
-        this.groupData = []
-        this.labelData = []
-        this.getList()
-      },
-      // 列表
-      getCityList() {
-        logistics.cityListTree().then(res => {
-          res.forEach((el, index) => {
-            el.child.forEach((cel, j) => {
-              delete cel.child
-            })
+    // 列表
+    getCityList () {
+      logistics.cityListTree().then(res => {
+        res.forEach((el, index) => {
+          el.child.forEach((cel, j) => {
+            delete cel.child
           })
-          this.addresData = res
         })
-      },
-      // 发送文章
-      sendNews() {
-        if (this.selectionList.length === 0) return this.$message.warning('请先选择用户')
-        const _this = this
-        this.$modalArticle(function(row) {
-          console.log(row)
-        },'send')
-      },
-      // 发送优惠劵
-      onSend(){
-        if (this.selectionList.length === 0) return this.$message.warning('请选择要设置的用户');
-        const _this = this
-        this.$modalCoupon('send', this.keyNum += 1, [],function(row) {
-          _this.formValidate.give_coupon_ids = []
-          _this.couponData = []
-          row.map((item) => {
-            _this.formValidate.give_coupon_ids.push(item.coupon_id)
-            _this.couponData.push(item.title)
-          })
-        },this.userIds)
-      },
-      Close() {
-        this.Visible = false
-      },
-      // 账户详情
-      onDetails(id){
-        this.uid = id
-        this.Visible = true
-      },
-      // 积分余额
-      editPoint(id) {
-        this.uid = id
-        this.VisiblePoint = true
-      },
-      // 积分余额
-      submitPointForm(formName){
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.PointValidateForm.uid = this.uid
-            this.loadingBtn = true
-            foundsApi(this.PointValidateForm).then(res => {
-              this.$message.success('设置成功')
-              this.loadingBtn = false
-              this.handlePointClose()
-              this.getList()
-            }).catch(() => {
-              this.loadingBtn = false
-            })
-          } else {
-            return false
-          }
+        this.addresData = res
+      })
+    },
+    // 发送文章
+    sendNews () {
+      if (this.selectionList.length === 0) return this.$message.warning('请先选择用户')
+      this.$modalArticle(function (row) {
+        console.log(row)
+      }, 'send')
+    },
+    // 发送优惠劵
+    onSend () {
+      if (this.selectionList.length === 0) return this.$message.warning('请选择要设置的用户')
+      const _this = this
+      this.$modalCoupon('send', this.keyNum += 1, [], function (row) {
+        _this.formValidate.give_coupon_ids = []
+        _this.couponData = []
+        row.map((item) => {
+          _this.formValidate.give_coupon_ids.push(item.coupon_id)
+          _this.couponData.push(item.title)
         })
-      },
-      // 积分余额
-      handlePointClose() {
-        this.VisiblePoint = false
-        this.PointValidateForm = {
-          integralType: 2,
-          integralValue: 0,
-          moneyType: 2,
-          moneyValue: 0,
-          uid: ''
-        }
-      },
-      editUser(id) {
-        this.visible = true
-        this.uid = id
-      },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.loading = true
-            this.batchName ==='group' ? groupPiApi({groupId: this.dynamicValidateForm.groupId.join(','), id: this.userIds}).then(res => {
-              this.$message.success('设置成功')
-              this.loading = false
-              this.handleClose()
-              this.getList()
-            }).catch(() => {
-              this.loading = false
-            }) : tagPiApi({tagId: this.dynamicValidateForm.groupId.join(','), id: this.userIds}).then(res => {
-              this.$message.success('设置成功')
-              this.loading = false
-              this.handleClose()
-              this.getList()
-            }).catch(() => {
-              this.loading = false
-            })
-          } else {
-            return false;
-          }
-        });
-      },
-      setBatch(name){
-        this.batchName = name
-        if (this.selectionList.length === 0) return this.$message.warning('请选择要设置的用户')
-        this.dialogVisible = true
-      },
-      handleClose(){
-        this.dialogVisible = false
-        this.$refs['dynamicValidateForm'].resetFields();
-      },
-      // 选择时间
-      selectChange (tab) {
-        this.timeVal = [];
-        this.getList();
-      },
-      // 全选
-      onSelectTab (selection) {
-        this.selectionList = selection;
-        let data = [];
-        this.selectionList.map((item) => {
-          data.push(item.uid)
-        });
-        this.userIds = data.join(',');
-      },
-      // 搜索
-      userSearchs () {
-        this.userFrom.page = 1;
-        this.getList();
-      },
-      // 选择国家
-      changeCountry () {
-        if (this.userFrom.country === 'OTHER' || !this.userFrom.country) {
-          this.selectedData = [];
-          this.userFrom.province = '';
-          this.userFrom.city = '';
-          this.address = [];
-        }
-      },
-      // 选择地址
-      handleChange (value) {
-        this.userFrom.province = value[0];
-        this.userFrom.city = value[1];
-      },
-      // 具体日期
-      onchangeTime (e) {
-        this.timeVal = e;
-        console.log(e)
-        this.userFrom.dateLimit = e.join(',');
-      },
-      // 分组列表
-      groupLists () {
-        groupListApi({ page: 1, limit: 9999}).then(async res => {
-          this.groupList = res.list
-        })
-      },
-      //标签列表
-      getTagList () {
-        tagListApi({ page: 1, limit: 9999}).then(res => {
-          this.labelLists = res.list
-        })
-      },
-      // 等级列表
-      levelLists () {
-        levelListApi({ page: 1, limit: 9999}).then(async res => {
-          this.levelList = res.list
-          localStorage.setItem('levelKey', JSON.stringify(res.list))
-        })
-      },
-      // 列表
-      getList() {
-        this.listLoading = true
-        this.userFrom.userType = this.loginType
-        if(this.loginType == 0) this.userFrom.userType =''
-        this.userFrom.level = this.levelData.join(',')
-        this.userFrom.groupId = this.groupData.join(',')
-        this.userFrom.labelId = this.labelData.join(',')
-        userListApi(this.userFrom).then(res => {
-          this.tableData.data = res.list
-          this.tableData.total = res.total
-          this.listLoading = false
-        }).catch(() => {
-          this.listLoading = false
-        })
-      },
-      pageChange(page) {
-        this.userFrom.page = page
-        this.getList()
-      },
-      handleSizeChange(val) {
-        this.userFrom.limit = val
-        this.getList()
-      },
-      // 删除
-      handleDelete(id, idx) {
-        this.$modalSure().then(() => {
-          productDeleteApi(id).then(() => {
-            this.$message.success('删除成功')
+      }, this.userIds)
+    },
+    Close () {
+      this.Visible = false
+    },
+    // 账户详情
+    onDetails (id) {
+      this.uid = id
+      this.Visible = true
+    },
+    // 积分余额
+    editPoint (id) {
+      this.uid = id
+      this.VisiblePoint = true
+    },
+    // 积分余额
+    submitPointForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.PointValidateForm.uid = this.uid
+          this.loadingBtn = true
+          foundsApi(this.PointValidateForm).then(res => {
+            this.$message.success('设置成功')
+            this.loadingBtn = false
+            this.handlePointClose()
             this.getList()
+          }).catch(() => {
+            this.loadingBtn = false
           })
-        })
-      },
-      onchangeIsShow(row) {
-        row.isShow
-          ? putOnShellApi( row.id ).then(() => {
-            this.$message.success('上架成功')
-            this.getList()
-          }) : offShellApi(row.id).then(() => {
-            this.$message.success('下架成功')
-            this.getList()
-          })
+        } else {
+          return false
+        }
+      })
+    },
+    // 积分余额
+    handlePointClose () {
+      this.VisiblePoint = false
+      this.PointValidateForm = {
+        integralType: 2,
+        integralValue: 0,
+        moneyType: 2,
+        moneyValue: 0,
+        uid: ''
       }
+    },
+    editUser (id) {
+      this.visible = true
+      this.uid = id
+    },
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.loading = true
+          this.batchName === 'group' ? groupPiApi({ groupId: this.dynamicValidateForm.groupId.join(','), id: this.userIds }).then(res => {
+            this.$message.success('设置成功')
+            this.loading = false
+            this.handleClose()
+            this.getList()
+          }).catch(() => {
+            this.loading = false
+          }) : tagPiApi({ tagId: this.dynamicValidateForm.groupId.join(','), id: this.userIds }).then(res => {
+            this.$message.success('设置成功')
+            this.loading = false
+            this.handleClose()
+            this.getList()
+          }).catch(() => {
+            this.loading = false
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    setBatch (name) {
+      this.batchName = name
+      if (this.selectionList.length === 0) return this.$message.warning('请选择要设置的用户')
+      this.dialogVisible = true
+    },
+    handleClose () {
+      this.dialogVisible = false
+      this.$refs.dynamicValidateForm.resetFields()
+    },
+    // 选择时间
+    selectChange (tab) {
+      this.timeVal = []
+      this.getList()
+    },
+    // 全选
+    onSelectTab (selection) {
+      this.selectionList = selection
+      const data = []
+      this.selectionList.map((item) => {
+        data.push(item.uid)
+      })
+      this.userIds = data.join(',')
+    },
+    // 搜索
+    userSearchs () {
+      this.userFrom.page = 1
+      this.getList()
+    },
+    // 选择国家
+    changeCountry () {
+      if (this.userFrom.country === 'OTHER' || !this.userFrom.country) {
+        this.selectedData = []
+        this.userFrom.province = ''
+        this.userFrom.city = ''
+        this.address = []
+      }
+    },
+    // 选择地址
+    handleChange (value) {
+      this.userFrom.province = value[0]
+      this.userFrom.city = value[1]
+    },
+    // 具体日期
+    onchangeTime (e) {
+      this.timeVal = e
+      console.log(e)
+      this.userFrom.dateLimit = e.join(',')
+    },
+    // 分组列表
+    groupLists () {
+      groupListApi({ page: 1, limit: 9999 }).then(async res => {
+        this.groupList = res.list
+      })
+    },
+    // 标签列表
+    getTagList () {
+      tagListApi({ page: 1, limit: 9999 }).then(res => {
+        this.labelLists = res.list
+      })
+    },
+    // 等级列表
+    levelLists () {
+      levelListApi({ page: 1, limit: 9999 }).then(async res => {
+        this.levelList = res.list
+        localStorage.setItem('levelKey', JSON.stringify(res.list))
+      })
+    },
+    // 列表
+    getList () {
+      this.listLoading = true
+      this.userFrom.userType = this.loginType
+      if (this.loginType === 0) this.userFrom.userType = ''
+      this.userFrom.level = this.levelData.join(',')
+      this.userFrom.groupId = this.groupData.join(',')
+      this.userFrom.labelId = this.labelData.join(',')
+      userListApi(this.userFrom).then(res => {
+        this.tableData.data = res.list
+        this.tableData.total = res.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    pageChange (page) {
+      this.userFrom.page = page
+      this.getList()
+    },
+    handleSizeChange (val) {
+      this.userFrom.limit = val
+      this.getList()
+    },
+    // 删除
+    handleDelete (id, idx) {
+      this.$modalSure().then(() => {
+        // eslint-disable-next-line no-undef
+        productDeleteApi(id).then(() => {
+          this.$message.success('删除成功')
+          this.getList()
+        })
+      })
+    },
+    onchangeIsShow (row) {
+      row.isShow
+        // eslint-disable-next-line no-undef
+        ? putOnShellApi(row.id).then(() => {
+          this.$message.success('上架成功')
+          this.getList()
+        // eslint-disable-next-line no-undef
+        }) : offShellApi(row.id).then(() => {
+          this.$message.success('下架成功')
+          this.getList()
+        })
     }
   }
+}
 </script>
 
 <style scoped lang="scss">

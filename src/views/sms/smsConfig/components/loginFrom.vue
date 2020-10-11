@@ -49,7 +49,7 @@
 import { configApi } from '@/api/sms'
 export default {
   name: 'Login',
-  data() {
+  data () {
     return {
       formInline: {
         account: '',
@@ -67,9 +67,9 @@ export default {
       loading: false
     }
   },
-  created() {
+  created () {
     var _this = this
-    document.onkeydown = function(e) {
+    document.onkeydown = function (e) {
       const key = window.event.keyCode
       if (key === 13) {
         _this.handleSubmit('formInline')
@@ -77,7 +77,7 @@ export default {
     }
   },
   methods: {
-    showPwd() {
+    showPwd () {
       if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
@@ -87,7 +87,7 @@ export default {
         this.$refs.token.focus()
       })
     },
-    handleSubmit(name) {
+    handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
           configApi(this.formInline).then(async res => {
@@ -103,10 +103,10 @@ export default {
       })
     },
     // 休息密码
-    changePassword() {
+    changePassword () {
       this.$emit('on-change')
     },
-    changeReg() {
+    changeReg () {
       this.$emit('on-changes')
     }
   }

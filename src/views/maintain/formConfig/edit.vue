@@ -17,21 +17,23 @@ export default {
   props: {
     editData: {
       type: Object,
-      default: {}
+      default: () => {
+        return {}
+      }
     },
     isCreate: {
       type: Number,
       default: 0 // 0=创建，1=编辑
     }
   },
-  data() {
+  data () {
     return {}
   },
   methods: {
-    handlerGetFormConfigData(formConfigData) {
+    handlerGetFormConfigData (formConfigData) {
       formConfigData.id ? this.handlerEdit(formConfigData) : this.handlerSave(formConfigData)
     },
-    handlerSave(pram) {
+    handlerSave (pram) {
       systemFormConfigApi.getFormConfigSave(pram).then(data => {
         this.$message.success('创建表单配置成功')
         setTimeout(() => {
@@ -39,7 +41,7 @@ export default {
         }, 800)
       })
     },
-    handlerEdit(pram) {
+    handlerEdit (pram) {
       systemFormConfigApi.getFormConfigEdit(pram).then(data => {
         this.$message.success('编辑表单配置成功')
         setTimeout(() => {

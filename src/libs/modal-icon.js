@@ -1,4 +1,4 @@
-export default function modalIcon(callback) {
+export default function modalIcon (callback) {
   const h = this.$createElement
   return new Promise((resolve, reject) => {
     this.$msgbox({
@@ -9,7 +9,7 @@ export default function modalIcon(callback) {
       message: h('div', { class: 'common-form-upload' }, [
         h('iconFrom', {
           on: {
-            getIcon(n) {
+            getIcon (n) {
               callback(n)
             }
           }
@@ -20,7 +20,7 @@ export default function modalIcon(callback) {
     }).then(() => {
       resolve()
     }).catch(() => {
-      reject()
+      reject(new Error('errorMsg'))
       this.$message({
         type: 'info',
         message: '已取消'

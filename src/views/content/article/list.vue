@@ -99,12 +99,11 @@
 import * as articleApi from '@/api/article.js'
 import * as categoryApi from '@/api/categoryApi.js'
 import * as constants from '@/utils/constants.js'
-import * as selfUtil from '@/utils/ZBKJIutil.js'
 import edit from './edit'
 export default {
   // name: "list",
   components: { edit },
-  data() {
+  data () {
     return {
       constants,
       listPram: {
@@ -130,31 +129,31 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.handlerGetListData(this.listPram)
     this.handlerGetTreeList()
   },
   methods: {
-    handlerGetTreeList() {
+    handlerGetTreeList () {
       categoryApi.listCategroy({ type: 3, status: '' }).then(data => {
         this.categoryTreeData = data.list
         localStorage.setItem('articleClass', JSON.stringify(data.list))
       })
     },
-    handerSearch() {
+    handerSearch () {
       this.listPram.page = 1
       this.handlerGetListData(this.listPram)
     },
-    handlerGetListData(pram) {
+    handlerGetListData (pram) {
       articleApi.ListArticle(pram).then(data => {
         this.listData = data
       })
     },
-    handlerOpenEdit(isEdit, editData) { // 0=add 1=edit
+    handlerOpenEdit (isEdit, editData) { // 0=add 1=edit
       if (isEdit === 1) {
         this.editDialogConfig.isEdit = 1
         this.editDialogConfig.editData = editData
-      }else{
+      } else {
         this.editDialogConfig.isEdit = 0
       }
       this.editDialogConfig.visible = true
@@ -165,11 +164,11 @@ export default {
     //     this.categoryTreeData = selfUtil.addTreeListLabelForCasCard(data)
     //   })
     // },
-    handlerHideDialog() {
+    handlerHideDialog () {
       this.handlerGetListData(this.listPram)
       this.editDialogConfig.visible = false
     },
-    handlerDelete(rowData) {
+    handlerDelete (rowData) {
       this.$confirm('确定删除当前数据', '提示').then(result => {
         articleApi.DelArticle(rowData).then(data => {
           this.$message.success('删除数据成功')
@@ -177,11 +176,11 @@ export default {
         })
       })
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.listPram.limit = val
       this.handlerGetListData(this.listPram)
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.listPram.page = val
       this.handlerGetListData(this.listPram)
     }

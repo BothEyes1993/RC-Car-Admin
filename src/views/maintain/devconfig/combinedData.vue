@@ -64,7 +64,7 @@ import cmDataList from './combineDataList'
 export default {
   // name: "combinedData"
   components: { edit, cmDataList },
-  data() {
+  data () {
     return {
       constants,
       dataList: {
@@ -87,30 +87,30 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.handlerGetList(this.listPram)
   },
   methods: {
-    handlerSearch() {
+    handlerSearch () {
       this.listPram.page = 1
       this.handlerGetList(this.listPram)
     },
-    handlerOpenEdit(editData, isCreate) {
+    handlerOpenEdit (editData, isCreate) {
       isCreate === 0 ? this.editDialogConfig.editData = {} : this.editDialogConfig.editData = editData
       this.editDialogConfig.isCreate = isCreate
       this.editDialogConfig.visible = true
     },
-    handlerGetList(pram) {
+    handlerGetList (pram) {
       systemGroupApi.groupList(pram).then(data => {
         this.dataList = data
       })
     },
-    handleDataList(rowData) {
+    handleDataList (rowData) {
       if (rowData.formId <= 0) return this.$message.error('请先关联表单')
       this.comDataListConfig.formData = rowData
       this.comDataListConfig.visible = true
     },
-    handleDelete(rowData) {
+    handleDelete (rowData) {
       this.$confirm('确定删除当前数据', '提示').then(() => {
         systemGroupApi.groupDelete(rowData).then(data => {
           this.$message.success('删除数据成功')
@@ -120,15 +120,15 @@ export default {
         })
       })
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.listPram.limit = val
       this.handlerGetList(this.listPram)
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.listPram.page = val
       this.handlerGetList(this.listPram)
     },
-    handlerHideDialog() {
+    handlerHideDialog () {
       setTimeout(() => {
         this.editDialogConfig.visible = false
         this.handlerGetList(this.listPram)

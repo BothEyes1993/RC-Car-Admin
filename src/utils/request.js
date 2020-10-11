@@ -22,9 +22,9 @@ service.interceptors.request.use(
       // please modify it according to the actual situationf
       config.headers['Authori-zation'] = getToken()
     }
-    if(/get/i.test(config.method)){
+    if (/get/i.test(config.method)) {
       config.params = config.params || {}
-      config.params.temp= Date.parse(new Date()) / 1000
+      config.params.temp = Date.parse(new Date()) / 1000
     }
     return config
   },
@@ -67,7 +67,7 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
-      return Promise.reject()
+      return Promise.reject(new Error('errorMsg'))
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       // return Promise.reject(new Error(res.message || 'Error'))
     } else {

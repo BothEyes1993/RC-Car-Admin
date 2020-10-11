@@ -104,206 +104,206 @@
 </template>
 
 <script>
-  import { wechatMenuApi, wechatMenuAddApi } from '@/api/wxApi'
-  export default {
-    name: 'WechatMenus',
-    data() {
+import { wechatMenuApi, wechatMenuAddApi } from '@/api/wxApi'
+export default {
+  name: 'WechatMenus',
+  data () {
+    return {
+      grid: {
+        xl: 8,
+        lg: 8,
+        md: 8,
+        sm: 8,
+        xs: 24
+      },
+      grid2: {
+        xl: 16,
+        lg: 16,
+        md: 16,
+        sm: 16,
+        xs: 24
+      },
+      modal2: false,
+      formValidate: {
+        name: '',
+        type: 'click',
+        appid: '',
+        url: '',
+        key: '',
+        pagepath: '',
+        id: 0
+      },
+      ruleValidate: {
+        name: [
+          { required: true, message: '请填写菜单名称', trigger: 'blur' }
+        ],
+        key: [
+          { required: true, message: '请填写关键字', trigger: 'blur' }
+        ],
+        appid: [
+          { required: true, message: '请填写appid', trigger: 'blur' }
+        ],
+        pagepath: [
+          { required: true, message: '请填写备用网页', trigger: 'blur' }
+        ],
+        url: [
+          { required: true, message: '请填写跳转地址', trigger: 'blur' }
+        ],
+        type: [
+          { required: true, message: '请选择规则状态', trigger: 'change' }
+        ]
+      },
+      parentMenuId: null,
+      list: [],
+      checkedMenuId: null,
+      isTrue: false,
+      isAsync: false
+    }
+  },
+  mounted () {
+    this.getMenus()
+    if (this.list.length) {
+      this.formValidate = this.list[this.activeClass]
+    } else {
+      return this.formValidate
+    }
+  },
+  methods: {
+    // 添加一级字段函数
+    defaultMenusData () {
       return {
-        grid: {
-          xl: 8,
-          lg: 8,
-          md: 8,
-          sm: 8,
-          xs: 24
-        },
-        grid2: {
-          xl: 16,
-          lg: 16,
-          md: 16,
-          sm: 16,
-          xs: 24
-        },
-        modal2: false,
-        formValidate: {
-          name: '',
-          type: 'click',
-          appid: '',
-          url: '',
-          key: '',
-          pagepath: '',
-          id: 0
-        },
-        ruleValidate: {
-          name: [
-            { required: true, message: '请填写菜单名称', trigger: 'blur' }
-          ],
-          key: [
-            { required: true, message: '请填写关键字', trigger: 'blur' }
-          ],
-          appid: [
-            { required: true, message: '请填写appid', trigger: 'blur' }
-          ],
-          pagepath: [
-            { required: true, message: '请填写备用网页', trigger: 'blur' }
-          ],
-          url: [
-            { required: true, message: '请填写跳转地址', trigger: 'blur' }
-          ],
-          type: [
-            { required: true, message: '请选择规则状态', trigger: 'change' }
-          ]
-        },
-        parentMenuId: null,
-        list: [],
-        checkedMenuId: null,
-        isTrue: false,
-        isAsync: false
+        type: 'click',
+        name: '',
+        sub_button: []
       }
     },
-    mounted() {
-      this.getMenus()
-      if (this.list.length) {
-        this.formValidate = this.list[this.activeClass]
+    // 添加二级字段函数
+    defaultChildData () {
+      return {
+        type: 'click',
+        name: ''
+      }
+    },
+    // 获取 菜单
+    getMenus () {
+      wechatMenuApi({ isAsync: this.isAsync }).then(async res => {
+        const data = res.menu
+        this.list = data.button
+      })
+    },
+    // 点击保存提交
+    submenus (name) {
+      if (this.isTrue && !this.checkedMenuId && this.checkedMenuId !== 0) {
+        this.putData()
       } else {
-        return this.formValidate
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            this.putData()
+          } else {
+            if (!this.check()) return false
+          }
+        })
       }
     },
-    methods: {
-      // 添加一级字段函数
-      defaultMenusData() {
-        return {
-          type: 'click',
-          name: '',
-          sub_button: []
-        }
-      },
-      // 添加二级字段函数
-      defaultChildData() {
-        return {
-          type: 'click',
-          name: ''
-        }
-      },
-      // 获取 菜单
-      getMenus() {
-        wechatMenuApi({ isAsync:this.isAsync }).then(async res => {
-          const data = res.menu
-          this.list = data.button
-        })
-      },
-      // 点击保存提交
-      submenus(name) {
-        if (this.isTrue && !this.checkedMenuId && this.checkedMenuId !== 0) {
-          this.putData()
-        } else {
-          this.$refs[name].validate((valid) => {
-            if (valid) {
-              this.putData()
-            } else {
-              if (!this.check()) return false
-            }
-          })
-        }
-      },
-      // 新增data
-      putData() {
-        const data = {
-          button: this.list
-        }
-        wechatMenuAddApi(data).then(async res => {
-          this.$message.success('提交成功')
-          this.checkedMenuId = null
-          this.formValidate = {}
-          this.isTrue = false
-        })
-      },
-      // 点击元素
-      gettem(item, index, pid) {
-        this.checkedMenuId = index
-        this.formValidate = item
-        this.parentMenuId = pid
-        this.isTrue = true
-      },
-      // 增加二级
-      add(item, index) {
-        if (!this.check()) return false
-        if (item.sub_button.length < 5) {
-          const data = this.defaultChildData()
-          const id = item.sub_button.length
-          item.sub_button.push(data)
-          this.formValidate = data
-          this.checkedMenuId = id
-          this.parentMenuId = index
-          this.isTrue = true
-        }
-      },
-      // 增加一级
-      addtext() {
-        if (!this.check()) return false
-        const data = this.defaultMenusData()
-        const id = this.list.length
-        this.list.push(data)
+    // 新增data
+    putData () {
+      const data = {
+        button: this.list
+      }
+      wechatMenuAddApi(data).then(async res => {
+        this.$message.success('提交成功')
+        this.checkedMenuId = null
+        this.formValidate = {}
+        this.isTrue = false
+      })
+    },
+    // 点击元素
+    gettem (item, index, pid) {
+      this.checkedMenuId = index
+      this.formValidate = item
+      this.parentMenuId = pid
+      this.isTrue = true
+    },
+    // 增加二级
+    add (item, index) {
+      if (!this.check()) return false
+      if (item.sub_button.length < 5) {
+        const data = this.defaultChildData()
+        const id = item.sub_button.length
+        item.sub_button.push(data)
         this.formValidate = data
         this.checkedMenuId = id
-        this.parentMenuId = null
+        this.parentMenuId = index
         this.isTrue = true
-      },
-      // 判断函数
-      check: function() {
-        const reg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/
-        if (this.checkedMenuId === null) return true
-        if (!this.isTrue) return true
-        if (!this.formValidate.name) {
-          this.$message.warning('请输入按钮名称!')
-          return false
-        }
-        if (this.formValidate.type === 'click' && !this.formValidate.key) {
-          this.$message.warning('请输入关键字!')
-          return false
-        }
-        if (this.formValidate.type === 'view' && !(reg.test(this.formValidate.url))) {
-          this.$message.warning('请输入正确的跳转地址!')
-          return false
-        }
-        if (this.formValidate.type === 'miniprogram' &&
+      }
+    },
+    // 增加一级
+    addtext () {
+      if (!this.check()) return false
+      const data = this.defaultMenusData()
+      const id = this.list.length
+      this.list.push(data)
+      this.formValidate = data
+      this.checkedMenuId = id
+      this.parentMenuId = null
+      this.isTrue = true
+    },
+    // 判断函数
+    check: function () {
+      const reg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/
+      if (this.checkedMenuId === null) return true
+      if (!this.isTrue) return true
+      if (!this.formValidate.name) {
+        this.$message.warning('请输入按钮名称!')
+        return false
+      }
+      if (this.formValidate.type === 'click' && !this.formValidate.key) {
+        this.$message.warning('请输入关键字!')
+        return false
+      }
+      if (this.formValidate.type === 'view' && !(reg.test(this.formValidate.url))) {
+        this.$message.warning('请输入正确的跳转地址!')
+        return false
+      }
+      if (this.formValidate.type === 'miniprogram' &&
           (!this.formValidate.appid ||
             !this.formValidate.pagepath ||
             !this.formValidate.url)) {
-          this.$message.warning('请填写完整小程序配置!')
-          return false
-        }
-        return true
-      },
-      // 删除
-      deltMenus() {
-        if (this.isTrue) {
-          this.$modalSure().then(() => {
-            this.del()
-          })
-        } else {
-          this.$message.warning('请选择菜单!')
-        }
-      },
-      // 确认删除
-      del() {
-        this.parentMenuId === null ? this.list.splice(this.checkedMenuId, 1) : this.list[this.parentMenuId].sub_button.splice(this.checkedMenuId, 1)
-        this.parentMenuId = null
-        this.formValidate = {
-          name: '',
-          type: 'click',
-          appid: '',
-          url: '',
-          key: '',
-          pagepath: '',
-          id: 0
-        }
-        this.isTrue = true
-        this.modal2 = false
-        this.checkedMenuId = null
-        this.$refs['formValidate'].resetFields()
+        this.$message.warning('请填写完整小程序配置!')
+        return false
       }
+      return true
+    },
+    // 删除
+    deltMenus () {
+      if (this.isTrue) {
+        this.$modalSure().then(() => {
+          this.del()
+        })
+      } else {
+        this.$message.warning('请选择菜单!')
+      }
+    },
+    // 确认删除
+    del () {
+      this.parentMenuId === null ? this.list.splice(this.checkedMenuId, 1) : this.list[this.parentMenuId].sub_button.splice(this.checkedMenuId, 1)
+      this.parentMenuId = null
+      this.formValidate = {
+        name: '',
+        type: 'click',
+        appid: '',
+        url: '',
+        key: '',
+        pagepath: '',
+        id: 0
+      }
+      this.isTrue = true
+      this.modal2 = false
+      this.checkedMenuId = null
+      this.$refs.formValidate.resetFields()
     }
   }
+}
 </script>
 
 <style scoped lang="scss">

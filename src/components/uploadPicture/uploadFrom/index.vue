@@ -17,10 +17,10 @@
 export default {
   name: 'UploadFroms',
   // components: { UploadIndex },
-  data() {
+  data () {
     return {
       visible: false,
-      callback: function() {},
+      callback: function () {},
       isMore: '',
       modelName: ''
     }
@@ -31,10 +31,10 @@ export default {
     // }
   },
   methods: {
-    handleClose() {
+    handleClose () {
       this.visible = false
     },
-    getImage(img) {
+    getImage (img) {
       this.callback(img)
       this.visible = false
     }

@@ -60,105 +60,105 @@
 </template>
 
 <script>
-  import { groupListApi, levelListApi, tagListApi, userInfoApi, userUpdateApi } from '@/api/user'
-  const defaultObj = {
-    birthday: '',
-    cardId: '',
-    id : null,
-    mark: '',
-    phone: '',
-    realName: '',
-    addres:'',
-    groupId: 0,
-    level: 0,
-    isPromoter: false,
-    status: false,
-  }
-  export default {
-    name: "UserEdit",
-    props:{
-      uid: {
-        type: Number,
-        default: null
-      }
+import { groupListApi, levelListApi, tagListApi, userInfoApi, userUpdateApi } from '@/api/user'
+const defaultObj = {
+  birthday: '',
+  cardId: '',
+  id: null,
+  mark: '',
+  phone: '',
+  realName: '',
+  addres: '',
+  groupId: 0,
+  level: 0,
+  isPromoter: false,
+  status: false
+}
+export default {
+  name: 'UserEdit',
+  props: {
+    uid: {
+      type: Number,
+      default: null
+    }
+  },
+  data () {
+    return {
+      ruleForm: Object.assign({}, defaultObj),
+      groupData: [],
+      labelData: [],
+      labelLists: [],
+      levelList: [],
+      groupList: [],
+      rules: {}
+    }
+  },
+  mounted () {
+    if (this.uid) this.userInfo()
+    this.groupLists()
+    this.levelLists()
+    this.getTagList()
+  },
+  methods: {
+    // 详情
+    userInfo () {
+      userInfoApi({ id: this.uid }).then(async res => {
+        this.ruleForm = {
+          birthday: res.birthday,
+          cardId: res.cardId,
+          id: res.uid,
+          mark: res.mark,
+          phone: res.phone,
+          realName: res.realName,
+          status: res.status,
+          addres: res.addres,
+          groupId: Number(res.groupId),
+          level: res.level,
+          isPromoter: res.isPromoter,
+          tagId: res.tagId
+        }
+        this.labelData = res.tagId.split(',').map(Number)
+        console.log(this.labelData)
+      })
     },
-    data() {
-      return {
-        ruleForm: Object.assign({}, defaultObj),
-        groupData: [],
-        labelData: [],
-        labelLists: [],
-        levelList: [],
-        groupList: [],
-        rules: {}
-      }
+    // 分组列表
+    groupLists () {
+      groupListApi({ page: 1, limit: 9999 }).then(async res => {
+        this.groupList = res.list
+      })
     },
-    mounted() {
-      if(this.uid) this.userInfo()
-      this.groupLists()
-      this.levelLists()
-      this.getTagList()
+    // 标签列表
+    getTagList () {
+      tagListApi({ page: 1, limit: 9999 }).then(res => {
+        this.labelLists = res.list
+      })
     },
-    methods: {
-      // 详情
-      userInfo () {
-        userInfoApi({ id: this.uid}).then(async res => {
-          this.ruleForm = {
-            birthday: res.birthday,
-            cardId: res.cardId,
-            id : res.uid,
-            mark: res.mark,
-            phone: res.phone,
-            realName: res.realName,
-            status: res.status,
-            addres: res.addres,
-            groupId: Number(res.groupId),
-            level: res.level,
-            isPromoter: res.isPromoter,
-            tagId: res.tagId
-          }
-          this.labelData = res.tagId.split(',').map(Number)
-          console.log(this.labelData)
-        })
-      },
-      // 分组列表
-      groupLists () {
-        groupListApi({ page: 1, limit: 9999}).then(async res => {
-          this.groupList = res.list
-        })
-      },
-      //标签列表
-      getTagList () {
-        tagListApi({ page: 1, limit: 9999}).then(res => {
-          this.labelLists = res.list
-        })
-      },
-      // 等级列表
-      levelLists () {
-        levelListApi({ page: 1, limit: 9999, isShow: 1, isDel: 0}).then(async res => {
-          this.levelList = res.list
-        })
-      },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.ruleForm.tagId=this.labelData.join(',')
-            userUpdateApi({id: this.ruleForm.id},this.ruleForm).then(async res => {
-              this.$message.success('编辑成功')
-              this.$parent.$parent.visible = false
-              this.$parent.$parent.getList()
-            })
-          } else {
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields()
-        this.$parent.visible = false
-      }
+    // 等级列表
+    levelLists () {
+      levelListApi({ page: 1, limit: 9999, isShow: 1, isDel: 0 }).then(async res => {
+        this.levelList = res.list
+      })
+    },
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.ruleForm.tagId = this.labelData.join(',')
+          userUpdateApi({ id: this.ruleForm.id }, this.ruleForm).then(async res => {
+            this.$message.success('编辑成功')
+            this.$parent.$parent.visible = false
+            this.$parent.$parent.getList()
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+      this.$parent.visible = false
     }
   }
+}
 </script>
 
 <style scoped>

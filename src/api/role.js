@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function addRole(pram) {
+export function addRole (pram) {
   const data = {
     level: pram.level,
     roleName: pram.roleName,
@@ -14,7 +14,7 @@ export function addRole(pram) {
   })
 }
 
-export function delRole(pram) {
+export function delRole (pram) {
   const data = {
     id: pram.id
   }
@@ -25,7 +25,7 @@ export function delRole(pram) {
   })
 }
 
-export function getInfo(pram) {
+export function getInfo (pram) {
   const data = {
     ids: pram.id
   }
@@ -36,7 +36,7 @@ export function getInfo(pram) {
   })
 }
 
-export function getRoleList(pram) {
+export function getRoleList (pram) {
   const data = {
     createTime: pram.createTime,
     updateTime: pram.updateTime,
@@ -54,7 +54,7 @@ export function getRoleList(pram) {
   })
 }
 
-export function updateRole(pram) {
+export function updateRole (pram) {
   const data = {
     id: pram.id,
     level: pram.level,

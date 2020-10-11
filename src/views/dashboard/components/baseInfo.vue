@@ -85,62 +85,62 @@
   </div>
 </template>
 <script>
-  import {statisticsOrderApi, statisticsSalesApi, statisticsUserApi, statisticsViewsApi} from '@/api/dashboard'
-  export default {
-    data() {
-      return {
-        infoList: [],
-        grid: {
-          xl: 6,
-          lg: 6,
-          md: 12,
-          sm: 12,
-          xs: 24
-        },
-        excessStyle: {
-          color: '#f56a00',
-          backgroundColor: '#fde3cf'
-        },
-        avatarList: [],
-        sales: null,
-        order: null,
-        user: null,
-        views: null
-      }
-    },
-    methods: {
-      // 订单量
-      statisticsOrder() {
-        statisticsOrderApi().then(async res => {
-          this.order = res
-        })
+import { statisticsOrderApi, statisticsSalesApi, statisticsUserApi, statisticsViewsApi } from '@/api/dashboard'
+export default {
+  data () {
+    return {
+      infoList: [],
+      grid: {
+        xl: 6,
+        lg: 6,
+        md: 12,
+        sm: 12,
+        xs: 24
       },
-      // 销售额
-      statisticsSales() {
-        statisticsSalesApi().then(async res => {
-          this.sales = res
-        })
+      excessStyle: {
+        color: '#f56a00',
+        backgroundColor: '#fde3cf'
       },
-      // 新增用户
-      statisticsUser() {
-        statisticsUserApi().then(async res => {
-          this.user = res
-        })
-      },
-      // 用户访问量
-      statisticsViews() {
-        statisticsViewsApi().then(async res => {
-          this.views = res
-        })
-      }
-    },
-    mounted() {
-      this.statisticsOrder();
-      this.statisticsSales();
-      this.statisticsUser();
-      this.statisticsViews();
+      avatarList: [],
+      sales: null,
+      order: null,
+      user: null,
+      views: null
     }
+  },
+  methods: {
+    // 订单量
+    statisticsOrder () {
+      statisticsOrderApi().then(async res => {
+        this.order = res
+      })
+    },
+    // 销售额
+    statisticsSales () {
+      statisticsSalesApi().then(async res => {
+        this.sales = res
+      })
+    },
+    // 新增用户
+    statisticsUser () {
+      statisticsUserApi().then(async res => {
+        this.user = res
+      })
+    },
+    // 用户访问量
+    statisticsViews () {
+      statisticsViewsApi().then(async res => {
+        this.views = res
+      })
+    }
+  },
+  mounted () {
+    this.statisticsOrder()
+    this.statisticsSales()
+    this.statisticsUser()
+    this.statisticsViews()
   }
+}
 </script>
 <style scoped lang="scss">
   .ivu-mb{

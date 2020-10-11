@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import { addCategroy, listCategroy, treeCategroy, infoCategroy, updateCategroy, deleteCategroy } from '@/api/categoryApi'
+import { addCategroy, treeCategroy, infoCategroy, updateCategroy, deleteCategroy } from '@/api/categoryApi'
 import { fileImageApi, fileListApi, fileDeleteApi, attachmentMoveApi } from '@/api/systemSetting'
 import { getToken } from '@/utils/auth'
 export default {
@@ -178,14 +178,14 @@ export default {
     },
     checkedMore: {
       type: Array,
-      default: ()=> []
+      default: () => []
     }
   },
-  data() {
+  data () {
     return {
       loading: false,
       modals: false,
-      allTreeList:[],
+      allTreeList: [],
       categoryProps: {
         value: 'id',
         label: 'name',
@@ -194,13 +194,13 @@ export default {
         checkStrictly: true,
         emitPath: false
       },
-      editPram:{
+      editPram: {
         pid: 0,
         name: '',
         type: 2,
         sort: 1,
         status: 0,
-        url:'url',
+        url: 'url',
         id: 0
       },
       visible: false,
@@ -261,11 +261,12 @@ export default {
     }
   },
   watch: {
-    filterText(val) {
+    filterText (val) {
       this.$refs.tree.filter(val)
     }
   },
-  mounted() {
+  mounted () {
+    // eslint-disable-next-line no-unused-expressions
     if (this.$route && this.$route.query.field === 'dialog') import('../../../public/UEditor/dialogs/internal.js')
     this.getList()
     this.getFileList()
@@ -273,33 +274,33 @@ export default {
   },
   methods: {
     // 选取图片后自动回调，里面可以获取到文件
-    imgSaveToUrl(event){  // 也可以用file
-      this.localFile=event.raw  // 或者 this.localFile=file.raw
+    imgSaveToUrl (event) { // 也可以用file
+      this.localFile = event.raw // 或者 this.localFile=file.raw
 
       // 转换操作可以不放到这个函数里面，
       // 因为这个函数会被多次触发，上传时触发，上传成功也触发
-      let reader = new FileReader()
-      reader.readAsDataURL(this.localFile);// 这里也可以直接写参数event.raw
+      const reader = new FileReader()
+      reader.readAsDataURL(this.localFile)// 这里也可以直接写参数event.raw
 
       // 转换成功后的操作，reader.result即为转换后的DataURL ，
       // 它不需要自己定义，你可以console.integralLog(reader.result)看一下
-      reader.onload=()=>{
+      reader.onload = () => {
         // console.integralLog(reader.result)
       }
 
       /* 另外一种本地预览方法 */
-      let URL = window.URL || window.webkitURL;
-      this.localImg = URL.createObjectURL(event.raw);
+      const URL = window.URL || window.webkitURL
+      this.localImg = URL.createObjectURL(event.raw)
       // 转换后的地址为 blob:http://xxx/7bf54338-74bb-47b9-9a7f-7a7093c716b5
     },
-    closeModel(){
-      this.$refs['editPram'].resetFields();
+    closeModel () {
+      this.$refs.editPram.resetFields()
     },
-    handlerSubmit(formName) {
+    handlerSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if( this.editPram.pid === 10000 ) this.editPram.pid = 0
-          this.bizTitle==='添加分类' ? addCategroy(this.editPram).then(data => {
+          if (this.editPram.pid === 10000) this.editPram.pid = 0
+          this.bizTitle === '添加分类' ? addCategroy(this.editPram).then(data => {
             this.$message.success('创建成功')
             this.visible = false
             this.getList()
@@ -309,13 +310,13 @@ export default {
             this.getList()
           })
         } else {
-          return false;
+          return false
         }
       })
     },
     // 表单分类
-    handlerGetList() {
-      let datas = {
+    handlerGetList () {
+      const datas = {
         name: '全部分类',
         id: ''
       }
@@ -325,12 +326,12 @@ export default {
       })
     },
     // 搜索分类
-    filterNode(value, data) {
+    filterNode (value, data) {
       if (!value) return true
       return data.name.indexOf(value) !== -1
     },
     // 所有分类
-    getList() {
+    getList () {
       const data = {
         name: '全部分类',
         id: 10000
@@ -342,55 +343,57 @@ export default {
       })
     },
     // 添加分类
-    onAdd(id) {
+    onAdd (id) {
       this.tableData.pid = id
-      if ( this.tableData.pid === 10000) this.tableData.pid = 0
+      if (this.tableData.pid === 10000) this.tableData.pid = 0
       this.bizTitle = '添加分类'
       this.visible = true
-      if(id) this.editPram = {
+      if (id) {
+        this.editPram = {
           pid: id,
           name: '',
           type: 2,
           sort: 1,
           status: 0,
-          url:'url',
+          url: 'url',
           id: 0
+        }
       }
     },
     // 编辑
-    onEdit(id) {
-      if( id === 10000 ) id = 0
+    onEdit (id) {
+      if (id === 10000) id = 0
       this.bizTitle = '编辑分类'
       this.loading = true
-      infoCategroy({id:id}).then((res) => {
+      infoCategroy({ id: id }).then((res) => {
         this.editPram = res
         this.loading = false
       })
       this.visible = true
     },
     // 删除
-    handleDelete(id) {
-      if(id === 10000) id = 0
+    handleDelete (id) {
+      if (id === 10000) id = 0
       this.$modalSure().then(() => {
-        deleteCategroy({id:id}).then(() => {
+        deleteCategroy({ id: id }).then(() => {
           this.$message.success('删除成功')
           this.getList()
         })
       })
     },
-    handleNodeClick(data) {
+    handleNodeClick (data) {
       this.tableData.pid = data.id
       this.getFileList()
     },
     // 上传
-    handleUploadForm(param){
+    handleUploadForm (param) {
       const formData = new FormData()
       const data = {
-        model: this.modelName ? this.modelName : this.$route.path.split("/")[1],
+        model: this.modelName ? this.modelName : this.$route.path.split('/')[1],
         pid: this.tableData.pid
       }
       formData.append('multipart', param.file)
-      let loading = this.$loading({
+      const loading = this.$loading({
         lock: true,
         text: '上传中，请稍候...',
         spinner: 'el-icon-loading',
@@ -405,11 +408,11 @@ export default {
       })
     },
     // 文件列表
-    getFileList() {
-      if ( this.tableData.pid === 10000) this.tableData.pid = 0
+    getFileList () {
+      if (this.tableData.pid === 10000) this.tableData.pid = 0
       fileListApi(this.tableData).then(async res => {
         this.pictrueList.list = res.list
-        if(this.tableData.page === 1 && this.pictrueList.list.length > 0) this.pictrueList.list[0].localImg = this.localImg
+        if (this.tableData.page === 1 && this.pictrueList.list.length > 0) this.pictrueList.list[0].localImg = this.localImg
         if (this.pictrueList.list.length) {
           this.isShowPic = false
         } else {
@@ -418,16 +421,16 @@ export default {
         this.pictrueList.total = res.total
       })
     },
-    pageChange(page) {
+    pageChange (page) {
       this.tableData.page = page
       this.getFileList()
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.tableData.limit = val
       this.getFileList()
     },
     // 选中图片
-    changImage(item, index, row) {
+    changImage (item, index, row) {
       let selectItem = ''
       this.$set(item, 'isSelect', item.isSelect === undefined ? true : !item.isSelect)
       selectItem = this.pictrueList.list.filter((item) => { return item.isSelect === true })
@@ -438,14 +441,14 @@ export default {
       })
     },
     // 点击使用选中图片
-    checkPics() {
-        if (!this.checkPicList.length) return this.$message.warning('请先选择图片')
-        if (this.$route && this.$route.query.field === 'dialog') {
-          let str = '';
-          for (let i = 0; i < this.checkPicList.length; i++) {
-            str += '<img src="' + this.checkPicList[i].sattDir + '">'
-          }
-          /* eslint-disable */
+    checkPics () {
+      if (!this.checkPicList.length) return this.$message.warning('请先选择图片')
+      if (this.$route && this.$route.query.field === 'dialog') {
+        let str = ''
+        for (let i = 0; i < this.checkPicList.length; i++) {
+          str += '<img src="' + this.checkPicList[i].sattDir + '">'
+        }
+        /* eslint-disable */
           nowEditor.dialog.close(true);
           nowEditor.editor.setContent(str,true)
         }else{

@@ -12,39 +12,39 @@
 </template>
 
 <script>
-  import * as systemConfigApi from '@/api/systemConfig.js'
-  export default {
-    name: 'SidebarLogo',
-    props: {
-      collapse: {
-        type: Boolean,
-        required: true
-      }
+import * as systemConfigApi from '@/api/systemConfig.js'
+export default {
+  name: 'SidebarLogo',
+  props: {
+    collapse: {
+      type: Boolean,
+      required: true
+    }
+  },
+  data () {
+    return {
+      title: 'Vue Element Admin',
+      logo: '',
+      logoSmall: ''
+    }
+  },
+  mounted () {
+    this.getLogo()
+    this.getSquareLogo()
+  },
+  methods: {
+    getLogo () {
+      systemConfigApi.configGetUniq({ key: 'site_logo' }).then(data => {
+        this.logo = data
+      })
     },
-    data() {
-      return {
-        title: 'Vue Element Admin',
-        logo: '',
-        logoSmall: ''
-      }
-    },
-    mounted() {
-      this.getLogo()
-      this.getSquareLogo()
-    },
-    methods: {
-      getLogo() {
-        systemConfigApi.configGetUniq({key: "site_logo"}).then(data => {
-          this.logo = data
-        })
-      },
-      getSquareLogo() {
-        systemConfigApi.configGetUniq({key: "site_logo_square"}).then(data => {
-          this.logoSmall = data
-        })
-      }
+    getSquareLogo () {
+      systemConfigApi.configGetUniq({ key: 'site_logo_square' }).then(data => {
+        this.logoSmall = data
+      })
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

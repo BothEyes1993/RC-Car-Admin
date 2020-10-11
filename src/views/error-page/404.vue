@@ -26,12 +26,12 @@
 export default {
   name: 'Page404',
 
-  data() {
+  data () {
     return {
     }
   },
   computed: {
-    message() {
+    message () {
       return '你不能进入这个页面...'
     }
   },

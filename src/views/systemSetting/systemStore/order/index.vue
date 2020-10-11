@@ -11,7 +11,7 @@
               <el-date-picker v-model="timeVal" value-format="yyyy/MM/dd" format="yyyy/MM/dd" size="small" type="daterange" placement="bottom-end" placeholder="自定义时间" style="width: 250px;" @change="onchangeTime" />
             </el-form-item>
             <el-form-item label="选择门店：">
-              <el-select v-model="tableFrom.storeId" clearable filterable placeholder="请选择" class="selWidth" clearable @change="seachList">
+              <el-select v-model="tableFrom.storeId" clearable filterable placeholder="请选择" class="selWidth" @change="seachList">
                 <el-option
                   v-for="item in storeSelectList"
                   :key="item.id"
@@ -125,103 +125,103 @@
 </template>
 
 <script>
-  import { orderListApi, storeListApi } from '@/api/storePoint'
-  import cardsData from '@/components/cards/index'
-  import { fromList } from '@/utils/constants.js'
-  export default {
-    components: { cardsData },
-    data() {
-      return {
-        storeSelectList: [],
-        orderId: 0,
-        tableData: {
-          data: [],
-          total: 0
-        },
-        listLoading: true,
-        tableFrom: {
-          keywords: '',
-          storeId: '',
-          dateLimit: '',
-          page: 1,
-          limit: 20
-        },
-        timeVal: [],
-        fromList: fromList,
-        ids: '',
-        cardLists: [],
-      }
-    },
-    mounted() {
-      this.storeList()
+import { orderListApi, storeListApi } from '@/api/storePoint'
+import cardsData from '@/components/cards/index'
+import { fromList } from '@/utils/constants.js'
+export default {
+  components: { cardsData },
+  data () {
+    return {
+      storeSelectList: [],
+      orderId: 0,
+      tableData: {
+        data: [],
+        total: 0
+      },
+      listLoading: true,
+      tableFrom: {
+        keywords: '',
+        storeId: '',
+        dateLimit: '',
+        page: 1,
+        limit: 20
+      },
+      timeVal: [],
+      fromList: fromList,
+      ids: '',
+      cardLists: []
+    }
+  },
+  mounted () {
+    this.storeList()
+    this.getList()
+  },
+  methods: {
+    seachList () {
+      this.tableFrom.page = 1
       this.getList()
     },
-    methods: {
-      seachList() {
-        this.tableFrom.page = 1
-        this.getList()
-      },
-      storeList() {
-        let artFrom =  {
-          page: 1,
-          limit: 999,
-          status: '1',
-          keywords: ''
-        };
-        storeListApi(artFrom).then(res=>{
-          this.storeSelectList = res.list;
-        })
-      },
-      pageChangeLog(page) {
-        this.tableFromLog.page = page
-        this.getList()
-      },
-      handleSizeChangeLog(val) {
-        this.tableFromLog.limit = val
-        this.getList()
-      },
-      // 选择时间
-      selectChange(tab) {
-        this.tableFrom.date = tab
-        this.tableFrom.page = 1
-        this.timeVal = []
-        this.getList()
-      },
-      // 具体日期
-      onchangeTime(e) {
-        this.timeVal = e
-        this.tableFrom.dateLimit = e ? this.timeVal.join('-') : ''
-        this.tableFrom.page = 1
-        this.getList()
-      },
-      // 列表
-      getList() {
-        this.listLoading = true
-        orderListApi(this.tableFrom).then(res => {
-          this.tableData.data = res.list.list
-          this.tableData.total = res.list.total
-          this.cardLists = [
-            { name: '订单数量', count: res.total },
-            { name: '订单金额', count: res.orderTotalPrice },
-            { name: '退款总单数', count: res.refundTotal },
-            { name: '退款总金额', count: res.refundTotalPrice }
-          ]
-          this.cardLists = res.data.stat
-          this.listLoading = false
-        }).catch(() => {
-          this.listLoading = false
-        })
-      },
-      pageChange(page) {
-        this.tableFrom.page = page
-        this.getList()
-      },
-      handleSizeChange(val) {
-        this.tableFrom.limit = val
-        this.getList()
+    storeList () {
+      const artFrom = {
+        page: 1,
+        limit: 999,
+        status: '1',
+        keywords: ''
       }
+      storeListApi(artFrom).then(res => {
+        this.storeSelectList = res.list
+      })
+    },
+    pageChangeLog (page) {
+      this.tableFromLog.page = page
+      this.getList()
+    },
+    handleSizeChangeLog (val) {
+      this.tableFromLog.limit = val
+      this.getList()
+    },
+    // 选择时间
+    selectChange (tab) {
+      this.tableFrom.date = tab
+      this.tableFrom.page = 1
+      this.timeVal = []
+      this.getList()
+    },
+    // 具体日期
+    onchangeTime (e) {
+      this.timeVal = e
+      this.tableFrom.dateLimit = e ? this.timeVal.join('-') : ''
+      this.tableFrom.page = 1
+      this.getList()
+    },
+    // 列表
+    getList () {
+      this.listLoading = true
+      orderListApi(this.tableFrom).then(res => {
+        this.tableData.data = res.list.list
+        this.tableData.total = res.list.total
+        this.cardLists = [
+          { name: '订单数量', count: res.total },
+          { name: '订单金额', count: res.orderTotalPrice },
+          { name: '退款总单数', count: res.refundTotal },
+          { name: '退款总金额', count: res.refundTotalPrice }
+        ]
+        this.cardLists = res.data.stat
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    pageChange (page) {
+      this.tableFrom.page = page
+      this.getList()
+    },
+    handleSizeChange (val) {
+      this.tableFrom.limit = val
+      this.getList()
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

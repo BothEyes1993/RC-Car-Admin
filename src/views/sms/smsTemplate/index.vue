@@ -98,21 +98,20 @@
 
 <script>
 import { smsTempLstApi, tempCreateApi } from '@/api/sms'
-import { roterPre } from '@/settings'
 import { mapGetters } from 'vuex'
 import zbParser from '@/components/FormGenerator/components/parser/ZBParser'
 export default {
   name: 'SmsTemplate',
   components: { zbParser },
   filters: {
-    statusFilter(status) {
+    statusFilter (status) {
       const statusMap = {
         0: '不可用',
         1: '可用'
       }
       return statusMap[status]
     },
-    typesFilter(status) {
+    typesFilter (status) {
       const statusMap = {
         1: '验证码',
         2: '通知',
@@ -121,7 +120,7 @@ export default {
       return statusMap[status]
     }
   },
-  data() {
+  data () {
     return {
       isCreate: 0,
       editData: {},
@@ -145,7 +144,7 @@ export default {
       'isLogin'
     ])
   },
-  mounted() {
+  mounted () {
     if (!this.isLogin) {
       this.$router.push('/operation/systemSms/config?url=' + this.$route.path)
     } else {
@@ -153,11 +152,11 @@ export default {
     }
   },
   methods: {
-    handleClose() {
+    handleClose () {
       this.dialogVisible = false
       this.editData = {}
     },
-    handlerSubmit(formValue) {
+    handlerSubmit (formValue) {
       tempCreateApi(formValue).then(data => {
         this.$message.success('新增成功')
         this.dialogVisible = false
@@ -165,28 +164,28 @@ export default {
         this.getList()
       })
     },
-    add() {
+    add () {
       this.dialogVisible = true
     },
     // 查看是否登录
-    onIsLogin() {
+    onIsLogin () {
       this.fullscreenLoading = true
       this.$store.dispatch('user/isLogin').then(async res => {
         const data = res
         if (!data.status) {
           this.$message.warning('请先登录')
-          this.$router.push( '/operation/systemSms/config?url=' + this.$route.path)
+          this.$router.push('/operation/systemSms/config?url=' + this.$route.path)
         } else {
           this.getList()
         }
         this.fullscreenLoading = false
       }).catch(res => {
-        this.$router.push( '/operation/systemSms/config?url=' + this.$route.path)
+        this.$router.push('/operation/systemSms/config?url=' + this.$route.path)
         this.fullscreenLoading = false
       })
     },
     // 列表
-    getList() {
+    getList () {
       this.listLoading = true
       smsTempLstApi(this.tableFrom).then(res => {
         this.tableData.data = res.data
@@ -196,16 +195,16 @@ export default {
         this.listLoading = false
       })
     },
-    pageChange(page) {
+    pageChange (page) {
       this.tableFrom.page = page
       this.getList()
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.tableFrom.limit = val
       this.getList()
     },
     // 表格搜索
-    userSearchs() {
+    userSearchs () {
       this.tableFrom.page = 1
       this.getList()
     }

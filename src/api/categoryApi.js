@@ -4,7 +4,7 @@ import request from '@/utils/request'
  * 新增分类
  * @param pram
  */
-export function addCategroy(pram) {
+export function addCategroy (pram) {
   const data = {
     extra: pram.extra,
     name: pram.name,
@@ -25,7 +25,7 @@ export function addCategroy(pram) {
  * 分类详情
  * @param pram
  */
-export function infoCategroy(pram) {
+export function infoCategroy (pram) {
   const data = {
     id: pram.id
   }
@@ -40,7 +40,7 @@ export function infoCategroy(pram) {
  * 删除分类
  * @param pram
  */
-export function deleteCategroy(pram) {
+export function deleteCategroy (pram) {
   const data = {
     id: pram.id
   }
@@ -55,7 +55,7 @@ export function deleteCategroy(pram) {
  * 分类列表
  * @param pram
  */
-export function listCategroy(pram) {
+export function listCategroy (pram) {
   const data = {
     limit: pram.limit,
     name: pram.name,
@@ -76,7 +76,7 @@ export function listCategroy(pram) {
  * 分类数据tree数据
  * @param pram
  */
-export function treeCategroy(pram) {
+export function treeCategroy (pram) {
   const data = {
     type: pram.type,
     status: pram.status
@@ -92,7 +92,7 @@ export function treeCategroy(pram) {
  * 更新分类
  * @param pram
  */
-export function updateCategroy(pram) {
+export function updateCategroy (pram) {
   const data = {
     extra: pram.extra,
     name: pram.name,
@@ -114,7 +114,7 @@ export function updateCategroy(pram) {
  * 根据id集合查询对应分类列表
  * @param pram
  */
-export function categroyByIds(pram) {
+export function categroyByIds (pram) {
   const data = {
     ids: pram.ids
   }

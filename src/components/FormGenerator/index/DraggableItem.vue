@@ -3,7 +3,7 @@ import draggable from 'vuedraggable'
 import render from '@/components/FormGenerator/components/render/render'
 
 const components = {
-  itemBtns(h, element, index, parent) {
+  itemBtns (h, element, index, parent) {
     const { copyItem, deleteItem } = this.$listeners
     return [
       <span class='drawing-item-copy' title='复制' onClick={event => {
@@ -20,7 +20,7 @@ const components = {
   }
 }
 const layouts = {
-  colFormItem(h, element, index, parent) {
+  colFormItem (h, element, index, parent) {
     const { activeItem } = this.$listeners
     const config = element.__config__
     let className = this.activeId === config.formId ? 'drawing-item active-from-item' : 'drawing-item'
@@ -40,7 +40,7 @@ const layouts = {
       </el-col>
     )
   },
-  rowFormItem(h, element, index, parent) {
+  rowFormItem (h, element, index, parent) {
     const { activeItem } = this.$listeners
     const className = this.activeId === element.__config__.formId
       ? 'drawing-row-item active-from-item'
@@ -66,7 +66,7 @@ const layouts = {
   }
 }
 
-function renderChildren(h, element, index, parent) {
+function renderChildren (h, element, index, parent) {
   const config = element.__config__
   if (!Array.isArray(config.children)) return null
   return config.children.map((el, i) => {
@@ -78,7 +78,7 @@ function renderChildren(h, element, index, parent) {
   })
 }
 
-function layoutIsNotFound() {
+function layoutIsNotFound () {
   throw new Error(`没有与${this.element.__config__.layout}匹配的layout`)
 }
 
@@ -94,7 +94,7 @@ export default {
     'activeId',
     'formConf'
   ],
-  render(h) {
+  render (h) {
     const layout = layouts[this.element.__config__.layout]
 
     if (layout) {

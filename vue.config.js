@@ -3,7 +3,7 @@ const path = require('path')
 const defaultSettings = require('./src/settings.js')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, dir)
 }
 
@@ -48,11 +48,11 @@ module.exports = {
         '@': resolve('src')
       }
     },
-    plugins:[
+    plugins: [
       new MonacoWebpackPlugin()
     ]
   },
-  chainWebpack(config) {
+  chainWebpack (config) {
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
 

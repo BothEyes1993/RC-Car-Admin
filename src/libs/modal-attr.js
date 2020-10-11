@@ -1,4 +1,4 @@
-export default function modalAttr(val, callback, keyNum) {
+export default function modalAttr (val, callback, keyNum) {
   const h = this.$createElement
   return new Promise((resolve, reject) => {
     this.$msgbox({
@@ -13,7 +13,7 @@ export default function modalAttr(val, callback, keyNum) {
             keyNum: keyNum
           },
           on: {
-            getList() {
+            getList () {
               callback()
             }
           }
@@ -24,7 +24,7 @@ export default function modalAttr(val, callback, keyNum) {
     }).then(() => {
       resolve()
     }).catch(() => {
-      reject()
+      reject(new Error('errorMsg'))
       this.$message({
         type: 'info',
         message: '已取消'

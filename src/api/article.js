@@ -4,7 +4,7 @@ import request from '@/utils/request'
  * 绑定产品
  * @param pram
  */
-export function bindProduct(pram) {
+export function bindProduct (pram) {
   const data = {
     id: pram.id,
     productId: pram.productId
@@ -21,7 +21,7 @@ export function bindProduct(pram) {
  * @param id
  * @constructor
  */
-export function DelArticle(pram) {
+export function DelArticle (pram) {
   const data = {
     id: pram.id
   }
@@ -37,7 +37,7 @@ export function DelArticle(pram) {
  * @param id
  * @constructor
  */
-export function InfoArticle(id) {
+export function InfoArticle (id) {
   const data = {
     id: id
   }
@@ -53,7 +53,7 @@ export function InfoArticle(id) {
  * @param pram
  * @constructor
  */
-export function ListArticle(pram) {
+export function ListArticle (pram) {
   const data = {
     keywords: pram.keywords,
     cid: pram.cid,
@@ -72,7 +72,7 @@ export function ListArticle(pram) {
  * @param pram
  * @constructor
  */
-export function AddArticle(pram) {
+export function AddArticle (pram) {
   const data = {
     author: pram.author,
     cid: pram.cid,
@@ -99,7 +99,7 @@ export function AddArticle(pram) {
  * @param pram
  * @constructor
  */
-export function UpdateArticle(pram) {
+export function UpdateArticle (pram) {
   const data = {
     author: pram.author,
     cid: pram.cid,

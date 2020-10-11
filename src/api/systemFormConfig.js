@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getFormConfigInfo(pram) {
+export function getFormConfigInfo (pram) {
   const data = {
     id: pram.id
   }
@@ -11,7 +11,7 @@ export function getFormConfigInfo(pram) {
   })
 }
 
-export function getFormConfigList(pram) {
+export function getFormConfigList (pram) {
   const data = {
     keywords: pram.keywords,
     page: pram.page,
@@ -24,7 +24,7 @@ export function getFormConfigList(pram) {
   })
 }
 
-export function getFormConfigSave(pram) {
+export function getFormConfigSave (pram) {
   const data = {
     content: pram.content,
     info: pram.info,
@@ -37,7 +37,7 @@ export function getFormConfigSave(pram) {
   })
 }
 
-export function getFormConfigEdit(pram) {
+export function getFormConfigEdit (pram) {
   const params = { id: pram.id }
   const data = {
     content: pram.content,

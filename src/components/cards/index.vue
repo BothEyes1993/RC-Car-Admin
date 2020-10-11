@@ -18,12 +18,12 @@
 </template>
 
 <script>
-  export default {
-    name: "index",
-    props: {
-      cardLists: Array
-    },
+export default {
+  name: 'index',
+  props: {
+    cardLists: Array
   }
+}
 </script>
 
 <style scoped lang="scss">

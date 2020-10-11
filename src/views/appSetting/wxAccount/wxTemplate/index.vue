@@ -118,105 +118,105 @@
 </template>
 
 <script>
-    import * as constants from '@/utils/constants.js'
-    import { wechatTemplateListApi, wechatTemplateStatusApi, wechatTemplateSaveApi, wechatTemplateUpdateApi, wechatTemplateDeleteApi} from '@/api/wxApi'
-    import zbParser from '@/components/FormGenerator/components/parser/ZBParser'
-    export default {
-      name: "Templates",
-      components: { zbParser },
-      data() {
-        return {
-          labelPosition:'right',
-          isCreate: 0,
-          editData: {},
-          dialogVisible: false,
-          switchData: constants.switchStatus,
-          tableFrom: {
-            page: 1,
-            limit: 20,
-            status: '',
-            name: '',
-            type: this.$route.path.indexOf('routineTemplate') !== -1? '0' :'1',
-            tempId: ''
-          },
-          tableData: {
-            data: [],
-            total: 0
-          },
-          listLoading: true,
-          tempId: null
-        }
+import * as constants from '@/utils/constants.js'
+import { wechatTemplateListApi, wechatTemplateStatusApi, wechatTemplateSaveApi, wechatTemplateUpdateApi, wechatTemplateDeleteApi } from '@/api/wxApi'
+import zbParser from '@/components/FormGenerator/components/parser/ZBParser'
+export default {
+  name: 'Templates',
+  components: { zbParser },
+  data () {
+    return {
+      labelPosition: 'right',
+      isCreate: 0,
+      editData: {},
+      dialogVisible: false,
+      switchData: constants.switchStatus,
+      tableFrom: {
+        page: 1,
+        limit: 20,
+        status: '',
+        name: '',
+        type: this.$route.path.indexOf('routineTemplate') !== -1 ? '0' : '1',
+        tempId: ''
       },
-      mounted() {
-        this.getList()
+      tableData: {
+        data: [],
+        total: 0
       },
-      methods: {
-        seachList() {
-          this.tableFrom.page = 1
-          this.getList()
-        },
-        // 订单删除
-        handleDelete(row, idx) {
-          this.$modalSure().then(() => {
-            wechatTemplateDeleteApi( row.id ).then(() => {
-              this.$message.success('删除成功')
-              this.tableData.data.splice(idx, 1)
-            })
-          })
-        },
-        handleClose() {
-          this.dialogVisible = false
-          this.editData = {}
-        },
-        handlerSubmit(formValue) {
-          this.isCreate === 0 ? wechatTemplateSaveApi(formValue).then(data => {
-            this.$message.success('新增成功')
-            this.dialogVisible = false
-            this.editData = {}
-            this.getList()
-          }) : wechatTemplateUpdateApi(this.tempId, formValue).then(data => {
-            this.$message.success('编辑成功')
-            this.dialogVisible = false
-            this.getList()
-          })
-        },
-        add() {
-          this.dialogVisible = true
-        },
-        edit(row) {
-          this.tempId = row.id
-          this.dialogVisible = true
-          this.isCreate = 1
-          this.editData = JSON.parse(JSON.stringify(row))
-        },
-        // 列表
-        getList() {
-          this.listLoading = true
-          wechatTemplateListApi(this.tableFrom).then(res => {
-            this.tableData.data = res.list || []
-            this.tableData.total = res.total
-            this.listLoading = false
-          }).catch(() => {
-            this.listLoading = false
-          })
-        },
-        pageChange(page) {
-          this.tableFrom.page = page
-          this.getList()
-        },
-        handleSizeChange(val) {
-          this.tableFrom.limit = val
-          this.getList()
-        },
-        // 修改状态
-        onchangeIsShow(row) {
-          wechatTemplateStatusApi(row.id, {status: row.status}).then(() => {
-            this.$message.success('修改成功')
-            this.getList()
-          })
-        }
-      }
+      listLoading: true,
+      tempId: null
     }
+  },
+  mounted () {
+    this.getList()
+  },
+  methods: {
+    seachList () {
+      this.tableFrom.page = 1
+      this.getList()
+    },
+    // 订单删除
+    handleDelete (row, idx) {
+      this.$modalSure().then(() => {
+        wechatTemplateDeleteApi(row.id).then(() => {
+          this.$message.success('删除成功')
+          this.tableData.data.splice(idx, 1)
+        })
+      })
+    },
+    handleClose () {
+      this.dialogVisible = false
+      this.editData = {}
+    },
+    handlerSubmit (formValue) {
+      this.isCreate === 0 ? wechatTemplateSaveApi(formValue).then(data => {
+        this.$message.success('新增成功')
+        this.dialogVisible = false
+        this.editData = {}
+        this.getList()
+      }) : wechatTemplateUpdateApi(this.tempId, formValue).then(data => {
+        this.$message.success('编辑成功')
+        this.dialogVisible = false
+        this.getList()
+      })
+    },
+    add () {
+      this.dialogVisible = true
+    },
+    edit (row) {
+      this.tempId = row.id
+      this.dialogVisible = true
+      this.isCreate = 1
+      this.editData = JSON.parse(JSON.stringify(row))
+    },
+    // 列表
+    getList () {
+      this.listLoading = true
+      wechatTemplateListApi(this.tableFrom).then(res => {
+        this.tableData.data = res.list || []
+        this.tableData.total = res.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
+    pageChange (page) {
+      this.tableFrom.page = page
+      this.getList()
+    },
+    handleSizeChange (val) {
+      this.tableFrom.limit = val
+      this.getList()
+    },
+    // 修改状态
+    onchangeIsShow (row) {
+      wechatTemplateStatusApi(row.id, { status: row.status }).then(() => {
+        this.$message.success('修改成功')
+        this.getList()
+      })
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

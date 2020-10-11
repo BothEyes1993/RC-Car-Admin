@@ -3,7 +3,7 @@ const styles = {
   'el-upload': '.el-upload__tip{line-height: 1.2;}'
 }
 
-function addCss(cssList, el) {
+function addCss (cssList, el) {
   const css = styles[el.__config__.tag]
   css && cssList.indexOf(css) === -1 && cssList.push(css)
   if (el.__config__.children) {
@@ -11,7 +11,7 @@ function addCss(cssList, el) {
   }
 }
 
-export function makeUpCss(conf) {
+export function makeUpCss (conf) {
   const cssList = []
   conf.fields.forEach(el => addCss(cssList, el))
   return cssList.join('\n')

@@ -4,7 +4,7 @@
       <el-row :gutter="24">
         <el-col :span="8">
           <el-form-item label="规格名称：" prop="ruleName">
-            <el-input  maxlength="20" v-model="formDynamic.ruleName" placeholder="请输入标题名称" />
+            <el-input maxlength="20" v-model="formDynamic.ruleName" placeholder="请输入标题名称" />
           </el-form-item>
         </el-col>
         <el-col v-for="(item, index) in formDynamic.ruleValue" :key="index" :span="24" class="noForm">
@@ -80,7 +80,7 @@ export default {
       default: 0
     }
   },
-  data() {
+  data () {
     return {
       loadingBtn: false,
       loading: false,
@@ -116,46 +116,46 @@ export default {
   },
   watch: {
     currentRow: {
-      handler: function(val, oldVal) {
+      handler: function (val, oldVal) {
         this.formDynamic = val
       },
       immediate: true
     },
     keyNum: {
       deep: true,
-      handler(val) {
-        if( val>0 ) this.clear()
+      handler (val) {
+        if (val > 0) this.clear()
       }
     }
   },
-  mounted() {
+  mounted () {
     this.formDynamic.ruleValue.map(item => {
       this.$set(item, 'inputVisible', false)
     })
   },
   methods: {
-    resetForm(formName) {
+    resetForm (formName) {
       this.$msgbox.close()
       this.clear()
       this.$refs[formName].resetFields()
     },
     // 添加按钮
-    addBtn() {
+    addBtn () {
       this.isBtn = true
     },
-    handleClose(item, index) {
+    handleClose (item, index) {
       item.splice(index, 1)
     },
     // 取消
-    offAttrName() {
+    offAttrName () {
       this.isBtn = false
     },
     // 删除
-    handleRemove(index) {
+    handleRemove (index) {
       this.formDynamic.ruleValue.splice(index, 1)
     },
     // 添加规则名称
-    createAttrName() {
+    createAttrName () {
       if (this.attrsName && this.attrsVal) {
         const data = {
           value: this.attrsName,
@@ -165,7 +165,7 @@ export default {
         }
         this.formDynamic.ruleValue.push(data)
         var hash = {}
-        this.formDynamic.ruleValue = this.formDynamic.ruleValue.reduce(function(item, next) {
+        this.formDynamic.ruleValue = this.formDynamic.ruleValue.reduce(function (item, next) {
           /* eslint-disable */
             hash[next.value] ? '' : hash[next.value] = true && item.push(next);
             return item

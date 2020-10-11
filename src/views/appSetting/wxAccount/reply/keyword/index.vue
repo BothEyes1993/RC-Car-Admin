@@ -88,10 +88,9 @@
 
 <script>
 import { replyListApi, replyDeleteApi, replyUpdateApi } from '@/api/wxApi'
-import { getToken } from '@/utils/auth'
 export default {
   name: 'WechatKeyword',
-  data() {
+  data () {
     return {
       tableData: {
         data: [],
@@ -106,21 +105,21 @@ export default {
       listLoading: true
     }
   },
-  created() {
+  created () {
     this.getList()
   },
   methods: {
-    seachList() {
+    seachList () {
       this.tableFrom.page = 1
       this.getList()
     },
-    onchangeIsShow(row) {
+    onchangeIsShow (row) {
       replyUpdateApi(row.id, row).then(() => {
         this.$message.success('修改成功')
       })
     },
     // 列表
-    getList() {
+    getList () {
       this.listLoading = true
       replyListApi(this.tableFrom).then(res => {
         this.tableData.data = res.list
@@ -130,16 +129,16 @@ export default {
         this.listLoading = false
       })
     },
-    pageChange(page) {
+    pageChange (page) {
       this.tableFrom.page = page
       this.getList()
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.tableFrom.limit = val
       this.getList()
     },
     // 删除
-    handleDelete(id, idx) {
+    handleDelete (id, idx) {
       this.$modalSure().then(() => {
         replyDeleteApi(id).then(() => {
           this.$message.success('删除成功')

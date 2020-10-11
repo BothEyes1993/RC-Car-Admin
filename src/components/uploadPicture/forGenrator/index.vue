@@ -43,48 +43,50 @@ import UploadIndex from '@/components/uploadPicture/index.vue'
 export default {
   name: 'UploadFroms',
   components: { UploadIndex },
-  props:{
-    value:{},
-    multiple:{
+  props: {
+    value: {},
+    multiple: {
       type: Boolean,
       default: false
     }
   },
-  data() {
+  data () {
     return {
-      image:"",
+      image: '',
       visible: false,
-      callback: function() {},
+      callback: function () {},
       isMore: '',
       imageList: []
     }
   },
-  beforeMount(){
-    if( this.multiple ){
+  beforeMount () {
+    if (this.multiple) {
       // 接收 v-model 数据
-      if(this.value){
+      if (this.value) {
         this.imageList = JSON.parse(this.value)
       }
-    }else{
+    } else {
       // 接收 v-model 数据
-      if(this.value){
+      if (this.value) {
         this.image = this.value
       }
     }
     // 处理多选
-    this.isMore = this.multiple ? '2':'1'
+    this.isMore = this.multiple ? '2' : '1'
   },
   methods: {
-    handleClose() {
+    handleClose () {
       this.visible = false
     },
-    getImage(img) {
+    getImage (img) {
       if (this.multiple) {
-        let obj = {};
-        this.imageList = img.reduce((cur,next) => {
-          obj[next.attId] ? "" : obj[next.attId] = true && cur.push(next);
-          return cur;
-        },[])
+        const obj = {}
+        this.imageList = img.reduce((cur, next) => {
+          if (!obj[next.attId]) {
+            obj[next.attId] = true && cur.push(next)
+          }
+          return cur
+        }, [])
         this.$emit('input', JSON.stringify(this.imageList))
       } else {
         this.image = img[0].sattDir
@@ -102,7 +104,7 @@ export default {
     },
     // 移动
     handleDragStart (e, item) {
-      this.dragging = item;
+      this.dragging = item
     },
     handleDragEnd (e, item) {
       this.dragging = null
@@ -119,7 +121,7 @@ export default {
       const src = newItems.indexOf(this.dragging)
       const dst = newItems.indexOf(item)
       newItems.splice(dst, 0, ...newItems.splice(src, 1))
-      this.imageList = newItems;
+      this.imageList = newItems
     }
   }
 }

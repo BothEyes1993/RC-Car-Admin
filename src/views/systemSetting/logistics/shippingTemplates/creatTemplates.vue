@@ -199,7 +199,7 @@ export default {
   name: 'CreatTemplates',
   components: {
   },
-  data() {
+  data () {
     return {
       rules: {
         name: [
@@ -244,32 +244,32 @@ export default {
       type: 0 // 0添加 1编辑
     }
   },
-  mounted() {
+  mounted () {
   },
   methods: {
-    changType(type) {
+    changType (type) {
       this.type = type
     },
-    onClose(formName) {
+    onClose (formName) {
       this.dialogVisible = false
       this.$refs[formName].resetFields()
     },
-    confirmEdit(row, index) {
+    confirmEdit (row, index) {
       row.splice(index, 1)
     },
-    popoverHide() {},
-    handleClose() {
+    popoverHide () {},
+    handleClose () {
       this.dialogVisible = false
-      this.$refs['ruleForm'].resetFields()
+      this.$refs.ruleForm.resetFields()
     },
-    changeRegion(value) {
+    changeRegion (value) {
       // console.integralLog(value)
     },
-    changeRadio(num) {
+    changeRadio (num) {
       this.columns = Object.assign({}, statusMap[num - 1])
     },
     // 添加配送区域
-    addRegion(region) {
+    addRegion (region) {
       region.push(Object.assign({}, {
         first: 1,
         firstPrice: 1,
@@ -278,7 +278,7 @@ export default {
         city_ids: []
       }))
     },
-    addFree(Free) {
+    addFree (Free) {
       Free.push(Object.assign({}, {
         city_id: [],
         number: 1,
@@ -292,7 +292,7 @@ export default {
      * id 模板id
      * appoint true包邮 false不包邮
     **/
-    getInfo(id, appoint) {
+    getInfo (id, appoint) {
       this.tempId = id
       const loadingInstance = Loading.service({ fullscreen: true })
       logistics.templateDetailApi({ id }).then(res => {
@@ -322,7 +322,7 @@ export default {
       })
     },
     // 不包邮
-    shippingRegion() {
+    shippingRegion () {
       logistics.shippingRegion({ tempId: this.tempId }).then(res => {
         res.forEach((item, index) => {
           item.title = JSON.parse(item.title)
@@ -332,7 +332,7 @@ export default {
       })
     },
     // 包邮
-    shippingFree() {
+    shippingFree () {
       logistics.shippingFree({ tempId: this.tempId }).then(res => {
         res.forEach((item, index) => {
           item.title = JSON.parse(item.title)
@@ -342,7 +342,7 @@ export default {
       })
     },
     // 列表
-    getCityList() {
+    getCityList () {
       logistics.cityListTree().then(res => {
         // console.integralLog(res, 'getCityList')
         res.forEach((el, index) => {
@@ -355,7 +355,7 @@ export default {
         this.$message.error(res.message)
       })
     },
-    change(idBox) {
+    change (idBox) {
       idBox.map(item => {
         const ids = []
         item.city_ids.map(j => {
@@ -366,22 +366,22 @@ export default {
       })
       return idBox
     },
-    changeOne(idBox) {
-      const city_ids = []
+    changeOne (idBox) {
+      const cityIds = []
       idBox.map(item => {
         item.splice(0, 1)
-        city_ids.push(item[0])
+        cityIds.push(item[0])
       })
-      return city_ids
+      return cityIds
     },
-    onsubmit(formName) {
+    onsubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const param = {
             appoint: this.ruleForm.appoint,
             name: this.ruleForm.name,
             sort: this.ruleForm.sort,
-            type: this.ruleForm.type,
+            type: this.ruleForm.type
             // 配送区域及运费
             // shippingTemplatesRegionRequestList: [],
             // // 指定包邮设置
@@ -445,7 +445,7 @@ export default {
         }
       })
     },
-    clear() {
+    clear () {
       this.ruleForm.name = ''
       this.ruleForm.sort = 0
     }

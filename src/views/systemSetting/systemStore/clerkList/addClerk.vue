@@ -53,140 +53,140 @@
 </template>
 
 <script>
-  import customerInfo from '@/components/customerInfo';
-  import { storeStaffSaveApi, storeStaffUpdateApi, storeStaffInfoApi, storeListApi } from '@/api/storePoint';
-    export default {
-      name: "addClerk",
-      components: { customerInfo },
-      props: {
-        storeSelectList: Array
-      },
-      data(){
-        const validateUpload = (rule, value, callback) => {
-          if (!this.ruleForm.avatar) {
-            callback(new Error('请上传商城用户图片'))
-          } else {
-            callback()
-          }
-        };
-        return{
-          dialogFormVisible: false,
-          id:0,
-          ruleForm:{
-            avatar:'',
-            phone:'',
-            staffName:'',
-            status:1,
-            storeId:'',
-            verifyStatus:1,
-            uid:''
-          },
-          rules: {
-            avatar: [
-              { required: true, validator: validateUpload, trigger: 'change' }
-            ],
-            storeId: [
-              { required: true, message: '请选择提货点地址', trigger: 'change' }
-            ]
-          }
-        }
-      },
-      created(){
-
-      },
-      mounted(){
-
-      },
-      methods:{
-        //接收来自子集的值；
-        upImgUid(id,img){
-          this.ruleForm.avatar = img;
-          this.ruleForm.uid = id;
-        },
-        upImg(){
-          this.$refs.customer.dialogFormVisible = true;
-          this.$refs.customer.tableList();
-        },
-        //详情
-        getInfo (id) {
-          let that = this;
-          that.id = id;
-          storeStaffInfoApi({id:id}).then(res=>{
-            that.ruleForm = res;
-          }).catch(res=>{
-            this.$message.error(res.message);
-          })
-        },
-        //取消
-        cancel(){
-          this.dialogFormVisible = false;
-          this.clearFrom();
-          this.resetForm('ruleForm');
-          this.id = 0
-        },
-        //数据归为初始状态
-        clearFrom(){
-          this.ruleForm.phone = '';
-          this.ruleForm.staffName = '';
-          this.ruleForm.status = 1;
-          this.ruleForm.verifyStatus = 1;
-        },
-        //重置
-        resetForm (name) {
-          this.$refs[name].resetFields();
-        },
-        // 提交
-        submitForm (name) {
-          this.$refs[name].validate((valid) => {
-            if (valid) {
-              let phone = this.ruleForm.phone;
-              if(phone){
-                 if(!/^1[3456789]\d{9}$/.test(phone)){
-                   return this.$message.error('手机号格式不正确');
-                 }
-              }
-              storeStaffSaveApi(this.ruleForm).then(async () => {
-                this.$message.success('提交成功');
-                this.dialogFormVisible = false;
-                this.$emit("tableList");
-                this.clearFrom();
-                this.resetForm(name);
-                this.id = 0;
-              }).catch(res => {
-                this.$message.error(res.message);
-              })
-            } else {
-              return false;
-            }
-          })
-        },
-        //  编辑
-        editForm(name){
-          this.$refs[name].validate((valid) => {
-            if (valid) {
-              let phone = this.ruleForm.phone;
-              if(phone){
-                if(!/^1[3456789]\d{9}$/.test(phone)){
-                  return this.$message.error('手机号格式不正确');
-                }
-              }
-              storeStaffUpdateApi(this.ruleForm).then(async () => {
-                this.$message.success('编辑成功');
-                this.dialogFormVisible = false;
-                this.$emit("tableList");
-                this.clearFrom();
-                this.resetForm(name);
-                this.id = 0;
-              }).catch(res => {
-                this.$message.error(res.message);
-              })
-            } else {
-              return false;
-            }
-          })
-        }
+import customerInfo from '@/components/customerInfo'
+import { storeStaffSaveApi, storeStaffUpdateApi, storeStaffInfoApi } from '@/api/storePoint'
+export default {
+  name: 'addClerk',
+  components: { customerInfo },
+  props: {
+    storeSelectList: Array
+  },
+  data () {
+    const validateUpload = (rule, value, callback) => {
+      if (!this.ruleForm.avatar) {
+        callback(new Error('请上传商城用户图片'))
+      } else {
+        callback()
       }
     }
+    return {
+      dialogFormVisible: false,
+      id: 0,
+      ruleForm: {
+        avatar: '',
+        phone: '',
+        staffName: '',
+        status: 1,
+        storeId: '',
+        verifyStatus: 1,
+        uid: ''
+      },
+      rules: {
+        avatar: [
+          { required: true, validator: validateUpload, trigger: 'change' }
+        ],
+        storeId: [
+          { required: true, message: '请选择提货点地址', trigger: 'change' }
+        ]
+      }
+    }
+  },
+  created () {
+
+  },
+  mounted () {
+
+  },
+  methods: {
+    // 接收来自子集的值；
+    upImgUid (id, img) {
+      this.ruleForm.avatar = img
+      this.ruleForm.uid = id
+    },
+    upImg () {
+      this.$refs.customer.dialogFormVisible = true
+      this.$refs.customer.tableList()
+    },
+    // 详情
+    getInfo (id) {
+      const that = this
+      that.id = id
+      storeStaffInfoApi({ id: id }).then(res => {
+        that.ruleForm = res
+      }).catch(res => {
+        this.$message.error(res.message)
+      })
+    },
+    // 取消
+    cancel () {
+      this.dialogFormVisible = false
+      this.clearFrom()
+      this.resetForm('ruleForm')
+      this.id = 0
+    },
+    // 数据归为初始状态
+    clearFrom () {
+      this.ruleForm.phone = ''
+      this.ruleForm.staffName = ''
+      this.ruleForm.status = 1
+      this.ruleForm.verifyStatus = 1
+    },
+    // 重置
+    resetForm (name) {
+      this.$refs[name].resetFields()
+    },
+    // 提交
+    submitForm (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          const phone = this.ruleForm.phone
+          if (phone) {
+            if (!/^1[3456789]\d{9}$/.test(phone)) {
+              return this.$message.error('手机号格式不正确')
+            }
+          }
+          storeStaffSaveApi(this.ruleForm).then(async () => {
+            this.$message.success('提交成功')
+            this.dialogFormVisible = false
+            this.$emit('tableList')
+            this.clearFrom()
+            this.resetForm(name)
+            this.id = 0
+          }).catch(res => {
+            this.$message.error(res.message)
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    //  编辑
+    editForm (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          const phone = this.ruleForm.phone
+          if (phone) {
+            if (!/^1[3456789]\d{9}$/.test(phone)) {
+              return this.$message.error('手机号格式不正确')
+            }
+          }
+          storeStaffUpdateApi(this.ruleForm).then(async () => {
+            this.$message.success('编辑成功')
+            this.dialogFormVisible = false
+            this.$emit('tableList')
+            this.clearFrom()
+            this.resetForm(name)
+            this.id = 0
+          }).catch(res => {
+            this.$message.error(res.message)
+          })
+        } else {
+          return false
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>

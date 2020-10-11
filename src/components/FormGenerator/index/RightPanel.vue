@@ -613,15 +613,13 @@
 </template>
 
 <script>
-import { isArray } from 'util'
 import TreeNodeDialog from './TreeNodeDialog'
 import { isNumberStr } from '../utils/index'
 import IconsDialog from './IconsDialog'
 import {
-  inputComponents, selectComponents, layoutComponents
+  inputComponents, selectComponents
 } from '@/components/FormGenerator/components/generator/config'
 import { saveFormConf } from '../utils/db'
-import Templates from "../../../views/appSetting/wxAccount/wxTemplate/index";
 
 const dateTimeFormat = {
   date: 'yyyy-MM-dd',
@@ -636,12 +634,11 @@ const dateTimeFormat = {
 
 export default {
   components: {
-    Templates,
     TreeNodeDialog,
     IconsDialog
   },
   props: ['showField', 'activeData', 'formConf'],
-  data() {
+  data () {
     return {
       currentTab: 'field',
       currentNode: null,
@@ -729,7 +726,7 @@ export default {
         }
       ],
       layoutTreeProps: {
-        label(data, node) {
+        label (data, node) {
           const config = data.__config__
           return data.componentName || `${config.label}: ${data.__vModel__}`
         }
@@ -743,7 +740,7 @@ export default {
     //     || 'https://element.eleme.cn/#/zh-CN/component/installation'
     //   )
     // },
-    dateOptions() {
+    dateOptions () {
       if (
         this.activeData.type !== undefined &&
         this.activeData.__config__.tag === 'el-date-picker'
@@ -755,7 +752,7 @@ export default {
       }
       return []
     },
-    tagList() {
+    tagList () {
       return [
         {
           label: '输入型组件',
@@ -767,49 +764,49 @@ export default {
         }
       ]
     },
-    activeTag() {
+    activeTag () {
       return this.activeData.__config__.tag
     },
-    isShowMin() {
+    isShowMin () {
       return ['el-input-number', 'el-slider'].indexOf(this.activeTag) > -1
     },
-    isShowMax() {
+    isShowMax () {
       return ['el-input-number', 'el-slider', 'el-rate'].indexOf(this.activeTag) > -1
     },
-    isShowStep() {
+    isShowStep () {
       return ['el-input-number', 'el-slider'].indexOf(this.activeTag) > -1
     }
   },
   watch: {
     formConf: {
-      handler(val) {
+      handler (val) {
         saveFormConf(val)
       },
       deep: true
     }
   },
-  mounted() {
+  mounted () {
     saveFormConf(this.formConf)
   },
   methods: {
-    addReg() {
+    addReg () {
       this.activeData.__config__.regList.push({
         pattern: '',
         message: ''
       })
     },
-    addSelectItem() {
+    addSelectItem () {
       this.activeData.__slot__.options.push({
         label: '',
         value: ''
       })
     },
-    addTreeItem() {
+    addTreeItem () {
       ++this.idGlobal
       this.dialogVisible = true
       this.currentNode = this.activeData.options
     },
-    renderContent(h, { node, data, store }) {
+    renderContent (h, { node, data, store }) {
       return (
         <div class='custom-tree-node'>
           <span>{node.label}</span>
@@ -826,27 +823,27 @@ export default {
         </div>
       )
     },
-    append(data) {
+    append (data) {
       if (!data.children) {
         this.$set(data, 'children', [])
       }
       this.dialogVisible = true
       this.currentNode = data.children
     },
-    remove(node, data) {
+    remove (node, data) {
       this.activeData.__config__.defaultValue = [] // 避免删除时报错
       const { parent } = node
       const children = parent.data.children || parent.data
       const index = children.findIndex(d => d.id === data.id)
       children.splice(index, 1)
     },
-    addNode(data) {
+    addNode (data) {
       this.currentNode.push(data)
     },
-    setOptionValue(item, val) {
+    setOptionValue (item, val) {
       item.value = isNumberStr(val) ? +val : val
     },
-    setDefaultValue(val) {
+    setDefaultValue (val) {
       if (Array.isArray(val)) {
         return val.join(',')
       }
@@ -858,8 +855,8 @@ export default {
       }
       return val
     },
-    onDefaultValueInput(str) {
-      if (isArray(this.activeData.__config__.defaultValue)) {
+    onDefaultValueInput (str) {
+      if (Array.isArray(this.activeData.__config__.defaultValue)) {
         // 数组
         this.$set(
           this.activeData.__config__,
@@ -878,59 +875,59 @@ export default {
         )
       }
     },
-    onSwitchValueInput(val, name) {
+    onSwitchValueInput (val, name) {
       if (['true', 'false'].indexOf(val) > -1) {
         this.$set(this.activeData, name, JSON.parse(val))
       } else {
         this.$set(this.activeData, name, isNumberStr(val) ? +val : val)
       }
     },
-    setTimeValue(val, type) {
+    setTimeValue (val, type) {
       const valueFormat = type === 'week' ? dateTimeFormat.date : val
       this.$set(this.activeData.__config__, 'defaultValue', null)
       this.$set(this.activeData, 'value-format', valueFormat)
       this.$set(this.activeData, 'format', val)
     },
-    spanChange(val) {
+    spanChange (val) {
       this.formConf.span = val
     },
-    multipleChange(val) {
+    multipleChange (val) {
       this.$set(this.activeData.__config__, 'defaultValue', val ? [] : '')
     },
-    dateTypeChange(val) {
+    dateTypeChange (val) {
       this.setTimeValue(dateTimeFormat[val], val)
     },
-    rangeChange(val) {
+    rangeChange (val) {
       this.$set(
         this.activeData.__config__,
         'defaultValue',
         val ? [this.activeData.min, this.activeData.max] : this.activeData.min
       )
     },
-    rateTextChange(val) {
+    rateTextChange (val) {
       if (val) this.activeData['show-score'] = false
     },
-    rateScoreChange(val) {
+    rateScoreChange (val) {
       if (val) this.activeData['show-text'] = false
     },
-    colorFormatChange(val) {
+    colorFormatChange (val) {
       this.activeData.__config__.defaultValue = null
       this.activeData['show-alpha'] = val.indexOf('a') > -1
       this.activeData.__config__.renderKey = +new Date() // 更新renderKey,重新渲染该组件
     },
-    openIconsDialog(model) {
+    openIconsDialog (model) {
       this.iconsVisible = true
       this.currentIconModel = model
     },
-    setIcon(val) {
+    setIcon (val) {
       this.activeData[this.currentIconModel] = val
     },
-    tagChange(tagIcon) {
+    tagChange (tagIcon) {
       let target = inputComponents.find(item => item.__config__.tagIcon === tagIcon)
       if (!target) target = selectComponents.find(item => item.__config__.tagIcon === tagIcon)
       this.$emit('tag-change', target)
     },
-    changeRenderKey() {
+    changeRenderKey () {
       this.activeData.__config__.renderKey = +new Date()
     }
   }

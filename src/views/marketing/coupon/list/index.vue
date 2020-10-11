@@ -179,102 +179,102 @@
 </template>
 
 <script>
-  import { marketingListApi, couponIssueStatusApi, couponUserListApi } from '@/api/marketing'
-  import { roterPre } from '@/settings'
-  export default {
-    name: 'CouponList',
-    data() {
-      return {
-        Loading: false,
-        dialogVisible: false,
-        roterPre: roterPre,
-        listLoading: true,
-        tableData: {
-          data: [],
-          total: 0
-        },
-        tableFrom: {
-          page: 1,
-          limit: 20,
-          status: '',
-          name: ''
-        },
-        tableFromIssue: {
-          page: 1,
-          limit: 10,
-          couponId: ''
-        },
-        issueData: {
-          data: [],
-          total: 0
-        }
-      }
-    },
-    mounted() {
-      this.getList()
-    },
-    methods: {
-      seachList() {
-        this.tableFrom.page = 1
-        this.getList()
+import { marketingListApi, couponIssueStatusApi, couponUserListApi } from '@/api/marketing'
+import { roterPre } from '@/settings'
+export default {
+  name: 'CouponList',
+  data () {
+    return {
+      Loading: false,
+      dialogVisible: false,
+      roterPre: roterPre,
+      listLoading: true,
+      tableData: {
+        data: [],
+        total: 0
       },
-      handleClose() {
-        this.dialogVisible = false
+      tableFrom: {
+        page: 1,
+        limit: 20,
+        status: '',
+        name: ''
       },
-      // 领取记录
-      receive(row) {
-        this.dialogVisible = true
-        this.getIssueList(row)
+      tableFromIssue: {
+        page: 1,
+        limit: 10,
+        couponId: ''
       },
-      // 列表
-      getIssueList(row) {
-        this.Loading = true
-        this.tableFromIssue.couponId = row.id
-        couponUserListApi(this.tableFromIssue).then(res => {
-          this.issueData.data = res.list
-          this.issueData.total = res.total
-          this.Loading = false
-        }).catch(res => {
-          this.Loading = false
-          this.$message.error(res.message)
-        })
-      },
-      pageChangeIssue(page) {
-        this.tableFromIssue.page = page
-        this.getIssueList()
-      },
-      handleSizeChangeIssue(val) {
-        this.tableFromIssue.limit = val
-        this.getIssueList()
-      },
-      // 列表
-      getList() {
-        this.listLoading = true
-        marketingListApi(this.tableFrom).then(res => {
-          this.tableData.data = res.list
-          this.tableData.total = res.total
-          this.listLoading = false
-        }).catch(res => {
-          this.listLoading = false
-        })
-      },
-      pageChange(page) {
-        this.tableFrom.page = page
-        this.getList()
-      },
-      handleSizeChange(val) {
-        this.tableFrom.limit = val
-        this.getList()
-      },
-      // 修改状态
-      onchangeIsShow(row) {
-        couponIssueStatusApi({id:row.id, status:row.status}).then(() => {
-          this.$message.success('修改成功')
-          this.getList()
-        })
+      issueData: {
+        data: [],
+        total: 0
       }
     }
+  },
+  mounted () {
+    this.getList()
+  },
+  methods: {
+    seachList () {
+      this.tableFrom.page = 1
+      this.getList()
+    },
+    handleClose () {
+      this.dialogVisible = false
+    },
+    // 领取记录
+    receive (row) {
+      this.dialogVisible = true
+      this.getIssueList(row)
+    },
+    // 列表
+    getIssueList (row) {
+      this.Loading = true
+      this.tableFromIssue.couponId = row.id
+      couponUserListApi(this.tableFromIssue).then(res => {
+        this.issueData.data = res.list
+        this.issueData.total = res.total
+        this.Loading = false
+      }).catch(res => {
+        this.Loading = false
+        this.$message.error(res.message)
+      })
+    },
+    pageChangeIssue (page) {
+      this.tableFromIssue.page = page
+      this.getIssueList()
+    },
+    handleSizeChangeIssue (val) {
+      this.tableFromIssue.limit = val
+      this.getIssueList()
+    },
+    // 列表
+    getList () {
+      this.listLoading = true
+      marketingListApi(this.tableFrom).then(res => {
+        this.tableData.data = res.list
+        this.tableData.total = res.total
+        this.listLoading = false
+      }).catch(res => {
+        this.listLoading = false
+      })
+    },
+    pageChange (page) {
+      this.tableFrom.page = page
+      this.getList()
+    },
+    handleSizeChange (val) {
+      this.tableFrom.limit = val
+      this.getList()
+    },
+    // 修改状态
+    onchangeIsShow (row) {
+      couponIssueStatusApi({ id: row.id, status: row.status }).then(() => {
+        this.$message.success('修改成功')
+        this.getList()
+      })
+    }
   }
+}
 </script>
 
 <style scoped lang="scss">

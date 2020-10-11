@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function login(data) {
+export function login (data) {
   return request({
     url: '/admin/login',
     method: 'post',
@@ -8,7 +8,7 @@ export function login(data) {
   })
 }
 
-export function getInfo(token) {
+export function getInfo (token) {
   return request({
     url: '/admin/getAdminInfoByToken',
     method: 'get',
@@ -16,7 +16,7 @@ export function getInfo(token) {
   })
 }
 
-export function logout() {
+export function logout () {
   return request({
     url: '/admin/logout',
     method: 'get'
@@ -27,9 +27,9 @@ export function logout() {
  * 会员管理 列表
  * @param pram
  */
-export function userListApi(params) {
+export function userListApi (params) {
   return request({
-    url: `/admin/user/list`,
+    url: '/admin/user/list',
     method: 'get',
     params
   })
@@ -39,9 +39,9 @@ export function userListApi(params) {
  * 会员管理 修改
  * @param pram
  */
-export function userUpdateApi(params, data) {
+export function userUpdateApi (params, data) {
   return request({
-    url: `/admin/user/update`,
+    url: '/admin/user/update',
     method: 'post',
     params,
     data
@@ -52,9 +52,9 @@ export function userUpdateApi(params, data) {
  * 会员管理 详情
  * @param pram
  */
-export function userInfoApi(params) {
+export function userInfoApi (params) {
   return request({
-    url: `/admin/user/info`,
+    url: '/admin/user/info',
     method: 'get',
     params
   })
@@ -64,9 +64,9 @@ export function userInfoApi(params) {
  * 会员管理 账户详情
  * @param pram
  */
-export function infobyconditionApi(params) {
+export function infobyconditionApi (params) {
   return request({
-    url: `/admin/user/infobycondition`,
+    url: '/admin/user/infobycondition',
     method: 'get',
     params
   })
@@ -76,9 +76,9 @@ export function infobyconditionApi(params) {
  * 会员管理 账户详情top数据
  * @param pram
  */
-export function topdetailApi(params) {
+export function topdetailApi (params) {
   return request({
-    url: `/admin/user/topdetail`,
+    url: '/admin/user/topdetail',
     method: 'get',
     params
   })
@@ -88,9 +88,9 @@ export function topdetailApi(params) {
  * 会员管理 批量设置分组
  * @param pram
  */
-export function groupPiApi(params) {
+export function groupPiApi (params) {
   return request({
-    url: `/admin/user/group`,
+    url: '/admin/user/group',
     method: 'post',
     params
   })
@@ -100,9 +100,9 @@ export function groupPiApi(params) {
  * 会员管理 批量设置标签
  * @param pram
  */
-export function tagPiApi(params) {
+export function tagPiApi (params) {
   return request({
-    url: `/admin/user/tag`,
+    url: '/admin/user/tag',
     method: 'post',
     params
   })
@@ -112,9 +112,9 @@ export function tagPiApi(params) {
  * 会员管理 积分余额
  * @param pram
  */
-export function foundsApi(params) {
+export function foundsApi (params) {
   return request({
-    url: `/admin/user/operate/founds`,
+    url: '/admin/user/operate/founds',
     method: 'get',
     params
   })
@@ -124,9 +124,9 @@ export function foundsApi(params) {
  * 会员管理 删除
  * @param pram
  */
-export function userDeleteApi(params) {
+export function userDeleteApi (params) {
   return request({
-    url: `/admin/user/delete`,
+    url: '/admin/user/delete',
     method: 'get',
     params
   })
@@ -136,9 +136,9 @@ export function userDeleteApi(params) {
  * 会员等级 列表
  * @param pram
  */
-export function levelListApi(params) {
+export function levelListApi (params) {
   return request({
-    url: `/admin/system/user/level/list`,
+    url: '/admin/system/user/level/list',
     method: 'get',
     params
   })
@@ -148,9 +148,9 @@ export function levelListApi(params) {
  * 会员等级 新增
  * @param pram
  */
-export function levelSaveApi(data) {
+export function levelSaveApi (data) {
   return request({
-    url: `/admin/system/user/level/save`,
+    url: '/admin/system/user/level/save',
     method: 'post',
     data
   })
@@ -160,9 +160,9 @@ export function levelSaveApi(data) {
  * 会员等级 编辑
  * @param pram
  */
-export function levelUpdateApi(params, data) {
+export function levelUpdateApi (params, data) {
   return request({
-    url: `/admin/system/user/level/update`,
+    url: '/admin/system/user/level/update',
     method: 'post',
     params,
     data
@@ -173,9 +173,9 @@ export function levelUpdateApi(params, data) {
  * 会员等级 详情
  * @param pram
  */
-export function levelInfoApi(params) {
+export function levelInfoApi (params) {
   return request({
-    url: `/admin/system/user/level/info`,
+    url: '/admin/system/user/level/info',
     method: 'get',
     params
   })
@@ -185,9 +185,9 @@ export function levelInfoApi(params) {
  * 会员等级 删除
  * @param pram
  */
-export function levelDeleteApi(params) {
+export function levelDeleteApi (params) {
   return request({
-    url: `/admin/system/user/level/delete`,
+    url: '/admin/system/user/level/delete',
     method: 'get',
     params
   })
@@ -197,9 +197,9 @@ export function levelDeleteApi(params) {
  * 会员等级 是否显示
  * @param pram
  */
-export function levelUseApi(params) {
+export function levelUseApi (params) {
   return request({
-    url: `/admin/system/user/level/use`,
+    url: '/admin/system/user/level/use',
     method: 'get',
     params
   })
@@ -209,9 +209,9 @@ export function levelUseApi(params) {
  * 会员标签 列表
  * @param pram
  */
-export function tagListApi(params) {
+export function tagListApi (params) {
   return request({
-    url: `/admin/user/tag/list`,
+    url: '/admin/user/tag/list',
     method: 'get',
     params
   })
@@ -221,9 +221,9 @@ export function tagListApi(params) {
  * 会员标签 新增
  * @param pram
  */
-export function tagSaveApi(data) {
+export function tagSaveApi (data) {
   return request({
-    url: `/admin/user/tag/save`,
+    url: '/admin/user/tag/save',
     method: 'post',
     data
   })
@@ -233,9 +233,9 @@ export function tagSaveApi(data) {
  * 会员标签 编辑
  * @param pram
  */
-export function tagUpdateApi(params, data) {
+export function tagUpdateApi (params, data) {
   return request({
-    url: `/admin/user/tag/update`,
+    url: '/admin/user/tag/update',
     method: 'post',
     params,
     data
@@ -246,9 +246,9 @@ export function tagUpdateApi(params, data) {
  * 会员标签 详情
  * @param pram
  */
-export function tagInfoApi(params) {
+export function tagInfoApi (params) {
   return request({
-    url: `/admin/user/tag/info`,
+    url: '/admin/user/tag/info',
     method: 'get',
     params
   })
@@ -258,9 +258,9 @@ export function tagInfoApi(params) {
  * 会员标签 删除
  * @param pram
  */
-export function tagDeleteApi(params) {
+export function tagDeleteApi (params) {
   return request({
-    url: `/admin/user/tag/delete`,
+    url: '/admin/user/tag/delete',
     method: 'get',
     params
   })
@@ -270,9 +270,9 @@ export function tagDeleteApi(params) {
  * 会员分组 列表
  * @param pram
  */
-export function groupListApi(params) {
+export function groupListApi (params) {
   return request({
-    url: `/admin/user/group/list`,
+    url: '/admin/user/group/list',
     method: 'get',
     params
   })
@@ -282,9 +282,9 @@ export function groupListApi(params) {
  * 会员分组 新增
  * @param pram
  */
-export function groupSaveApi(data) {
+export function groupSaveApi (data) {
   return request({
-    url: `/admin/user/group/save`,
+    url: '/admin/user/group/save',
     method: 'post',
     data
   })
@@ -294,10 +294,10 @@ export function groupSaveApi(data) {
  * 会员分组 编辑
  * @param pram
  */
-export function groupUpdateApi(params, data) {
+export function groupUpdateApi (params, data) {
   console.log(params, data)
   return request({
-    url: `/admin/user/group/update`,
+    url: '/admin/user/group/update',
     method: 'post',
     params,
     data
@@ -308,9 +308,9 @@ export function groupUpdateApi(params, data) {
  * 会员分组 详情
  * @param pram
  */
-export function groupInfoApi(params) {
+export function groupInfoApi (params) {
   return request({
-    url: `/admin/user/group/info`,
+    url: '/admin/user/group/info',
     method: 'get',
     params
   })
@@ -320,9 +320,9 @@ export function groupInfoApi(params) {
  * 会员分组 删除
  * @param pram
  */
-export function groupDeleteApi(params) {
+export function groupDeleteApi (params) {
   return request({
-    url: `/admin/user/group/delete`,
+    url: '/admin/user/group/delete',
     method: 'get',
     params
   })
@@ -331,9 +331,9 @@ export function groupDeleteApi(params) {
 /**
  *获取登录页图片
  */
-export function getLoginPicApi() {
+export function getLoginPicApi () {
   return request({
-    url: `/admin/getLoginPic`,
+    url: '/admin/getLoginPic',
     method: 'get'
   })
 }
@@ -341,9 +341,9 @@ export function getLoginPicApi() {
 /**
  * @description 验证码
  */
-export function captchaApi() {
+export function captchaApi () {
   return request({
-    url: `/admin/validate/code/get`,
+    url: '/admin/validate/code/get',
     method: 'get'
   })
 }
