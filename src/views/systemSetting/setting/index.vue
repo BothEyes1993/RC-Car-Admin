@@ -11,7 +11,7 @@
           <!--      文件上传特殊处理-->
           <template v-if="activeNamel1 == 4">
             <el-radio-group v-model="activeNamel2" class="mb10">
-              <el-radio v-for="(tabItem,itemIndex)in tab.child"
+              <el-radio v-for="(tabItem,itemIndex) in tab.child"
                         :key="itemIndex"
                         :label="tabItem.name" @change="()=>handleItemTabClick(tabItem.extra)">{{tabItem.name}}</el-radio>
             </el-radio-group>
