@@ -37,7 +37,14 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    // before: require('./mock/mock-server.js'),  //mock和proxy代理有冲突，二选一
+    proxy: {
+      '/api/': {
+        target: 'https://api.java.crmeb.net',
+        changeOrigin: true
+      }
+    }
+
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

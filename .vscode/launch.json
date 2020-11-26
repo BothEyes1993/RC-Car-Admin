@@ -7,7 +7,7 @@
       "request": "launch",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
-        "run-script", "dev"  
+        "run-script", "preview"  
       ],
         "port": 9229   
     }
