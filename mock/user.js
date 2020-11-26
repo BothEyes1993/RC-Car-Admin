@@ -24,6 +24,17 @@ const users = {
 }
 
 export default [
+  {
+    url: '/admin/validate/code/get',
+    type: 'get',
+    response: _ => {
+      return {
+        code: 20000,
+        data: { a: 1 }
+      }
+    }
+  },
+
   // user login
   {
     url: '/vue-element-admin/user/login',
