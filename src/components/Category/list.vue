@@ -99,6 +99,7 @@
       </div>
     </template>
     <el-dialog
+      v-el-drag-dialog
       :title="(editDialogConfig.isCreate===0?`创建${biztype.name}`:`编辑${biztype.name}`)"
       :visible.sync="editDialogConfig.visible"
       destroy-on-close

@@ -34,6 +34,8 @@ import modalIcon from '@/libs/modal-icon'
 import { modalSure } from '@/libs/public'
 import { loadScriptQueue } from '@/components/FormGenerator/utils/loadScript'
 
+import dragDialog from './directive/el-drag-dialog'
+
 import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error integralLog
@@ -47,6 +49,7 @@ Vue.use(VueLazyload, {
   listenEvents: ['scroll', 'wheel', 'mousewheel', 'resize', 'animationend', 'transitionend', 'touchmove']
 })
 
+Vue.use(dragDialog)
 Vue.use(uploadPicture)
 Vue.use(goodListFrom)
 Vue.use(couponFrom)
@@ -141,7 +144,6 @@ function newVue (attrs, main, html) {
     template: `<div><child ${attrs}/></div>`
   }).$mount('#app')
 }
-
 // eslint-disable-next-line no-new
 new Vue({
   el: '#app',
